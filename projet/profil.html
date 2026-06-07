@@ -830,15 +830,15 @@
           <span class="logo-text">FITNESS GYM</span>
         </a>
         <a href="index.html">Accueil</a>
-        <a href="projet/clubs.html">Clubs</a>
-        <a href="projet/horaires.html">Horaires</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="horaires.html">Horaires</a>
         <a href="offre.html">Offre</a>
-        <a href="projet/contact.html">Contact</a>
+        <a href="contact.html">Contact</a>
         <a href="profil.html" class="active">My FG</a>
         <a href="analytic.html">Suivi</a>
       </div>
       <div class="auth-btns">
-        <a href="projet/connexion.html">Se connecter</a>
+        <a href="connexion.html">Se connecter</a>
         <button class="btn-red" onclick="logout()">Déconnexion</button>
       </div>
     </header>
@@ -1141,11 +1141,11 @@
         sessionStorage.getItem("fgConnectedUser") || "null"
       );
       if (!connectedUser || !connectedUser.email)
-        window.location.href = "projet/connexion.html";
+        window.location.href = "connexion.html";
 
       function logout() {
         sessionStorage.removeItem("fgConnectedUser");
-        window.location.href = "projet/connexion.html";
+        window.location.href = "connexion.html";
       }
 
       const OFFRE_COLORS = {

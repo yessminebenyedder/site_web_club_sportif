@@ -475,17 +475,17 @@
       </a>
       <nav>
         <a href="index.html">Accueil</a>
-        <a href="projet/clubs.html">Clubs</a>
-        <a href="projet/horaires.html">Horaires</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="horaires.html">Horaires</a>
         <a href="offre.html">Offres</a>
-        <a href="projet/contact.html">Contact</a>
+        <a href="contact.html">Contact</a>
         <a href="profil.html">My FG</a>
         <a href="analytic.html" class="active">Suivi</a>
       </nav>
       <div class="hdr-right">
         <button
           class="btn-hdr btn-outline-gold"
-          onclick="window.location.href='projet/connexion.html'"
+          onclick="window.location.href='connexion.html'"
         >
           Se connecter
         </button>
@@ -1083,12 +1083,12 @@ Continuez a vous entrainer ! L'equipe Fitness Gym vous remercie pour votre confi
 
       function logout() {
         sessionStorage.removeItem("fgConnectedUser");
-        window.location.href = "projet/connexion.html";
+        window.location.href = "connexion.html";
       }
 
       const connectedUser = sessionStorage.getItem("fgConnectedUser");
       if (!connectedUser) {
-        window.location.href = "projet/connexion.html";
+        window.location.href = "connexion.html";
       } else {
         const user = JSON.parse(connectedUser);
         document.getElementById("userName").textContent =
