@@ -707,7 +707,7 @@
       footer span {
         color: var(--gold);
       }
-      
+
       .offre-list {
         display: flex;
         flex-direction: column;
@@ -789,7 +789,7 @@
   <body>
     <header class="bar">
       <div class="nav-links">
-        <a class="logo-luxury" href="aceuill.html">
+        <a class="logo-luxury" href="index.html">
           <div class="logo-icon">
             <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
               <path
@@ -829,16 +829,16 @@
           </div>
           <span class="logo-text">FITNESS GYM</span>
         </a>
-        <a href="aceuill.html">Accueil</a>
-        <a href="clubs.html">Clubs</a>
-        <a href="horaires.html">Horaires</a>
+        <a href="index.html">Accueil</a>
+        <a href="projet/clubs.html">Clubs</a>
+        <a href="projet/horaires.html">Horaires</a>
         <a href="offre.html">Offre</a>
-        <a href="contact.html">Contact</a>
+        <a href="projet/contact.html">Contact</a>
         <a href="profil.html" class="active">My FG</a>
         <a href="analytic.html">Suivi</a>
       </div>
       <div class="auth-btns">
-        <a href="connexion.html">Se connecter</a>
+        <a href="projet/connexion.html">Se connecter</a>
         <button class="btn-red" onclick="logout()">Déconnexion</button>
       </div>
     </header>
@@ -904,7 +904,7 @@
                 <div class="action-label">Modifier</div>
                 <div class="action-sub">Mes informations</div>
               </div>
-              
+
               <div class="action-btn" onclick="openChangeOfferModal()">
                 <div class="action-icon">
                   <svg
@@ -983,7 +983,6 @@
       </div>
     </div>
 
-    
     <div class="modal" id="editModal">
       <div class="modal-content">
         <div class="modal-title">Modifier mon profil</div>
@@ -1027,7 +1026,6 @@
       </div>
     </div>
 
-    
     <div class="modal" id="cancelModal">
       <div class="modal-content">
         <div class="modal-title danger">Résilier mon abonnement</div>
@@ -1046,7 +1044,6 @@
       </div>
     </div>
 
-   
     <div class="modal" id="changeOfferModal">
       <div class="modal-content">
         <div class="modal-title">Changer d'abonnement</div>
@@ -1054,9 +1051,7 @@
           Sélectionnez une nouvelle offre. Le mois en cours sera remplacé et un
           nouveau cycle démarrera immédiatement.
         </div>
-        <div class="offre-list" id="offreListContainer">
-          
-        </div>
+        <div class="offre-list" id="offreListContainer"></div>
         <div class="modal-actions">
           <button class="btn-cancel" onclick="closeChangeOfferModal()">
             Annuler
@@ -1081,9 +1076,8 @@
       const STORE = "profiles";
       let db = null;
       let currentProfile = null;
-      let selectedOffre = null; 
+      let selectedOffre = null;
 
-      
       const OFFERS_LIST = [
         {
           key: "blue",
@@ -1147,11 +1141,11 @@
         sessionStorage.getItem("fgConnectedUser") || "null"
       );
       if (!connectedUser || !connectedUser.email)
-        window.location.href = "connexion.html";
+        window.location.href = "projet/connexion.html";
 
       function logout() {
         sessionStorage.removeItem("fgConnectedUser");
-        window.location.href = "connexion.html";
+        window.location.href = "projet/connexion.html";
       }
 
       const OFFRE_COLORS = {
@@ -1337,7 +1331,6 @@
         showToast("Profil mis à jour avec succès !", "ok");
       }
 
-      
       async function renewSubscription() {
         if (!currentProfile)
           return showToast("Erreur : profil introuvable", "error");
@@ -1385,10 +1378,9 @@
         );
       }
 
-     
       function openChangeOfferModal() {
         if (!currentProfile) return;
-        
+
         const container = document.getElementById("offreListContainer");
         container.innerHTML = OFFERS_LIST.map(
           (offre) => `
@@ -1398,7 +1390,7 @@
           </div>
         `
         ).join("");
-        
+
         document.querySelectorAll(".offre-option").forEach((el) => {
           el.addEventListener("click", (e) => {
             document
@@ -1429,7 +1421,7 @@
           return;
         }
         if (!currentProfile) return;
-        
+
         const startDate = new Date();
         const nextDue = new Date(startDate);
         nextDue.setMonth(nextDue.getMonth() + 1);
@@ -1447,7 +1439,6 @@
           dateEcheance: nextDue.toISOString(),
         };
 
-        
         const todayStr = new Date().toLocaleDateString("fr-FR", {
           day: "numeric",
           month: "long",
@@ -1464,7 +1455,6 @@
         currentProfile.subscription = newSubscription;
         await dbPut(currentProfile);
 
-        
         const c = OFFRE_COLORS[selectedOffre.key] || OFFRE_COLORS.blue;
         document.documentElement.style.setProperty("--accent", c.accent);
         document.documentElement.style.setProperty("--accent-bg", c.bg);
