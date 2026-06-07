@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="ex4tp3.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form>
+      <fieldset>
+        <legend>Formulaire exercice 3</legend>
+        <table>
+          <tr>
+            <td>
+              <input
+                type="text"
+                name=""
+                placeholder="saisir votre titre"
+                pattern="[a-z].*"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="password"
+                name=""
+                placeholder="saisir votre mot de passe"
+                pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[./\\|?!*#\-_%@]).{4,8}"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="file" value="choisir un fichier" />
+              <input type="hidden" name="MAX-FILE-SIZE" value="3000" />
+            </td>
+            <td>
+              <input type="submit" value="envoyer" class="button" />
+            </td>
+          </tr>
+        </table>
+      </fieldset>
+    </form>
+  </body>
+</html>

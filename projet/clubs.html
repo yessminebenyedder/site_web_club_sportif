@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nos Clubs - Fitness Gym</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --gold-pale: rgba(201, 168, 76, 0.11);
+        --gold-border: rgba(201, 168, 76, 0.28);
+        --cyan: #8fe9f0;
+        --cyan-dim: rgba(143, 233, 240, 0.13);
+        --cyan-border: rgba(143, 233, 240, 0.22);
+        --bg: #080d10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --text: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --text-dim: rgba(255, 255, 255, 0.3);
+        --green: #4ade80;
+        --red: #ef4444;
+        --blue: #60a5fa;
+        --dark-navy: #0a1a1f;
+        --bg-footer: #040a0d;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 50px;
+        height: 66px;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--gold-border);
+      }
+      .logo-luxury {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 22px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .logo-luxury:hover {
+        transform: scale(1.02);
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.14),
+          rgba(143, 233, 240, 0.04)
+        );
+        border: 1px solid rgba(143, 233, 240, 0.32);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+      }
+      .logo-luxury:hover .logo-icon {
+        border-color: var(--cyan);
+        box-shadow: 0 0 14px rgba(143, 233, 240, 0.25);
+      }
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        background: linear-gradient(135deg, #fff 40%, var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+
+      .links {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .links a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.06);
+        transition: 0.22s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .links a:hover,
+      .links a.active {
+        color: var(--cyan);
+        background: var(--cyan-dim);
+      }
+
+      .auth-btns {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .auth-btns a {
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 7px 20px;
+        border-radius: 16px;
+        transition: 0.25s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .c2 {
+        background: transparent !important;
+        color: var(--gold) !important;
+        border: 1.5px solid var(--gold) !important;
+      }
+      .c2:hover {
+        background: var(--gold) !important;
+        color: #0a2a2d !important;
+        transform: translateY(-2px);
+      }
+      .hero {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 110px 20px 80px;
+        background: linear-gradient(
+            135deg,
+            rgba(0, 0, 0, 0.72) 0%,
+            rgba(0, 0, 0, 0.5) 100%
+          ),
+          url("img11.jpg") center/cover fixed no-repeat;
+        position: relative;
+        gap: 60px;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          circle at 30% 50%,
+          rgba(143, 233, 240, 0.07) 0%,
+          transparent 70%
+        );
+        pointer-events: none;
+      }
+      .hero-title {
+        text-align: center;
+        animation: fadeInUp 0.7s ease-out both;
+      }
+      .hero-title span {
+        display: block;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.4rem, 6vw, 5rem);
+        letter-spacing: 6px;
+        line-height: 1.05;
+        color: white;
+        text-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+      }
+      .hero-title span.accent {
+        color: var(--cyan);
+        text-shadow: 0 0 30px rgba(143, 233, 240, 0.4);
+      }
+      .hero-title p {
+        margin-top: 14px;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.6);
+        letter-spacing: 1px;
+        font-weight: 300;
+      }
+      .clubs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+        max-width: 1100px;
+        width: 100%;
+        padding: 0 10px;
+        animation: fadeInUp 0.9s ease-out 0.15s both;
+      }
+      .club-card {
+        background: rgba(0, 255, 255, 0.25);
+        backdrop-filter: blur(16px);
+        border: 1px solid rgba(143, 233, 240, 0.15);
+        border-radius: 20px;
+        padding: 28px 24px;
+        cursor: pointer;
+        transition: all 0.35s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .club-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--cyan), #60a5fa);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.35s ease;
+      }
+      .club-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(143, 233, 240, 0.4);
+        background: rgba(143, 233, 240, 0.08);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      }
+      .club-card:hover::before {
+        transform: scaleX(1);
+      }
+      .club-card .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-bottom: 14px;
+      }
+      .badge.open {
+        background: rgba(52, 211, 153, 0.15);
+        color: #34d399;
+        border: 1px solid rgba(52, 211, 153, 0.3);
+      }
+      .badge.new {
+        background: rgba(143, 233, 240, 0.15);
+        color: var(--cyan);
+        border: 1px solid var(--cyan-border);
+      }
+      .badge.premium {
+        background: rgba(251, 191, 36, 0.15);
+        color: #fbbf24;
+        border: 1px solid rgba(251, 191, 36, 0.3);
+      }
+      .club-card h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+        letter-spacing: 2px;
+        color: white;
+        margin-bottom: 6px;
+      }
+      .club-card .city {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.45);
+        margin-bottom: 16px;
+      }
+      .club-card .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 16px;
+      }
+      .club-card .hours {
+        font-size: 12.5px;
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .club-card .arrow-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cyan);
+        background: var(--cyan-dim);
+        border: 1px solid var(--cyan-border);
+        padding: 6px 14px;
+        border-radius: 30px;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      .club-card .arrow-btn:hover {
+        background: var(--cyan);
+        color: #0a2a2d;
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .stats-bar {
+        display: flex;
+        justify-content: center;
+        background: rgba(143, 233, 240, 0.04);
+        border-top: 1px solid var(--cyan-border);
+        border-bottom: 1px solid var(--cyan-border);
+        overflow: hidden;
+      }
+      .stat-item {
+        flex: 1;
+        max-width: 200px;
+        text-align: center;
+        padding: 28px 20px;
+        border-right: 1px solid rgba(143, 233, 240, 0.1);
+        transition: background 0.3s;
+      }
+      .stat-item:last-child {
+        border-right: none;
+      }
+      .stat-item:hover {
+        background: rgba(143, 233, 240, 0.06);
+      }
+      .stat-item .num {
+        font-family: "Playfair Display", serif;
+        font-size: 2.4rem;
+        color: var(--cyan);
+        letter-spacing: 2px;
+        display: block;
+      }
+      .stat-item .label {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.45);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+      .footer {
+        background: linear-gradient(
+          180deg,
+          var(--dark-navy) 0%,
+          var(--bg-footer) 100%
+        );
+        border-top: 1px solid rgba(143, 233, 240, 0.1);
+        padding: 60px 40px 0;
+        margin-top: auto;
+      }
+      .footer-top {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr 1.2fr;
+        gap: 40px;
+        padding-bottom: 50px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      }
+      .footer h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        letter-spacing: 2px;
+        color: var(--cyan);
+        margin-bottom: 20px;
+        position: relative;
+        display: inline-block;
+      }
+      .footer h3::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 32px;
+        height: 2px;
+        background: var(--cyan);
+        border-radius: 2px;
+      }
+      .footer-brand p {
+        font-size: 13.5px;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.75;
+        margin-bottom: 20px;
+        max-width: 260px;
+      }
+      .footer-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--cyan-dim);
+        border: 1px solid var(--cyan-border);
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 12px;
+        color: var(--cyan);
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+      .footer-links-col a {
+        display: block;
+        font-size: 13.5px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 13px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .footer-links-col a:hover {
+        color: var(--cyan);
+        transform: translateX(4px);
+      }
+      .social-icons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .social-icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(255, 255, 255, 0.55);
+        text-decoration: none;
+        font-size: 13px;
+        transition: all 0.3s;
+        padding: 7px 12px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .social-icon:hover {
+        color: var(--cyan);
+        background: var(--cyan-dim);
+        border-color: var(--cyan-border);
+        transform: translateX(4px);
+      }
+      .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 14px;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+      .contact-item:hover {
+        color: var(--cyan);
+      }
+      .contact-item .icon {
+        min-width: 30px;
+        height: 30px;
+        background: rgba(143, 233, 240, 0.08);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(143, 233, 240, 0.12);
+      }
+      footer .c {
+        color: var(--gold);
+      }
+      .footer-bottom {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 22px 0;
+        gap: 20px;
+      }
+      .footer-bottom p {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.3);
+      }
+      .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+      }
+      .footer-bottom-links a {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.3);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .footer-bottom-links a:hover {
+        color: var(--cyan);
+      }
+      .pay-badge {
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        padding: 4px 10px;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 600;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (max-width: 1100px) {
+        .footer-top {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+        .footer-brand {
+          grid-column: 1/-1;
+        }
+      }
+      @media (max-width: 800px) {
+        header {
+          padding: 0 18px;
+        }
+        .clubs-grid {
+          grid-template-columns: 1fr;
+          max-width: 400px;
+        }
+        .footer-top {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer-brand {
+          grid-column: 1/-1;
+        }
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+        .stats-bar {
+          flex-wrap: wrap;
+        }
+        .stat-item {
+          flex: 1 1 120px;
+          border-right: none;
+          border-bottom: 1px solid rgba(143, 233, 240, 0.08);
+        }
+      }
+      @media (max-width: 600px) {
+        .links a:not(.logo-luxury) {
+          display: none;
+        }
+        .logo-luxury {
+          margin-right: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toast" id="toast"></div>
+
+    <header>
+      <nav class="links">
+        <a
+          href="aceuill.html"
+          class="logo-luxury"
+          style="text-decoration: none"
+        >
+          <div class="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path
+                d="M16 2L4 9L16 16L28 9L16 2Z"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M4 9V23L16 30L28 23V9"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path d="M16 16V30" stroke="#8fe9f0" stroke-width="1.5" />
+              <circle
+                cx="16"
+                cy="16"
+                r="3"
+                fill="#8fe9f0"
+                stroke="#8fe9f0"
+                stroke-width="1"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">FITNESS GYM</span>
+        </a>
+        <a href="aceuill.html">Accueil</a>
+        <a href="clubs.html" class="active">Clubs</a>
+        <a href="horaires.html">Horaires</a>
+        <a href="offre.html">Offre</a>
+        <a href="contact.html">Contact</a>
+        <a href="profil.html">My FG</a>
+        <a href="analytic.html">Static</a>
+      </nav>
+      <nav class="auth-btns">
+        <a href="connexion.html" class="c2">Se connecter</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div class="hero-title">
+        <span>TROUVEZ VOTRE</span>
+        <span class="accent">CLUB FITNESS GYM</span>
+        <p>7 clubs — Tunis &amp; régions — ouverts 7j/7</p>
+      </div>
+      <div class="clubs-grid">
+        <div
+          class="club-card"
+          onclick="window.location.href='voirclub.html?club=tunis'"
+        >
+          <span class="badge open">● Ouvert</span>
+          <h3>FG Tunis Centre</h3>
+          <div class="city">📍 Tunis, Centre-Ville</div>
+          <div class="card-footer">
+            <span class="hours">🕐 06:00 – 23:00</span>
+            <a class="arrow-btn">Voir →</a>
+          </div>
+        </div>
+        <div
+          class="club-card"
+          onclick="window.location.href='voirclub.html?club=marsa'"
+        >
+          <span class="badge premium">★ Premium</span>
+          <h3>FG La Marsa</h3>
+          <div class="city">📍 La Marsa, Côte Nord</div>
+          <div class="card-footer">
+            <span class="hours">🕐 06:00 – 23:00</span>
+            <a class="arrow-btn">Voir →</a>
+          </div>
+        </div>
+        <div
+          class="club-card"
+          onclick="window.location.href='voirclub.html?club=boumhal'"
+        >
+          <span class="badge new">★ Nouveau</span>
+          <h3>FG Boumhal</h3>
+          <div class="city">📍 Boumhal, Banlieue Sud</div>
+          <div class="card-footer">
+            <span class="hours">🕐 07:00 – 22:00</span>
+            <a class="arrow-btn">Voir →</a>
+          </div>
+        </div>
+        <div
+          class="club-card"
+          onclick="window.location.href='voirclub.html?club=bardo'"
+        >
+          <span class="badge open">● Ouvert</span>
+          <h3>FG Bardo</h3>
+          <div class="city">📍 Bardo, Grand Tunis</div>
+          <div class="card-footer">
+            <span class="hours">🕐 07:00 – 22:00</span>
+            <a class="arrow-btn">Voir →</a>
+          </div>
+        </div>
+        <div
+          class="club-card"
+          onclick="window.location.href='voirclub.html?club=ennaser'"
+        >
+          <span class="badge open">● Ouvert</span>
+          <h3>FG Ennaser</h3>
+          <div class="city">📍 Ennaser, Ariana</div>
+          <div class="card-footer">
+            <span class="hours">🕐 06:30 – 22:30</span>
+            <a class="arrow-btn">Voir →</a>
+          </div>
+        </div>
+        <div
+          class="club-card"
+          onclick="window.location.href='voirclub.html?club=sousse'"
+        >
+          <span class="badge premium">★ Premium</span>
+          <h3>FG Sousse</h3>
+          <div class="city">📍 Sousse, Centre</div>
+          <div class="card-footer">
+            <span class="hours">🕐 06:00 – 23:00</span>
+            <a class="arrow-btn">Voir →</a>
+          </div>
+        </div>
+        <div
+          class="club-card"
+          onclick="window.location.href='voirclub.html?club=sfax'"
+        >
+          <span class="badge open">● Ouvert</span>
+          <h3>FG Sfax</h3>
+          <div class="city">📍 Sfax, Centre Urbain</div>
+          <div class="card-footer">
+            <span class="hours">🕐 07:00 – 22:00</span>
+            <a class="arrow-btn">Voir →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span class="num">7</span><span class="label">Clubs en Tunisie</span>
+      </div>
+      <div class="stat-item">
+        <span class="num">50K+</span><span class="label">Membres actifs</span>
+      </div>
+      <div class="stat-item">
+        <span class="num">50+</span><span class="label">Coachs certifiés</span>
+      </div>
+      <div class="stat-item">
+        <span class="num">7/7</span><span class="label">Jours ouverts</span>
+      </div>
+      <div class="stat-item">
+        <span class="num">15+</span
+        ><span class="label">Disciplines sportives</span>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-bottom: 16px;
+            "
+          >
+            <div class="logo-icon">
+              <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                <path
+                  d="M16 2L4 9L16 16L28 9L16 2Z"
+                  stroke="#8fe9f0"
+                  stroke-width="1.5"
+                  fill="none"
+                />
+                <path
+                  d="M4 9V23L16 30L28 23V9"
+                  stroke="#8fe9f0"
+                  stroke-width="1.5"
+                  fill="none"
+                />
+                <path d="M16 16V30" stroke="#8fe9f0" stroke-width="1.5" />
+                <circle cx="16" cy="16" r="3" fill="#8fe9f0" />
+              </svg>
+            </div>
+            <span class="logo-text">FITNESS GYM</span>
+          </div>
+          <p>
+            Fitness Gym, <em>The land of fitness</em>, est la première chaîne de
+            clubs de remise en forme en Tunisie.
+          </p>
+          <div class="footer-badge">✅ Certifié Qualité Sport & Bien-être</div>
+          <p style="font-size: 12px; margin-top: 4px">
+            Fitness Gym — Enjoy the difference!
+          </p>
+        </div>
+        <div class="footer-links-col">
+          <h3>Nos Clubs</h3>
+          <a href="voirclub.html?club=tunis">FG Tunis Centre</a>
+          <a href="voirclub.html?club=marsa">FG La Marsa</a>
+          <a href="voirclub.html?club=bardo">FG Bardo</a>
+          <a href="voirclub.html?club=ennaser">FG Ennaser</a>
+          <a href="voirclub.html?club=boumhal">FG Boumhal</a>
+          <a href="voirclub.html?club=sousse">FG Sousse</a>
+          <a href="voirclub.html?club=sfax">FG Sfax</a>
+        </div>
+        <div class="footer-links-col">
+          <h3>Liens Utiles</h3>
+          <a href="aceuill.html">Accueil</a>
+          <a href="horaires.html">Horaires</a>
+          <a href="offre.html">Nos Offres</a>
+          <a href="coach.html">Nos Coachs</a>
+          <a href="cours.html">Cours collectifs</a>
+          <a href="formulaire.html">S'inscrire</a>
+        </div>
+        <div class="footer-links-col">
+          <h3>Informations</h3>
+          <a href="#">À propos</a>
+          <a href="#">FAQ</a>
+          <a href="#">Partenariats</a>
+          <a href="#">Recrutement</a>
+          <a href="#">CGU</a>
+          <a href="#">Confidentialité</a>
+        </div>
+        <div>
+          <h3>Contact & Réseaux</h3>
+          <div class="contact-item">
+            <div class="icon">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8fe9f0"
+                stroke-width="2"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.4a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.69h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.7a16 16 0 0 0 5.93 5.93l1.07-1.07a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.92 18z"
+                />
+              </svg>
+            </div>
+            <span>+216 71 XXX XXX</span>
+          </div>
+          <div class="contact-item">
+            <div class="icon">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8fe9f0"
+                stroke-width="2"
+              >
+                <path
+                  d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                />
+                <polyline points="22,6 12,13 2,6" />
+              </svg>
+            </div>
+            <span>contact@fitnessgym.tn</span>
+          </div>
+          <div class="contact-item">
+            <div class="icon">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#8fe9f0"
+                stroke-width="2"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+            </div>
+            <span>Tunis, Tunisie</span>
+          </div>
+          <div class="social-icons" style="margin-top: 18px">
+            <a href="#" class="social-icon">Facebook</a>
+            <a href="#" class="social-icon">Instagram</a>
+            <a href="#" class="social-icon">YouTube</a>
+            <a href="#" class="social-icon">LinkedIn</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 <span class="c">Fitness Gym</span>- Tous droits réservés.</p>
+        <div class="footer-bottom-links">
+          <a href="#">CGU</a><a href="#">Confidentialité</a
+          ><a href="#">Cookies</a>
+        </div>
+        <div style="display: flex; gap: 8px">
+          <span class="pay-badge">VISA</span><span class="pay-badge">MC</span
+          ><span class="pay-badge">SOBITAS</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

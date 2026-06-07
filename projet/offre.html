@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offres - Fitness Gym</title>
+    <style>
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --gold-pale: rgba(201, 168, 76, 0.11);
+        --gold-border: rgba(201, 168, 76, 0.28);
+        --cyan: #8fe9f0;
+        --cyan-dim: rgba(143, 233, 240, 0.13);
+        --cyan-border: rgba(143, 233, 240, 0.22);
+        --bg: #080d10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --text: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --text-dim: rgba(255, 255, 255, 0.3);
+        --green: #4ade80;
+        --red: #ef4444;
+        --blue: #60a5fa;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      header.bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 50px;
+        height: 66px;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--gold-border);
+      }
+      .logo-luxury {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 25px;
+        transition: all 0.3s;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .logo-luxury:hover {
+        transform: scale(1.02);
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.15),
+          rgba(143, 233, 240, 0.05)
+        );
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(143, 233, 240, 0.3);
+        transition: all 0.3s;
+      }
+      .logo-luxury:hover .logo-icon {
+        border-color: var(--cyan);
+        box-shadow: 0 0 14px rgba(143, 233, 240, 0.25);
+      }
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        letter-spacing: 3px;
+        background: linear-gradient(135deg, #fff, var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: 40px;
+        background: rgba(255, 255, 255, 0.08);
+        transition: 0.22s;
+      }
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--cyan);
+        background: var(--cyan-dim);
+      }
+      .auth-btns {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .auth-btns a {
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px 22px;
+        border-radius: 50px;
+        transition: 0.3s;
+      }
+      .btn-login {
+        background: transparent;
+        color: var(--gold);
+        border: 2px solid var(--gold);
+      }
+      .btn-login:hover {
+        background: var(--gold);
+        color: #0a2a2d;
+      }
+      .hero-banner {
+        margin-top: 66px;
+        height: 320px;
+        background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.75)),
+          url("img44.jpg") center/cover no-repeat;
+        display: flex;
+        align-items: flex-end;
+        padding: 44px 60px;
+        border-bottom: 1px solid var(--gold-border);
+      }
+      .hero-banner h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3rem, 6vw, 5rem);
+        letter-spacing: 6px;
+        color: white;
+        line-height: 1;
+      }
+      .hero-banner p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 15px;
+        margin-top: 10px;
+      }
+      .breadcrumb {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.45);
+        margin-bottom: 10px;
+      }
+      .breadcrumb span {
+        color: var(--cyan);
+      }
+      .offres-section {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 70px 40px 80px;
+      }
+      .section-label {
+        font-family: "Playfair Display", serif;
+        font-size: 1rem;
+        color: var(--cyan);
+        letter-spacing: 4px;
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: 4px;
+        text-align: center;
+        margin-bottom: 10px;
+      }
+      .section-sub {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 15px;
+        margin-bottom: 56px;
+      }
+      .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 28px;
+      }
+      .offer-card {
+        border-radius: 24px;
+        padding: 40px 32px 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        transition: transform 0.35s, box-shadow 0.35s;
+      }
+      .offer-card:hover {
+        transform: translateY(-8px);
+      }
+      .card-blue {
+        background: linear-gradient(
+          145deg,
+          rgba(30, 80, 160, 0.35),
+          rgba(10, 30, 80, 0.6)
+        );
+        border: 1px solid rgba(100, 160, 255, 0.3);
+      }
+      .card-yellow {
+        background: linear-gradient(
+          145deg,
+          rgba(120, 90, 10, 0.4),
+          rgba(60, 40, 5, 0.6)
+        );
+        border: 1px solid rgba(250, 200, 60, 0.3);
+      }
+      .card-green {
+        background: linear-gradient(
+          145deg,
+          rgba(10, 80, 40, 0.4),
+          rgba(5, 40, 20, 0.6)
+        );
+        border: 1px solid rgba(60, 220, 120, 0.3);
+      }
+      .card-blue:hover {
+        box-shadow: 0 24px 60px rgba(60, 120, 255, 0.2);
+      }
+      .card-yellow:hover {
+        box-shadow: 0 24px 60px rgba(250, 200, 60, 0.15);
+      }
+      .card-green:hover {
+        box-shadow: 0 24px 60px rgba(60, 220, 120, 0.15);
+      }
+      .card-blue .accent {
+        color: #60a5fa;
+      }
+      .card-yellow .accent {
+        color: #fbbf24;
+      }
+      .card-green .accent {
+        color: #34d399;
+      }
+      .card-blue .badge {
+        background: rgba(96, 165, 250, 0.15);
+        color: #60a5fa;
+        border-color: rgba(96, 165, 250, 0.3);
+      }
+      .card-yellow .badge {
+        background: rgba(251, 191, 36, 0.15);
+        color: #fbbf24;
+        border-color: rgba(251, 191, 36, 0.3);
+      }
+      .card-green .badge {
+        background: rgba(52, 211, 153, 0.15);
+        color: #34d399;
+        border-color: rgba(52, 211, 153, 0.3);
+      }
+      .card-blue .icon-bg {
+        background: rgba(96, 165, 250, 0.12);
+      }
+      .card-yellow .icon-bg {
+        background: rgba(251, 191, 36, 0.12);
+      }
+      .card-green .icon-bg {
+        background: rgba(52, 211, 153, 0.12);
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+      .card-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+      }
+      .badge {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        border: 1px solid;
+        text-transform: uppercase;
+      }
+      .card-name {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        letter-spacing: 3px;
+        line-height: 1;
+      }
+      .card-desc {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.7;
+        flex: 1;
+      }
+      .price-block {
+        display: flex;
+        align-items: baseline;
+        gap: 4px;
+        margin-bottom: 6px;
+      }
+      .amount {
+        font-family: "Playfair Display", serif;
+        font-size: 2.6rem;
+        line-height: 1;
+      }
+      .currency {
+        font-size: 1rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .period {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.35);
+      }
+      .divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 8px 0 12px;
+      }
+      ul.feat {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      ul.feat li {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.7);
+        padding-left: 22px;
+        position: relative;
+      }
+      ul.feat li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        font-size: 11px;
+        opacity: 0.8;
+      }
+      ul.feat li.non {
+        color: rgba(255, 255, 255, 0.28);
+        text-decoration: line-through;
+      }
+      ul.feat li.non::before {
+        content: "✗";
+        color: rgba(255, 80, 80, 0.5);
+      }
+      .activities-list {
+        margin-top: 12px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+      }
+      .activities-title {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+      }
+      .activities-items {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .activity-tag {
+        font-size: 11px;
+        padding: 3px 8px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .card-blue .activity-tag {
+        background: rgba(96, 165, 250, 0.12);
+        color: #60a5fa;
+      }
+      .card-yellow .activity-tag {
+        background: rgba(251, 191, 36, 0.12);
+        color: #fbbf24;
+      }
+      .card-green .activity-tag {
+        background: rgba(52, 211, 153, 0.12);
+        color: #34d399;
+      }
+      .card-footer {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 20px;
+        margin-top: auto;
+      }
+      .btn-offre {
+        display: block;
+        width: 100%;
+        padding: 13px;
+        text-align: center;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        border-radius: 50px;
+        transition: 0.3s;
+        cursor: pointer;
+        border: 2px solid;
+      }
+      .card-blue .btn-offre {
+        background: #60a5fa;
+        color: #0a1a3d;
+        border-color: #60a5fa;
+      }
+      .card-blue .btn-offre:hover {
+        background: transparent;
+        color: #60a5fa;
+      }
+      .card-yellow .btn-offre {
+        background: #fbbf24;
+        color: #2d1a00;
+        border-color: #fbbf24;
+      }
+      .card-yellow .btn-offre:hover {
+        background: transparent;
+        color: #fbbf24;
+      }
+      .card-green .btn-offre {
+        background: #34d399;
+        color: #001a0d;
+        border-color: #34d399;
+      }
+      .card-green .btn-offre:hover {
+        background: transparent;
+        color: #34d399;
+      }
+      .compare-note {
+        text-align: center;
+        margin-top: 48px;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 14px;
+      }
+      .compare-note a {
+        color: var(--cyan);
+        text-decoration: none;
+      }
+      .compare-note a:hover {
+        text-decoration: underline;
+      }
+      footer {
+        background: rgba(0, 0, 0, 0.6);
+        border-top: 1px solid rgba(143, 233, 240, 0.1);
+        padding: 24px 50px;
+        text-align: center;
+        color: rgba(255, 255, 255, 0.2);
+        font-size: 12px;
+      }
+      footer .c {
+        color: var(--gold);
+      }
+      .toast {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        background: rgba(10, 20, 15, 0.95);
+        border-left: 4px solid #34d399;
+        padding: 14px 22px;
+        border-radius: 12px;
+        transform: translateX(400px);
+        transition: 0.35s;
+        z-index: 9999;
+        color: #fff;
+        backdrop-filter: blur(16px);
+        font-size: 14px;
+      }
+      .toast.show {
+        transform: translateX(0);
+      }
+      @media (max-width: 900px) {
+        header.bar {
+          padding: 0 18px;
+        }
+        .hero-banner {
+          padding: 30px 20px;
+        }
+        .offres-section {
+          padding: 50px 20px 60px;
+        }
+        .cards-grid {
+          grid-template-columns: 1fr;
+          max-width: 460px;
+          margin: 0 auto;
+        }
+        .logo-text {
+          font-size: 18px;
+          letter-spacing: 2px;
+        }
+        .logo-icon {
+          width: 32px;
+          height: 32px;
+        }
+      }
+      @media (max-width: 600px) {
+        .nav-links a:not(.logo-luxury) {
+          display: none;
+        }
+        .logo-luxury {
+          margin-right: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bar">
+      <div class="nav-links">
+        <div class="logo-luxury" onclick="window.location.href='aceuill.html'">
+          <div class="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path
+                d="M16 2L4 9L16 16L28 9L16 2Z"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M4 9V23L16 30L28 23V9"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path d="M16 16V30" stroke="#8fe9f0" stroke-width="1.5" />
+              <circle
+                cx="16"
+                cy="16"
+                r="3"
+                fill="#8fe9f0"
+                stroke="#8fe9f0"
+                stroke-width="1"
+              />
+              <path
+                d="M9 12.5L23 12.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 19.5L23 19.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">FITNESS GYM</span>
+        </div>
+        <a href="aceuill.html">Accueil</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="horaires.html">Horaires</a>
+        <a href="offre.html" class="active">Offre</a>
+        <a href="contact.html">Contact</a>
+        <a href="profil.html">My FG</a>
+        <a href="analytic.html">Suivi</a>
+      </div>
+      <div class="auth-btns">
+        <a href="connexion.html" class="btn-login">Se connecter</a>
+      </div>
+    </header>
+
+    <div class="hero-banner">
+      <div>
+        <div class="breadcrumb">Accueil &nbsp;›&nbsp; <span>Offres</span></div>
+        <h1>NOS OFFRES</h1>
+        <p>Choisissez l'abonnement qui vous correspond</p>
+      </div>
+    </div>
+
+    <div id="toast">✅ Offre sélectionnée !</div>
+
+    <section class="offres-section">
+      <div class="section-label">ABONNEMENTS</div>
+      <div class="section-title">CHOISISSEZ VOTRE PASS</div>
+      <div class="section-sub">
+        Accédez à tous nos clubs avec la formule adaptée à votre style de vie
+      </div>
+
+      <div class="cards-grid">
+        <!-- BLUE -->
+        <div class="offer-card card-blue">
+          <div class="card-header">
+            <div class="card-icon icon-bg">🔵</div>
+            <span class="badge">Essentiel</span>
+          </div>
+          <div>
+            <div class="card-name accent">BLUE</div>
+            <div class="card-name">PASS-SPORT</div>
+          </div>
+          <div class="card-desc">
+            L'offre idéale pour débuter et accéder aux équipements essentiels de
+            votre club.
+          </div>
+          <div>
+            <div class="price-block">
+              <span class="amount accent">150</span>
+              <span class="currency">DT</span>
+              <span class="period">/ mois</span>
+            </div>
+            <div class="divider"></div>
+            <ul class="feat">
+              <li>Accès à la salle de musculation</li>
+              <li>Accès aux machines cardio</li>
+              <li>Vestiaires et douches</li>
+              <li>Accès illimité à votre club</li>
+              <li class="non">Cours collectifs non inclus</li>
+              <li class="non">Coaching personnalisé</li>
+            </ul>
+            <div class="activities-list">
+              <div class="activities-title">Activités incluses</div>
+              <div class="activities-items">
+                <span class="activity-tag">Musculation</span>
+                <span class="activity-tag">Cardio</span>
+                <span class="activity-tag">Vélo/Spinning</span>
+                <span class="activity-tag">Marche nordique</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              class="btn-offre"
+              onclick="choisirOffre('blue', 'BLUE PASS-SPORT', 150)"
+            >
+              CHOISIR L'OFFRE →
+            </button>
+          </div>
+        </div>
+
+        <!-- YELLOW -->
+        <div class="offer-card card-yellow">
+          <div class="card-header">
+            <div class="card-icon icon-bg">🟡</div>
+            <span class="badge">Populaire</span>
+          </div>
+          <div>
+            <div class="card-name accent">YELLOW</div>
+            <div class="card-name">PASS-SPORT</div>
+          </div>
+          <div class="card-desc">
+            Plus de liberté avec accès aux cours collectifs et à plusieurs clubs
+            de la chaîne.
+          </div>
+          <div>
+            <div class="price-block">
+              <span class="amount accent">200</span>
+              <span class="currency">DT</span>
+              <span class="period">/ mois</span>
+            </div>
+            <div class="divider"></div>
+            <ul class="feat">
+              <li>Accès complet à la salle</li>
+              <li>Cours collectifs (fitness, cardio…)</li>
+              <li>Coaching de groupe</li>
+              <li>Accès 6 jours / semaine</li>
+              <li class="non">Spa & piscine non inclus</li>
+            </ul>
+            <div class="activities-list">
+              <div class="activities-title">Activités incluses</div>
+              <div class="activities-items">
+                <span class="activity-tag">Musculation</span>
+                <span class="activity-tag">Cardio</span>
+                <span class="activity-tag">Vélo/Spinning</span>
+                <span class="activity-tag">Marche nordique</span>
+                <span class="activity-tag">Zumba</span>
+                <span class="activity-tag">Yoga</span>
+                <span class="activity-tag">Boxe</span>
+                <span class="activity-tag">Pilates</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              class="btn-offre"
+              onclick="choisirOffre('yellow', 'YELLOW PASS-SPORT', 200)"
+            >
+              CHOISIR L'OFFRE →
+            </button>
+          </div>
+        </div>
+
+        <!-- GREEN -->
+        <div class="offer-card card-green">
+          <div class="card-header">
+            <div class="card-icon icon-bg">🟢</div>
+            <span class="badge">Premium</span>
+          </div>
+          <div>
+            <div class="card-name accent">GREEN</div>
+            <div class="card-name">PASS-SPORT</div>
+          </div>
+          <div class="card-desc">
+            L'accès illimité à tous les clubs de Tunisie avec tous les services
+            premium inclus.
+          </div>
+          <div>
+            <div class="price-block">
+              <span class="amount accent">250</span>
+              <span class="currency">DT</span>
+              <span class="period">/ mois</span>
+            </div>
+            <div class="divider"></div>
+            <ul class="feat">
+              <li>Accès illimité (7j/7)</li>
+              <li>Tous les cours inclus</li>
+              <li>Coaching personnalisé</li>
+              <li>Programme nutritionnel</li>
+              <li>Accès VIP (espace détente)</li>
+            </ul>
+            <div class="activities-list">
+              <div class="activities-title">Activités incluses</div>
+              <div class="activities-items">
+                <span class="activity-tag">Musculation</span>
+                <span class="activity-tag">Cardio</span>
+                <span class="activity-tag">Vélo/Spinning</span>
+                <span class="activity-tag">Marche nordique</span>
+                <span class="activity-tag">Zumba</span>
+                <span class="activity-tag">Yoga</span>
+                <span class="activity-tag">Boxe</span>
+                <span class="activity-tag">Pilates</span>
+                <span class="activity-tag">Natation</span>
+                <span class="activity-tag">Spa & Sauna</span>
+                <span class="activity-tag">CrossFit</span>
+                <span class="activity-tag">Arts Martiaux</span>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              class="btn-offre"
+              onclick="choisirOffre('green', 'GREEN PASS-SPORT', 250)"
+            >
+              CHOISIR L'OFFRE →
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="compare-note">
+        Besoin d'aide pour choisir ? <a href="contact.html">Contactez-nous</a>
+      </div>
+    </section>
+
+    <footer>
+      © 2026 <span class="c">Fitness Gym</span> — Tous droits réservés
+    </footer>
+
+    <script>
+      function choisirOffre(offreKey, label, prix) {
+        const dateEcheance = new Date();
+        dateEcheance.setFullYear(dateEcheance.getFullYear() + 1);
+
+        const subscriptionData = {
+          offreKey: offreKey,
+          label: label,
+          prix: prix,
+          club: "FG Tunis Centre",
+          dateEcheance: dateEcheance.toISOString(),
+          dateSelection: new Date().toISOString(),
+        };
+
+        localStorage.setItem(
+          "fitnessGymSubscription",
+          JSON.stringify(subscriptionData)
+        );
+        sessionStorage.setItem(
+          "fitnessGymSubscription",
+          JSON.stringify(subscriptionData)
+        );
+
+        console.log("✅ Offre sauvegardée:", subscriptionData);
+
+        const toast = document.getElementById("toast");
+        toast.textContent = "✅ Offre " + label + " sélectionnée !";
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+          window.location.href = "payer.html?offre=" + offreKey;
+        }, 1200);
+      }
+    </script>
+  </body>
+</html>

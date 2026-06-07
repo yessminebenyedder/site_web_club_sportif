@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suivi & Analytics – Fitness Gym</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+      
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --gold-pale: rgba(201, 168, 76, 0.11);
+        --gold-border: rgba(201, 168, 76, 0.28);
+        --cyan: #8fe9f0;
+        --cyan-dim: rgba(143, 233, 240, 0.13);
+        --bg: #080d10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --text: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --text-dim: rgba(255, 255, 255, 0.3);
+        --green: #4ade80;
+        --red: #ef4444;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 50px;
+        height: 66px;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--gold-border);
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+      .logo-mark {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.15),
+          rgba(143, 233, 240, 0.04)
+        );
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Playfair Display", serif;
+        font-weight: 900;
+        font-size: 16px;
+        color: var(--cyan);
+        border: 1px solid rgba(143, 233, 240, 0.32);
+      }
+      .logo-name {
+        font-family: "Playfair Display", serif;
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        background: linear-gradient(135deg, #fff 40%, var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      nav a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.06);
+        transition: 0.22s;
+      }
+      nav a:hover,
+      nav a.active {
+        color: var(--cyan);
+        background: var(--cyan-dim);
+      }
+      .hdr-right {
+        display: flex;
+        gap: 10px;
+      }
+      .btn-hdr {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 7px 18px;
+        border-radius: 16px;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: 0.22s;
+        border: none;
+      }
+      .btn-outline-gold {
+        background: transparent;
+        border: 1.5px solid var(--gold);
+        color: var(--gold);
+      }
+      .btn-outline-gold:hover {
+        background: var(--gold);
+        color: #0a2a2d;
+      }
+      .btn-red {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1.5px solid var(--red);
+        color: var(--red);
+      }
+      .btn-red:hover {
+        background: var(--red);
+        color: #fff;
+      }
+      .page {
+        max-width: 1360px;
+        margin: 0 auto;
+        padding: 96px 32px 80px;
+      }
+      .breadcrumb {
+        font-size: 12px;
+        color: var(--text-dim);
+        margin-bottom: 8px;
+      }
+      .breadcrumb span {
+        color: var(--gold);
+      }
+      .page-eyebrow {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 6px;
+      }
+      .page-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .page-sub {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-bottom: 32px;
+      }
+      .welcome-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+        background: var(--card-bg);
+        border: 1px solid var(--gold-border);
+        border-radius: 14px;
+        padding: 16px 22px;
+        margin-bottom: 28px;
+      }
+      .welcome-name {
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .welcome-email {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .stats-row {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 28px;
+      }
+      .stat-chip {
+        flex: 1;
+        min-width: 150px;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        transition: 0.25s;
+      }
+      .stat-chip:hover {
+        border-color: var(--gold-border);
+      }
+      .stat-chip-label {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+      .stat-chip-val {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        font-weight: 900;
+        color: var(--gold);
+        line-height: 1;
+      }
+      .stat-chip-sub {
+        font-size: 12px;
+        color: var(--text-dim);
+      }
+      .stat-chip.highlight {
+        background: var(--gold-pale);
+        border-color: var(--gold-border);
+      }
+      .grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        margin-bottom: 24px;
+      }
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 18px;
+        padding: 28px 30px;
+        transition: 0.25s;
+      }
+      .card:hover {
+        border-color: var(--gold-border);
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .planning-week {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+      }
+      .pday {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        min-width: 52px;
+      }
+      .pday.off {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .pday.on {
+        background: var(--gold-pale);
+        border: 1.5px solid var(--gold-border);
+      }
+      .pday-name {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+      .pday.on .pday-name {
+        color: var(--gold);
+      }
+      .pday-sports {
+        font-size: 11px;
+        color: var(--text);
+        text-align: center;
+      }
+      .sports-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .sport-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        border-radius: 8px;
+        background: var(--gold-pale);
+        border: 1px solid var(--gold-border);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--gold);
+      }
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .info-item {
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--card-border);
+      }
+      .info-item-label {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+      }
+      .info-item-val {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+      }
+      .chart-wrap {
+        position: relative;
+        height: 260px;
+        margin-top: 12px;
+      }
+      .field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 6px;
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1.5px solid var(--card-border);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        outline: none;
+      }
+      .field input:focus,
+      .field select:focus {
+        border-color: var(--gold);
+      }
+      .btn-calc,
+      .btn-bilan {
+        width: 100%;
+        padding: 13px;
+        background: var(--gold);
+        color: #0a2a2d;
+        font-weight: 700;
+        font-size: 14px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: 0.2s;
+        margin-top: 8px;
+      }
+      .btn-calc:hover,
+      .btn-bilan:hover {
+        background: var(--gold-light);
+      }
+      .btn-bilan {
+        background: var(--card-bg);
+        border: 1px solid var(--gold-border);
+        color: var(--gold);
+      }
+      .btn-bilan:hover {
+        background: var(--gold-pale);
+      }
+      .imc-result {
+        text-align: center;
+        padding: 18px;
+        background: var(--gold-pale);
+        border: 1px solid var(--gold-border);
+        border-radius: 12px;
+        margin-top: 14px;
+      }
+      .imc-val {
+        font-family: "Playfair Display", serif;
+        font-size: 3.5rem;
+        font-weight: 900;
+        color: var(--gold);
+      }
+      .projection {
+        margin-top: 12px;
+        padding: 14px;
+        border-radius: 12px;
+        background: rgba(74, 222, 128, 0.08);
+        border: 1px solid rgba(74, 222, 128, 0.2);
+        font-size: 13px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+      .conseil-box {
+        padding: 18px 20px;
+        border-radius: 12px;
+        background: var(--gold-pale);
+        border-left: 4px solid var(--gold);
+        font-size: 14px;
+        color: var(--text-muted);
+      }
+      .toast {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        background: var(--card-bg);
+        border-left: 4px solid var(--gold);
+        padding: 14px 22px;
+        border-radius: 12px;
+        transform: translateX(400px);
+        transition: 0.35s;
+        z-index: 9999;
+        color: var(--text);
+      }
+      .toast.show {
+        transform: translateX(0);
+      }
+      .toast.error {
+        border-left-color: var(--red);
+      }
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 12px;
+        color: var(--text-dim);
+        border-top: 1px solid var(--card-border);
+        margin-top: 20px;
+      }
+      @media (max-width: 900px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        header {
+          padding: 0 20px;
+        }
+        .page {
+          padding: 88px 16px 40px;
+        }
+        nav {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="logo" href="aceuill.html">
+        <div class="logo-mark">FG</div>
+        <span class="logo-name">FITNESS GYM</span>
+      </a>
+      <nav>
+        <a href="aceuill.html">Accueil</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="horaires.html">Horaires</a>
+        <a href="offre.html">Offres</a>
+        <a href="contact.html">Contact</a>
+        <a href="profil.html">My FG</a>
+        <a href="analytic.html" class="active">Suivi</a>
+      </nav>
+      <div class="hdr-right">
+        <button
+          class="btn-hdr btn-outline-gold"
+          onclick="window.location.href='connexion.html'"
+        >
+          Se connecter
+        </button>
+        <button class="btn-hdr btn-red" onclick="logout()">Déconnexion</button>
+      </div>
+    </header>
+
+    <div class="page">
+      <div class="breadcrumb">
+        Mon compte &rsaquo; <span>Suivi & Analytics</span>
+      </div>
+      <div class="page-eyebrow">Performance & progression</div>
+      <h1 class="page-title">Suivi & Analytics</h1>
+      <p class="page-sub">
+        Visualisez vos performances, fréquence d'entraînement et objectifs
+        personnalisés.
+      </p>
+
+      <div class="welcome-bar">
+        <div>
+          <div class="welcome-name">Bonjour, <span id="userName">—</span></div>
+          <div class="welcome-email" id="userEmail">—</div>
+        </div>
+        <div id="offreBadge" style="font-size: 13px; color: var(--text-muted)">
+          —
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-chip highlight">
+          <div class="stat-chip-label">Seances (30j)</div>
+          <div class="stat-chip-val" id="totalSeances">0</div>
+          <div class="stat-chip-sub">seances planifiees</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-label">Frequence</div>
+          <div class="stat-chip-val" id="moyenneSeances">0</div>
+          <div class="stat-chip-sub">seances / semaine</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-label">Jours actifs</div>
+          <div class="stat-chip-val" id="joursActifs">0</div>
+          <div class="stat-chip-sub">jours / semaine</div>
+        </div>
+        <div class="stat-chip">
+          <div class="stat-chip-label">Intensite</div>
+          <div class="stat-chip-val" id="intensiteChip">—</div>
+          <div class="stat-chip-sub">niveau d'entrainement</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            Evolution de la frequence (cette semaine)
+          </div>
+          <div class="chart-wrap"><canvas id="formeChart"></canvas></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Votre planning actuel</div>
+          <div class="planning-week" id="planningWeek"></div>
+          <div id="sportsActifs" style="margin-top: 10px"></div>
+          <div class="info-grid" id="infoGrid" style="margin-top: 14px"></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Calculateur IMC & Objectif poids</div>
+          <div
+            class="imc-form"
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px"
+          >
+            <div class="field">
+              <label>Taille (cm)</label
+              ><input type="number" id="tailleImc" placeholder="175" />
+            </div>
+            <div class="field">
+              <label>Poids actuel (kg)</label
+              ><input type="number" id="poidsImc" placeholder="70" step="0.5" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Poids objectif (kg)</label
+            ><input
+              type="number"
+              id="poidsObjectif"
+              placeholder="65"
+              step="0.5"
+            />
+          </div>
+          <div class="field">
+            <label>Rythme estime</label
+            ><select id="rythmeSelect">
+              <option value="0.2">Lent (0.2 kg/semaine)</option>
+              <option value="0.5" selected>Modere (0.5 kg/semaine)</option>
+              <option value="0.8">Rapide (0.8 kg/semaine)</option>
+              <option value="1">Intensif (1 kg/semaine)</option>
+            </select>
+          </div>
+          <button class="btn-calc" onclick="calculerIMC()">
+            Calculer IMC & Projection
+          </button>
+          <div id="imcResultat" style="display: none">
+            <div class="imc-result">
+              <div class="imc-val" id="imcValeur">0</div>
+              <div class="imc-cat" id="imcCategorie"></div>
+            </div>
+            <div
+              class="projection"
+              id="projectionResultat"
+              style="display: none"
+            ></div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom: 20px">
+            <div class="card-title">Bilan mensuel automatique</div>
+            <p
+              style="
+                font-size: 13px;
+                color: var(--text-muted);
+                margin-bottom: 16px;
+              "
+            >
+              Recevez un recapitulatif par email le 1er de chaque mois.
+            </p>
+            <div class="field">
+              <label>Email de reception</label
+              ><input
+                type="email"
+                id="bilanEmail"
+                placeholder="votre@email.com"
+              />
+            </div>
+            <button class="btn-bilan" onclick="genererBilan()">
+              Generer le bilan maintenant
+            </button>
+          </div>
+          <div class="card">
+            <div class="card-title">Conseil du coach</div>
+            <div class="conseil-box" id="coachTip">
+              Ajustez votre planning dans l'onglet Horaires pour voir
+              l'evolution de votre frequence.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>© 2026 Fitness Gym Tunisie — Tous droits reserves</footer>
+    <div class="toast" id="toast">Action reussie</div>
+
+    <script>
+      const EMAILJS_PUBLIC_KEY = "WQg79DdU6GL5RK-zb";
+      const EMAILJS_SERVICE_ID = "service_d5bc58r";
+      const EMAILJS_TEMPLATE_ID = "template_8xjwlzw";
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+
+      const PLANNING_KEY = "fitnessGymPlanning";
+      const DAYS_LABELS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+      const INTENSITY_LABELS = [
+        "Debutant",
+        "Leger",
+        "Modere",
+        "Intense",
+        "Elite",
+      ];
+      const OFFRES_LABELS = {
+        blue: "Blue Pass-Sport",
+        yellow: "Yellow Pass-Sport",
+        green: "Green Pass-Sport",
+      };
+      const OBJECTIFS_LABELS = {
+        perte: "Perte de poids",
+        muscle: "Prise de muscle",
+        forme: "Remise en forme",
+        endurance: "Endurance",
+        flexibilite: "Flexibilite",
+        competition: "Competition",
+      };
+      const ALL_SPORTS_MAP = {
+        musculation: { name: "Musculation", emoji: "" },
+        cardio: { name: "Cardio", emoji: "" },
+        velo: { name: "Velo/Spinning", emoji: "" },
+        marche: { name: "Marche Nordique", emoji: "" },
+        zumba: { name: "Zumba", emoji: "" },
+        yoga: { name: "Yoga", emoji: "" },
+        boxe: { name: "Boxe", emoji: "" },
+        pilates: { name: "Pilates", emoji: "" },
+        natation: { name: "Natation", emoji: "" },
+        spa: { name: "Spa & Sauna", emoji: "" },
+        crossfit: { name: "CrossFit", emoji: "" },
+        "arts-martiaux": { name: "Arts martiaux", emoji: "" },
+      };
+      const SLOTS_MAP = {
+        m1: "06:00",
+        m2: "07:30",
+        a1: "12:30",
+        a2: "14:00",
+        s1: "18:00",
+        s2: "19:30",
+      };
+
+      let planningData = {
+        activeDays: [],
+        daySports: {},
+        selectedSports: [],
+        selectedSlots: [],
+        objectif: null,
+        intensity: 3,
+        rappels: {},
+      };
+
+      function computeMonthlyStats(activeDays) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const startDate = new Date(today);
+        startDate.setDate(today.getDate() - 29);
+        let total = 0;
+        let current = new Date(startDate);
+        while (current <= today) {
+          let idx = current.getDay();
+          idx = idx === 0 ? 6 : idx - 1;
+          if (activeDays.includes(idx)) total++;
+          current.setDate(current.getDate() + 1);
+        }
+        const avgPerWeek = total / 4.2857;
+        return { total, avgPerWeek: avgPerWeek.toFixed(1) };
+      }
+
+      function getWeeklyChartData(activeDays) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const labels = [];
+        const data = [];
+        for (let i = 0; i < 7; i++) {
+          const d = new Date(today);
+          d.setDate(today.getDate() + i);
+          let idx = d.getDay();
+          idx = idx === 0 ? 6 : idx - 1;
+          labels.push(
+            d.toLocaleDateString("fr-FR", {
+              weekday: "short",
+              day: "numeric",
+              month: "short",
+            })
+          );
+          data.push(activeDays.includes(idx) ? 1 : 0);
+        }
+        return { labels, data };
+      }
+
+      function updateDashboard() {
+        const {
+          activeDays,
+          daySports,
+          selectedSports,
+          selectedSlots,
+          objectif,
+          intensity,
+        } = planningData;
+        const monthly = computeMonthlyStats(activeDays);
+        document.getElementById("totalSeances").textContent = monthly.total;
+        document.getElementById("moyenneSeances").textContent =
+          monthly.avgPerWeek;
+        document.getElementById("joursActifs").textContent = activeDays.length;
+        document.getElementById("intensiteChip").textContent =
+          INTENSITY_LABELS[(intensity || 3) - 1];
+
+        const sub = JSON.parse(
+          sessionStorage.getItem("fitnessGymSubscription") || "{}"
+        );
+        if (sub.offreKey) {
+          document.getElementById("offreBadge").textContent =
+            OFFRES_LABELS[sub.offreKey] || "—";
+        } else {
+          document.getElementById("offreBadge").textContent =
+            "Aucun abonnement";
+        }
+
+        const weekEl = document.getElementById("planningWeek");
+        weekEl.innerHTML = DAYS_LABELS.map((d, i) => {
+          const isActive = activeDays.includes(i);
+          const sportsIcons =
+            isActive && daySports[i]
+              ? daySports[i]
+                  .map((s) => ALL_SPORTS_MAP[s]?.emoji || "")
+                  .join(" ")
+              : "";
+          return `<div class="pday ${isActive ? "on" : "off"}">
+                <div class="pday-name">${d}</div>
+                <div class="pday-sports">${
+                  isActive ? sportsIcons || "✓" : "—"
+                }</div>
+              </div>`;
+        }).join("");
+
+        const sportsEl = document.getElementById("sportsActifs");
+        if (selectedSports.length) {
+          sportsEl.innerHTML = `<div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px;">Activites favorites</div>
+                            <div class="sports-tags">${selectedSports
+                              .map(
+                                (s) =>
+                                  `<div class="sport-tag">${
+                                    ALL_SPORTS_MAP[s]?.emoji || ""
+                                  } ${ALL_SPORTS_MAP[s]?.name || s}</div>`
+                              )
+                              .join("")}</div>`;
+        } else {
+          sportsEl.innerHTML = `<div style="font-size:13px;color:var(--text-dim);">Aucune activite selectionnee dans votre planning.</div>`;
+        }
+
+        const slotTime = selectedSlots[0] ? SLOTS_MAP[selectedSlots[0]] : null;
+        const marcheGroup =
+          sessionStorage.getItem("fitnessGymMarcheGroup") === "true";
+        document.getElementById("infoGrid").innerHTML = [
+          { label: "Creneau prefere", val: slotTime || "—" },
+          {
+            label: "Objectif",
+            val: objectif ? OBJECTIFS_LABELS[objectif] : "—",
+          },
+          { label: "Intensite", val: INTENSITY_LABELS[(intensity || 3) - 1] },
+          {
+            label: "Marche nordique",
+            val: marcheGroup ? "Inscrit" : "Non inscrit",
+          },
+        ]
+          .map(
+            (item) =>
+              `<div class="info-item"><div class="info-item-label">${item.label}</div><div class="info-item-val">${item.val}</div></div>`
+          )
+          .join("");
+
+        const weekData = getWeeklyChartData(activeDays);
+        buildChart(weekData.labels, weekData.data);
+        updateCoachTip(activeDays, objectif, selectedSports);
+      }
+
+      let chartInst;
+      function buildChart(labels, data) {
+        if (chartInst) chartInst.destroy();
+        const ctx = document.getElementById("formeChart").getContext("2d");
+        chartInst = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                label: "Seances planifiees",
+                data: data,
+                borderColor: "#C9A84C",
+                backgroundColor: "rgba(201,168,76,0.08)",
+                borderWidth: 2,
+                fill: true,
+                tension: 0.35,
+                pointBackgroundColor: "#C9A84C",
+                pointBorderColor: "#fff",
+                pointRadius: 3,
+                pointHoverRadius: 5,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: "rgba(255,255,255,0.7)",
+                  font: { family: "DM Sans", size: 12 },
+                },
+              },
+            },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1, color: "rgba(255,255,255,0.5)" },
+                grid: { color: "rgba(255,255,255,0.08)" },
+              },
+              x: {
+                ticks: {
+                  color: "rgba(255,255,255,0.5)",
+                  maxRotation: 45,
+                  autoSkip: true,
+                  maxTicksLimit: 7,
+                },
+                grid: { color: "rgba(255,255,255,0.08)" },
+              },
+            },
+          },
+        });
+      }
+
+      function updateCoachTip(activeDays, objectif, selectedSports) {
+        const nb = activeDays.length;
+        let tip = "";
+        if (nb === 0)
+          tip =
+            "Aucun jour d'entrainement defini. Creez votre planning dans l'onglet Horaires !";
+        else if (nb <= 2)
+          tip = `Vous vous entrainez ${nb} jour(s) par semaine. Ajoutez 1-2 jours pour progresser plus vite.`;
+        else if (nb >= 5)
+          tip =
+            "Rythme soutenu ! Pensez a bien recuperer et a varier les activites.";
+        else tip = "Bon rythme ! Continuez a suivre votre planning.";
+        if (objectif === "perte" && !selectedSports.includes("cardio"))
+          tip += " Ajoutez du cardio pour accelerer la perte de poids.";
+        if (objectif === "muscle" && !selectedSports.includes("musculation"))
+          tip += " La musculation est essentielle pour votre objectif.";
+        document.getElementById("coachTip").textContent = tip;
+      }
+
+      function calculerIMC() {
+        const taille =
+          parseFloat(document.getElementById("tailleImc").value) / 100;
+        const poids = parseFloat(document.getElementById("poidsImc").value);
+        const objectif = parseFloat(
+          document.getElementById("poidsObjectif").value
+        );
+        const rythme = parseFloat(
+          document.getElementById("rythmeSelect").value
+        );
+        if (!taille || !poids || taille <= 0 || poids <= 0) {
+          showToast("Entrez une taille et un poids valides", "error");
+          return;
+        }
+        const imc = poids / (taille * taille);
+        let cat = "";
+        if (imc < 18.5) cat = "Insuffisance ponderale";
+        else if (imc < 25) cat = "Poids normal — Bravo !";
+        else if (imc < 30) cat = "Surpoids";
+        else if (imc < 35) cat = "Obesite moderee";
+        else cat = "Obesite severe";
+        document.getElementById("imcValeur").textContent = imc.toFixed(1);
+        document.getElementById("imcCategorie").textContent = cat;
+        document.getElementById("imcResultat").style.display = "block";
+        if (objectif && objectif > 0 && objectif !== poids) {
+          const diff = Math.abs(poids - objectif);
+          const sem = diff / rythme;
+          const dateObj = new Date();
+          dateObj.setDate(dateObj.getDate() + sem * 7);
+          const sens = objectif < poids ? "perdre" : "gagner";
+          document.getElementById(
+            "projectionResultat"
+          ).innerHTML = `Objectif : ${objectif} kg (${sens} ${diff.toFixed(
+            1
+          )} kg)<br>Rythme : ${rythme} kg/sem<br>Date estimee : <strong>${dateObj.toLocaleDateString(
+            "fr-FR"
+          )}</strong><br>Soit environ ${Math.ceil(sem)} semaine(s)`;
+          document.getElementById("projectionResultat").style.display = "block";
+        } else {
+          document.getElementById("projectionResultat").style.display = "none";
+        }
+      }
+
+      async function genererBilan() {
+        const email = document.getElementById("bilanEmail").value;
+        if (!email || !email.includes("@")) {
+          showToast("Email invalide", "error");
+          return;
+        }
+
+        const mois = new Date().toLocaleString("fr-FR", {
+          month: "long",
+          year: "numeric",
+        });
+        const activeDays = planningData.activeDays || [];
+        const daySports = planningData.daySports || {};
+        const selectedSlots = planningData.selectedSlots || [];
+        const objectif = planningData.objectif;
+        const intensity = planningData.intensity || 3;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const startDate = new Date(today);
+        startDate.setDate(today.getDate() - 29);
+        let totalSeances = 0;
+        for (
+          let d = new Date(startDate);
+          d <= today;
+          d.setDate(d.getDate() + 1)
+        ) {
+          let idx = d.getDay();
+          idx = idx === 0 ? 6 : idx - 1;
+          if (activeDays.includes(idx)) totalSeances++;
+        }
+
+        let planningDetail = "";
+        const joursComplets = [
+          "Lundi",
+          "Mardi",
+          "Mercredi",
+          "Jeudi",
+          "Vendredi",
+          "Samedi",
+          "Dimanche",
+        ];
+        if (activeDays.length === 0) {
+          planningDetail = "Aucun jour d'entrainement defini pour le moment.";
+        } else {
+          planningDetail = "Votre planning hebdomadaire :\n";
+          for (let i = 0; i < joursComplets.length; i++) {
+            if (activeDays.includes(i)) {
+              const sports = daySports[i] || [];
+              const sportsList = sports.length
+                ? sports
+                    .map((s) => {
+                      const sportName = ALL_SPORTS_MAP[s]?.name || s;
+                      return sportName;
+                    })
+                    .join(", ")
+                : "Aucun sport specifique";
+              planningDetail += `- ${joursComplets[i]} : ${sportsList}\n`;
+            }
+          }
+        }
+
+        let creneau = "";
+        if (selectedSlots.length > 0) {
+          const slotId = selectedSlots[0];
+          creneau = SLOTS_MAP[slotId] || "Non defini";
+        } else {
+          creneau = "Non defini";
+        }
+
+        const objectifTexte = objectif
+          ? OBJECTIFS_LABELS[objectif] || "Non defini"
+          : "Non defini";
+        const intensiteTexte = INTENSITY_LABELS[intensity - 1] || "Modere";
+
+        const message = `BILAN MENSUEL - ${mois.toUpperCase()}
+
+Seances planifiees sur les 30 derniers jours : ${totalSeances}
+Frequence moyenne : ${(totalSeances / 4.2857).toFixed(1)} seances/semaine
+Jours actifs par semaine : ${activeDays.length}
+Objectif : ${objectifTexte}
+Intensite : ${intensiteTexte}
+Creneau prefere : ${creneau}
+
+Detail de votre planning :
+${planningDetail}
+
+Continuez a vous entrainer ! L'equipe Fitness Gym vous remercie pour votre confiance.`;
+
+        const templateParams = {
+          to_email: email,
+          subject: `Bilan mensuel Fitness Gym - ${mois}`,
+          message: message,
+          month: mois,
+          sessions: totalSeances,
+          active_days: activeDays.map((i) => DAYS_LABELS[i]).join(", "),
+          planning_detail: planningDetail,
+          creneau: creneau,
+          objectif: objectifTexte,
+          intensite: intensiteTexte,
+        };
+
+        try {
+          await emailjs.send(
+            EMAILJS_SERVICE_ID,
+            EMAILJS_TEMPLATE_ID,
+            templateParams
+          );
+          showToast(`Bilan envoye a ${email}`, "success");
+        } catch (error) {
+          console.error("Erreur EmailJS :", error);
+          showToast(
+            "Echec de l'envoi, verifiez votre template et service ID",
+            "error"
+          );
+        }
+      }
+
+      function showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast show" + (type === "error" ? " error" : "");
+        setTimeout(() => t.classList.remove("show"), 3000);
+      }
+
+      function loadPlanning() {
+        const saved = sessionStorage.getItem(PLANNING_KEY);
+        if (saved) {
+          planningData = JSON.parse(saved);
+          planningData.activeDays = planningData.activeDays || [];
+          planningData.daySports = planningData.daySports || {};
+          planningData.selectedSports = planningData.selectedSports || [];
+          planningData.selectedSlots = planningData.selectedSlots || [];
+          planningData.objectif = planningData.objectif || null;
+          planningData.intensity =
+            planningData.intensity !== undefined ? planningData.intensity : 3;
+        }
+        updateDashboard();
+      }
+
+      function logout() {
+        sessionStorage.removeItem("fgConnectedUser");
+        window.location.href = "connexion.html";
+      }
+
+      const connectedUser = sessionStorage.getItem("fgConnectedUser");
+      if (!connectedUser) {
+        window.location.href = "connexion.html";
+      } else {
+        const user = JSON.parse(connectedUser);
+        document.getElementById("userName").textContent =
+          user.fullName || "Membre";
+        document.getElementById("userEmail").textContent = user.email;
+      }
+      loadPlanning();
+    </script>
+  </body>
+</html>

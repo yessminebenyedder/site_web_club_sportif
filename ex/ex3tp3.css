@@ -1,0 +1,18 @@
+body{
+    background-image: url('im.jpg');
+    background-size: cover;
+    background-position: center;
+}
+h1{
+    color:brown;
+    text-decoration:underline;
+    font-style: oblique;
+}
+.button{
+    color:burlywood;
+    border-radius:8px;
+}
+input{
+    background-color: brown;
+    color:white;
+}

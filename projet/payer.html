@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paiement - Fitness Gym</title>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --gold-pale: rgba(201, 168, 76, 0.11);
+        --gold-border: rgba(201, 168, 76, 0.28);
+        --cyan: #8fe9f0;
+        --cyan-dim: rgba(143, 233, 240, 0.13);
+        --bg: #080d10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --text: #fff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --text-dim: rgba(255, 255, 255, 0.3);
+        --green: #4ade80;
+        --red: #ef4444;
+        --blue: #60a5fa;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: #080d10;
+        color: #fff;
+        min-height: 100vh;
+      }
+      header.bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 50px;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(143, 233, 240, 0.12);
+        z-index: 1000;
+      }
+      .logo-luxury {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 25px;
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+      .logo-luxury:hover {
+        transform: scale(1.02);
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.15),
+          rgba(143, 233, 240, 0.05)
+        );
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(143, 233, 240, 0.3);
+        transition: border 0.3s, box-shadow 0.3s;
+      }
+      .logo-luxury:hover .logo-icon {
+        border-color: #8fe9f0;
+        box-shadow: 0 0 14px rgba(143, 233, 240, 0.25);
+      }
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        letter-spacing: 3px;
+        background: linear-gradient(135deg, #fff, #8fe9f0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: 40px;
+        background: rgba(255, 255, 255, 0.08);
+        transition: 0.3s;
+      }
+      .nav-links a:hover {
+        color: #8fe9f0;
+        background: rgba(143, 233, 240, 0.12);
+      }
+      .auth-btns {
+        display: flex;
+        gap: 10px;
+      }
+      .auth-btns a {
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px 22px;
+        border-radius: 50px;
+        transition: 0.3s;
+      }
+      .btn-login {
+        background: transparent;
+        color: #8fe9f0;
+        border: 2px solid #8fe9f0;
+      }
+      .btn-login:hover {
+        background: #8fe9f0;
+        color: #0a2a2d;
+      }
+
+      .page {
+        max-width: 1060px;
+        margin: 0 auto;
+        padding: 100px 30px 60px;
+        display: grid;
+        grid-template-columns: 1fr 420px;
+        gap: 32px;
+        align-items: start;
+      }
+      .breadcrumb {
+        grid-column: 1/-1;
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.35);
+        margin-bottom: 4px;
+      }
+      .breadcrumb span {
+        color: var(--accent, #60a5fa);
+      }
+      .page-title {
+        grid-column: 1/-1;
+        font-family: "Playfair Display", serif;
+        font-size: 2.4rem;
+        letter-spacing: 4px;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 30px 32px;
+        margin-bottom: 20px;
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.15rem;
+        letter-spacing: 3px;
+        color: var(--accent, #60a5fa);
+        margin-bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .recap-offer {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 20px 24px;
+        border-radius: 16px;
+        border: 2px solid var(--accent-border, rgba(96, 165, 250, 0.3));
+        background: var(--accent-bg, rgba(96, 165, 250, 0.12));
+        margin-bottom: 24px;
+      }
+      .recap-icon {
+        font-size: 2.2rem;
+      }
+      .recap-name {
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+        letter-spacing: 3px;
+        color: var(--accent, #60a5fa);
+      }
+      .recap-sub {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.45);
+        margin-top: 2px;
+      }
+      .recap-price {
+        margin-left: auto;
+        text-align: right;
+      }
+      .recap-price .amount {
+        font-family: "Playfair Display", serif;
+        font-size: 2.2rem;
+        color: var(--accent, #60a5fa);
+      }
+      .recap-price .period {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
+      }
+      .duration-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .dur-btn {
+        padding: 12px 8px;
+        border-radius: 12px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        transition: 0.25s;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .dur-btn:hover {
+        border-color: var(--accent-border);
+        color: #fff;
+      }
+      .dur-btn.active {
+        border-color: var(--accent);
+        background: var(--accent-bg);
+        color: var(--accent);
+      }
+      .dur-btn strong {
+        display: block;
+        font-size: 16px;
+        color: #fff;
+        margin-bottom: 2px;
+      }
+      .dur-btn.active strong {
+        color: var(--accent);
+      }
+      .dur-discount {
+        font-size: 10px;
+        color: #4ade80;
+        font-weight: 700;
+        margin-top: 4px;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .field {
+        margin-bottom: 16px;
+      }
+      .field label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.45);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 7px;
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 12px 16px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: #fff;
+        font-family: "DM Sans", sans-serif;
+        font-size: 15px;
+        outline: none;
+        transition: 0.3s;
+      }
+      .field input:focus,
+      .field select:focus {
+        border-color: var(--accent);
+        background: var(--accent-bg);
+      }
+      .field input::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .field select option {
+        background: #0d1a20;
+      }
+      #datePreview {
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-size: 13px;
+      }
+      .payment-methods {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .method-btn {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 20px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+        transition: 0.25s;
+      }
+      .method-btn:hover {
+        border-color: var(--accent-border);
+      }
+      .method-btn.active {
+        border-color: var(--accent);
+        background: var(--accent-bg);
+      }
+      .method-icon {
+        font-size: 1.6rem;
+        width: 40px;
+        text-align: center;
+      }
+      .method-label {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .method-sub {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
+        margin-top: 2px;
+      }
+      .method-check {
+        margin-left: auto;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+      }
+      .method-btn.active .method-check {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #0a1a3d;
+      }
+      .card-visual {
+        background: linear-gradient(135deg, #1a3a6e, #0a1a40);
+        border-radius: 16px;
+        padding: 24px 26px;
+        margin-bottom: 20px;
+        border: 1px solid rgba(96, 165, 250, 0.2);
+      }
+      .card-number-display {
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+        letter-spacing: 4px;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 18px;
+      }
+      .card-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+      .card-holder-label,
+      .card-exp-label {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .card-holder-val,
+      .card-exp-val {
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 3px;
+      }
+      .virement-info,
+      .especes-info {
+        display: none;
+      }
+      .virement-info.show,
+      .especes-info.show {
+        display: block;
+      }
+      .rib-box {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 18px 20px;
+        font-size: 14px;
+        line-height: 2;
+        margin-top: 10px;
+      }
+      .rib-box span {
+        color: var(--accent);
+        font-weight: 600;
+      }
+      .summary-card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 28px 30px;
+        position: sticky;
+        top: 90px;
+      }
+      .summary-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        letter-spacing: 3px;
+        color: var(--accent);
+        margin-bottom: 22px;
+      }
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.55);
+        padding: 9px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .summary-row.total {
+        font-size: 17px;
+        font-weight: 700;
+        color: #fff;
+        padding-top: 16px;
+        margin-top: 6px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+      }
+      .summary-row.total span:last-child {
+        color: var(--accent);
+      }
+      .promo-row {
+        display: flex;
+        gap: 10px;
+        margin: 16px 0;
+      }
+      .promo-input {
+        flex: 1;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        color: #fff;
+        font-size: 14px;
+        outline: none;
+      }
+      .promo-btn {
+        padding: 10px 18px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .secure-note {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.3);
+        margin: 14px 0;
+      }
+      .btn-pay {
+        width: 100%;
+        padding: 16px;
+        background: var(--accent);
+        color: #0a1a3d;
+        font-weight: 800;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        letter-spacing: 1px;
+        transition: 0.3s;
+        margin-top: 4px;
+      }
+      .btn-pay:hover {
+        background: #fff;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(96, 165, 250, 0.3);
+      }
+      .btn-pay:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: rgba(255, 255, 255, 0.35);
+        font-size: 13px;
+        text-decoration: none;
+        margin-top: 14px;
+      }
+
+      /* MODAL SUCCÈS */
+      .success-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(4, 8, 12, 0.92);
+        backdrop-filter: blur(20px);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+      }
+      .success-overlay.show {
+        display: flex;
+      }
+      .success-box {
+        background: linear-gradient(145deg, #0d1e2a, #091520);
+        border-radius: 28px;
+        text-align: center;
+        max-width: 500px;
+        width: 92%;
+        overflow: hidden;
+        animation: successPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes successPop {
+        from {
+          transform: scale(0.6);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .success-header {
+        background: linear-gradient(
+          135deg,
+          rgba(74, 222, 128, 0.15),
+          rgba(16, 185, 129, 0.08)
+        );
+        border-bottom: 1px solid rgba(74, 222, 128, 0.15);
+        padding: 36px 40px 28px;
+      }
+      .success-check-ring {
+        width: 88px;
+        height: 88px;
+        border-radius: 50%;
+        background: rgba(74, 222, 128, 0.12);
+        border: 2px solid rgba(74, 222, 128, 0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+      }
+      .check-icon {
+        font-size: 2.8rem;
+      }
+      .success-header h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 2.1rem;
+        letter-spacing: 5px;
+        color: #4ade80;
+      }
+      .success-details {
+        padding: 24px 40px;
+      }
+      .success-detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 14px;
+      }
+      .email-status-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 12px;
+        padding: 12px 16px;
+        margin: 12px 0;
+        font-size: 13px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .success-footer {
+        padding: 0 40px 32px;
+      }
+      .success-btns {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+      }
+      .btn-profil {
+        background: linear-gradient(135deg, #4ade80, #22c55e);
+        color: #001a0d;
+        flex: 1;
+        border-radius: 50px;
+        padding: 13px 0;
+        text-decoration: none;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .btn-accueil {
+        background: rgba(255, 255, 255, 0.06);
+        color: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 50px;
+        padding: 13px 24px;
+        text-decoration: none;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+      }
+      .confetti-container {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 9998;
+      }
+      .confetti-piece {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        animation: confettiFall linear forwards;
+        opacity: 0;
+      }
+      @keyframes confettiFall {
+        0% {
+          transform: translateY(-20px) rotate(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+      footer {
+        text-align: center;
+        padding: 24px;
+        color: rgba(255, 255, 255, 0.15);
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      @media (max-width: 800px) {
+        .page {
+          grid-template-columns: 1fr;
+          padding: 90px 16px 40px;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        header.bar {
+          padding: 12px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <div class="success-overlay" id="successOverlay">
+      <div class="success-box">
+        <div class="success-header">
+          <div class="success-check-ring"><div class="check-icon">✅</div></div>
+          <h2>PAIEMENT CONFIRMÉ !</h2>
+          <p id="successMsg">Votre abonnement a été activé avec succès.</p>
+        </div>
+        <div class="success-details">
+          <div class="success-detail-row">
+            <span>Offre</span><span id="sDetailOffre">—</span>
+          </div>
+          <div class="success-detail-row">
+            <span>Club</span><span id="sDetailClub">—</span>
+          </div>
+          <div class="success-detail-row">
+            <span>Montant payé</span
+            ><span id="sDetailTotal" style="color: #4ade80; font-weight: 700"
+              >— DT</span
+            >
+          </div>
+          <div class="success-detail-row">
+            <span>Date d'activation</span><span id="sDetailDate">—</span>
+          </div>
+          <div class="email-status-box" id="emailStatusBox">
+            <span id="emailStatusText"
+              >✅ Compte créé avec succès dans la base de données.</span
+            >
+          </div>
+        </div>
+        <div class="success-footer">
+          <div class="success-btns">
+            <a href="profil.html" class="btn-profil">MON PROFIL</a>
+            <a href="aceuill.html" class="btn-accueil">Accueil</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <header class="bar">
+      <div class="nav-links">
+        <div class="logo-luxury" onclick="window.location.href='aceuill.html'">
+          <div class="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path
+                d="M16 2L4 9L16 16L28 9L16 2Z"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M4 9V23L16 30L28 23V9"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path d="M16 16V30" stroke="#8fe9f0" stroke-width="1.5" />
+              <circle
+                cx="16"
+                cy="16"
+                r="3"
+                fill="#8fe9f0"
+                stroke="#8fe9f0"
+                stroke-width="1"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">FITNESS GYM</span>
+        </div>
+        <a href="aceuill.html">Accueil</a><a href="clubs.html">Clubs</a>
+        <a href="horaires.html">Horaires</a><a href="offre.html">Offre</a>
+        <a href="contact.html">Contact</a><a href="profil.html">My FG</a>
+        <a href="analytic.html">Suivi</a>
+      </div>
+      <div class="auth-btns">
+        <a href="connexion.html" class="btn-login">Se connecter</a>
+      </div>
+    </header>
+
+    <div class="page">
+      <div class="breadcrumb">
+        Accueil › Offres › <span id="bc">Paiement</span>
+      </div>
+      <h1 class="page-title" id="pageTitle">FINALISER MON ABONNEMENT</h1>
+
+      <div>
+        <div class="card">
+          <div class="card-title">OFFRE SÉLECTIONNÉE</div>
+          <div class="recap-offer">
+            <div class="recap-icon" id="recapIcon">🔵</div>
+            <div>
+              <div class="recap-name" id="recapName">BLUE PASS-SPORT</div>
+              <div class="recap-sub" id="recapSub">Offre Essentiel</div>
+            </div>
+            <div class="recap-price">
+              <div>
+                <span class="amount" id="recapAmount">150</span
+                ><span style="font-size: 14px; color: rgba(255, 255, 255, 0.5)">
+                  DT</span
+                >
+              </div>
+              <div class="period">/ mois</div>
+            </div>
+          </div>
+          <div class="card-title" style="margin-top: 4px">
+            DURÉE DE L'ABONNEMENT
+          </div>
+          <div class="duration-grid">
+            <div class="dur-btn active" onclick="setDuration(this,1,'')">
+              <strong>1 mois</strong>sans engagement
+            </div>
+            <div class="dur-btn" onclick="setDuration(this,3,'-5%')">
+              <strong>3 mois</strong>trimestriel
+              <div class="dur-discount">économisez 5%</div>
+            </div>
+            <div class="dur-btn" onclick="setDuration(this,12,'-15%')">
+              <strong>12 mois</strong>annuel
+              <div class="dur-discount">économisez 15%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">VOS COORDONNÉES</div>
+          <div class="form-row">
+            <div class="field">
+              <label>Prénom</label
+              ><input type="text" id="fPrenom" placeholder="Votre prénom" />
+            </div>
+            <div class="field">
+              <label>Nom</label
+              ><input type="text" id="fNom" placeholder="Votre nom" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Email</label
+            ><input type="email" id="fEmail" placeholder="email@exemple.com" />
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label>Téléphone</label
+              ><input type="tel" id="fTel" placeholder="+216 XX XXX XXX" />
+            </div>
+            <div class="field">
+              <label>Club choisi</label>
+              <select id="fClub">
+                <option value="">— Choisir un club —</option>
+                <option>FG Tunis Centre</option>
+                <option>FG Boumhal</option>
+                <option>FG La Marsa</option>
+                <option>FG Bardo</option>
+                <option>FG El Menzah</option>
+                <option>FG Sousse</option>
+                <option>FG Sfax</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label>Date de début</label>
+            <input
+              type="text"
+              id="fStartDate"
+              value="Aujourd'hui"
+              readonly
+              disabled
+              style="
+                background: rgba(255, 255, 255, 0.05);
+                color: #fff;
+                cursor: default;
+                font-weight: 500;
+              "
+            />
+            <div id="datePreview">
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  margin-bottom: 8px;
+                "
+              >
+                <span style="color: rgba(255, 255, 255, 0.4)">Début</span>
+                <span
+                  id="previewStart"
+                  style="font-weight: 600; color: var(--accent)"
+                  >—</span
+                >
+              </div>
+              <div style="display: flex; justify-content: space-between">
+                <span style="color: rgba(255, 255, 255, 0.4)">Fin</span>
+                <span
+                  id="previewEnd"
+                  style="font-weight: 600; color: var(--accent)"
+                  >—</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">MODE DE PAIEMENT</div>
+          <div class="payment-methods">
+            <div class="method-btn active" onclick="selectMethod(this,'carte')">
+              <div class="method-icon">💳</div>
+              <div>
+                <div class="method-label">Carte bancaire</div>
+                <div class="method-sub">Visa, Mastercard, CIB</div>
+              </div>
+              <div class="method-check">✓</div>
+            </div>
+            <div class="method-btn" onclick="selectMethod(this,'virement')">
+              <div class="method-icon">🏦</div>
+              <div>
+                <div class="method-label">Virement bancaire</div>
+                <div class="method-sub">Paiement sous 48h</div>
+              </div>
+              <div class="method-check"></div>
+            </div>
+            <div class="method-btn" onclick="selectMethod(this,'especes')">
+              <div class="method-icon">💵</div>
+              <div>
+                <div class="method-label">Paiement en espèces</div>
+                <div class="method-sub">Directement au club</div>
+              </div>
+              <div class="method-check"></div>
+            </div>
+          </div>
+          <div id="panelCarte" style="margin-top: 24px">
+            <div class="card-visual">
+              <div style="font-size: 1.4rem; margin-bottom: 18px">💳</div>
+              <div class="card-number-display" id="cardDisplay">
+                •••• •••• •••• ••••
+              </div>
+              <div class="card-row">
+                <div>
+                  <div class="card-holder-label">Titulaire</div>
+                  <div class="card-holder-val" id="cardName">VOTRE NOM</div>
+                </div>
+                <div>
+                  <div class="card-exp-label">Expiration</div>
+                  <div class="card-exp-val" id="cardExp">MM/AA</div>
+                </div>
+                <div style="font-size: 1.6rem">🏦</div>
+              </div>
+            </div>
+            <div class="field">
+              <label>Numéro de carte</label
+              ><input
+                type="text"
+                id="cardNum"
+                placeholder="1234 5678 9012 3456"
+                maxlength="19"
+                oninput="formatCard(this)"
+              />
+            </div>
+            <div class="field">
+              <label>Titulaire</label
+              ><input
+                type="text"
+                id="cardHolder"
+                placeholder="NOM PRÉNOM"
+                oninput="document.getElementById('cardName').textContent=this.value||'VOTRE NOM'"
+              />
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label>Expiration</label
+                ><input
+                  type="text"
+                  id="cardExpiry"
+                  placeholder="MM/AA"
+                  maxlength="5"
+                  oninput="formatExpiry(this)"
+                />
+              </div>
+              <div class="field">
+                <label>CVV</label
+                ><input type="password" placeholder="•••" maxlength="3" />
+              </div>
+            </div>
+          </div>
+          <div class="virement-info" id="panelVirement">
+            <div class="rib-box">
+              <div>Banque : <span>Banque de Tunisie</span></div>
+              <div>RIB : <span>10 006 0123456789 12</span></div>
+              <div>IBAN : <span>TN59 1000 6012 3456 7891 2</span></div>
+            </div>
+          </div>
+          <div class="especes-info" id="panelEspeces">
+            <p>Rendez-vous dans votre club avec cette confirmation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="summary-card">
+          <div class="summary-title">✦ RÉCAPITULATIF</div>
+          <div class="summary-row">
+            <span id="sNom">Blue Pass-Sport</span
+            ><span id="sPrice">150 DT</span>
+          </div>
+          <div class="summary-row">
+            <span>Durée</span><span id="sMois">1 mois</span>
+          </div>
+          <div class="summary-row">
+            <span>Frais d'inscription</span><span>Offerts</span>
+          </div>
+          <div
+            class="summary-row"
+            id="sPromoRow"
+            style="display: none; color: #4ade80"
+          >
+            <span>Code promo</span><span id="sPromoVal">-0 DT</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span><span id="sTotal">150 DT</span>
+          </div>
+          <div class="promo-row">
+            <input
+              class="promo-input"
+              id="promoInput"
+              placeholder="Code promo"
+            />
+            <button class="promo-btn" onclick="applyPromo()">Appliquer</button>
+          </div>
+          <div class="secure-note">🔒 Paiement 100% sécurisé — SSL chiffré</div>
+          <button class="btn-pay" id="btnPay" onclick="confirmerPaiement()">
+            <span id="btnPayText">CONFIRMER ET PAYER →</span>
+          </button>
+          <a href="offre.html" class="back-link">← Changer d'offre</a>
+        </div>
+      </div>
+    </div>
+
+    <footer>© 2026 Fitness Gym Tunisie — Tous droits réservés</footer>
+
+    <script>
+      const offreKey =
+        new URLSearchParams(window.location.search).get("offre") || "blue";
+      const offres = {
+        blue: {
+          icon: "🔵",
+          name: "BLUE PASS-SPORT",
+          sub: "Offre Essentiel",
+          prix: 150,
+          color: "#60a5fa",
+          colorBg: "rgba(96,165,250,0.12)",
+          colorBorder: "rgba(96,165,250,0.3)",
+        },
+        yellow: {
+          icon: "🟡",
+          name: "YELLOW PASS-SPORT",
+          sub: "Offre Populaire",
+          prix: 200,
+          color: "#fbbf24",
+          colorBg: "rgba(251,191,36,0.12)",
+          colorBorder: "rgba(251,191,36,0.3)",
+        },
+        green: {
+          icon: "🟢",
+          name: "GREEN PASS-SPORT",
+          sub: "Offre Premium",
+          prix: 250,
+          color: "#34d399",
+          colorBg: "rgba(52,211,153,0.12)",
+          colorBorder: "rgba(52,211,153,0.3)",
+        },
+      };
+      const offre = offres[offreKey] || offres.blue;
+      document.documentElement.style.setProperty("--accent", offre.color);
+      document.documentElement.style.setProperty("--accent-bg", offre.colorBg);
+      document.documentElement.style.setProperty(
+        "--accent-border",
+        offre.colorBorder
+      );
+      document.getElementById("recapIcon").textContent = offre.icon;
+      document.getElementById("recapName").textContent = offre.name;
+      document.getElementById("recapSub").textContent = offre.sub;
+      document.getElementById("recapAmount").textContent = offre.prix;
+      document.getElementById("sNom").textContent = offre.name;
+      document.getElementById("sPrice").textContent = offre.prix + " DT";
+      document.getElementById("sTotal").textContent = offre.prix + " DT";
+
+      const renewData = sessionStorage.getItem("fitnessRenewData");
+      if (renewData) {
+        const data = JSON.parse(renewData);
+        document.getElementById("fPrenom").value = data.prenom || "";
+        document.getElementById("fNom").value = data.nom || "";
+        document.getElementById("fEmail").value = data.email || "";
+        document.getElementById("fTel").value = data.telephone || "";
+        const clubSelect = document.getElementById("fClub");
+        if (data.club && clubSelect) {
+          for (let i = 0; i < clubSelect.options.length; i++) {
+            if (
+              clubSelect.options[i].value === data.club ||
+              clubSelect.options[i].text === data.club
+            ) {
+              clubSelect.selectedIndex = i;
+              break;
+            }
+          }
+        }
+      }
+
+      let dureesMois = 1,
+        remise = 0,
+        prixBase = offre.prix,
+        promoRemise = 0;
+      function recalcTotal() {
+        document.getElementById("sTotal").textContent =
+          Math.round(prixBase * dureesMois * (1 - remise) * (1 - promoRemise)) +
+          " DT";
+      }
+      function setDuration(btn, mois, disc) {
+        dureesMois = mois;
+        remise = disc === "-5%" ? 0.05 : disc === "-15%" ? 0.15 : 0;
+        recalcTotal();
+        document.getElementById("sMois").textContent = mois + " mois";
+        document
+          .querySelectorAll(".dur-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        updateDatePreview();
+      }
+      function updateDatePreview() {
+        const start = new Date(),
+          end = new Date(start);
+        end.setMonth(end.getMonth() + dureesMois);
+        const opts = { day: "numeric", month: "short", year: "numeric" };
+        document.getElementById("previewStart").textContent =
+          start.toLocaleDateString("fr-FR", opts);
+        document.getElementById("previewEnd").textContent =
+          end.toLocaleDateString("fr-FR", opts);
+      }
+      updateDatePreview();
+
+      let currentMethod = "carte";
+      function selectMethod(btn, method) {
+        document.querySelectorAll(".method-btn").forEach((b) => {
+          b.classList.remove("active");
+          b.querySelector(".method-check").textContent = "";
+        });
+        btn.classList.add("active");
+        btn.querySelector(".method-check").textContent = "✓";
+        currentMethod = method;
+        document.getElementById("panelCarte").style.display =
+          method === "carte" ? "block" : "none";
+        document.getElementById("panelVirement").className =
+          "virement-info" + (method === "virement" ? " show" : "");
+        document.getElementById("panelEspeces").className =
+          "especes-info" + (method === "especes" ? " show" : "");
+      }
+      function formatCard(inp) {
+        let v = inp.value.replace(/\D/g, "").substring(0, 16);
+        inp.value = v.replace(/(.{4})/g, "$1 ").trim();
+        let masked = (v + "················")
+          .substring(0, 16)
+          .replace(/(.{4})/g, "$1 ")
+          .trim()
+          .replace(/\d(?=.{5})/g, "•");
+        document.getElementById("cardDisplay").textContent = masked;
+      }
+      function formatExpiry(inp) {
+        let v = inp.value.replace(/\D/g, "");
+        if (v.length >= 2) v = v.substring(0, 2) + "/" + v.substring(2, 4);
+        inp.value = v;
+        document.getElementById("cardExp").textContent = v || "MM/AA";
+      }
+      const promos = { FG2025: 0.1, BIENVENUE: 0.15, FIT50: 0.2 };
+      function applyPromo() {
+        const code = document
+          .getElementById("promoInput")
+          .value.trim()
+          .toUpperCase();
+        if (promos[code]) {
+          promoRemise = promos[code];
+          document.getElementById("sPromoRow").style.display = "flex";
+          document.getElementById("sPromoVal").textContent =
+            "-" +
+            Math.round(prixBase * dureesMois * (1 - remise) * promoRemise) +
+            " DT";
+          recalcTotal();
+          alert("✅ Code promo appliqué : -" + promoRemise * 100 + "%");
+        } else
+          alert("❌ Code promo invalide. Essayez : FG2025, BIENVENUE, FIT50");
+      }
+      function launchConfetti() {
+        const c = document.getElementById("confettiContainer");
+        const cols = [
+          "#4ade80",
+          "#60a5fa",
+          "#fbbf24",
+          "#f472b6",
+          "#a78bfa",
+          "#34d399",
+          "#fb923c",
+        ];
+        for (let i = 0; i < 70; i++) {
+          const p = document.createElement("div");
+          p.className = "confetti-piece";
+          p.style.left = Math.random() * 100 + "vw";
+          p.style.backgroundColor =
+            cols[Math.floor(Math.random() * cols.length)];
+          p.style.width = Math.random() * 8 + 4 + "px";
+          p.style.height = Math.random() * 8 + 4 + "px";
+          p.style.borderRadius = Math.random() > 0.5 ? "50%" : "2px";
+          p.style.animationDuration = Math.random() * 2 + 2 + "s";
+          p.style.animationDelay = Math.random() * 1.5 + "s";
+          c.appendChild(p);
+          setTimeout(() => p.remove(), 5000);
+        }
+      }
+
+      const DB_NAME = "FitnessGymDB";
+      const DB_VERSION = 1;
+      const STORE = "profiles";
+      let db = null;
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const req = indexedDB.open(DB_NAME, DB_VERSION);
+          req.onupgradeneeded = (e) => {
+            const db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE)) {
+              db.createObjectStore(STORE, { keyPath: "email" });
+            }
+          };
+          req.onsuccess = (e) => {
+            db = e.target.result;
+            resolve(db);
+          };
+          req.onerror = (e) => reject(e.target.error);
+        });
+      }
+
+      function dbGet(email) {
+        return new Promise((res, rej) => {
+          const tx = db.transaction(STORE, "readonly");
+          const req = tx.objectStore(STORE).get(email);
+          req.onsuccess = (e) => res(e.target.result || null);
+          req.onerror = (e) => rej(e.target.error);
+        });
+      }
+
+      function dbPut(profile) {
+        return new Promise((res, rej) => {
+          const tx = db.transaction(STORE, "readwrite");
+          const req = tx.objectStore(STORE).put(profile);
+          req.onsuccess = () => res();
+          req.onerror = (e) => rej(e.target.error);
+        });
+      }
+
+      async function confirmerPaiement() {
+        const prenom = document.getElementById("fPrenom").value.trim();
+        const nom = document.getElementById("fNom").value.trim();
+        const email = document.getElementById("fEmail").value.trim();
+        const tel = document.getElementById("fTel").value.trim();
+        const club = document.getElementById("fClub").value;
+
+        if (!prenom || !nom || !email || !club) {
+          alert("Veuillez remplir tous les champs obligatoires.");
+          return;
+        }
+        if (!email.includes("@")) {
+          alert("Email invalide.");
+          return;
+        }
+        if (currentMethod === "carte") {
+          let cardNumRaw = document
+            .getElementById("cardNum")
+            .value.replace(/\s/g, "")
+            .trim();
+          if (cardNumRaw.length !== 16) {
+            alert("Numéro de carte invalide. Il doit comporter 16 chiffres.");
+            return;
+          }
+          let expiry = document.getElementById("cardExpiry").value.trim();
+          if (!/^\d{2}\/\d{2}$/.test(expiry)) {
+            alert("Date d'expiration invalide (format MM/AA).");
+            return;
+          }
+        }
+
+        const btn = document.getElementById("btnPay");
+        btn.disabled = true;
+        document.getElementById("btnPayText").textContent =
+          "⏳ Traitement en cours…";
+
+        const total = Math.round(
+          prixBase * dureesMois * (1 - remise) * (1 - promoRemise)
+        );
+
+        try {
+          await openDB();
+          const existing = await dbGet(email);
+          const isRenewal = renewData !== null;
+          const connectedUser = JSON.parse(
+            sessionStorage.getItem("fgConnectedUser") || "null"
+          );
+          const isLoggedIn = connectedUser && connectedUser.email === email;
+
+          if (existing && !isRenewal && !isLoggedIn) {
+            alert(
+              "❌ Cet email est déjà utilisé. Veuillez vous connecter ou utiliser un autre email."
+            );
+            btn.disabled = false;
+            document.getElementById("btnPayText").textContent =
+              "CONFIRMER ET PAYER →";
+            return;
+          }
+
+          const fullName = prenom + " " + nom;
+          const today = new Date();
+          const startDate = today;
+          const nextDue = new Date(startDate);
+          nextDue.setMonth(nextDue.getMonth() + dureesMois);
+          const memberSince = existing
+            ? existing.memberSince
+            : startDate.toLocaleDateString("fr-FR", {
+                year: "numeric",
+                month: "long",
+              });
+
+          const payment = {
+            date: today.toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            }),
+            amount: total,
+            method: currentMethod,
+            offre: offre.name,
+          };
+
+          const subscription = {
+            offreKey: offreKey,
+            name: offre.name,
+            desc: offre.sub,
+            price: total,
+            period: dureesMois + " mois",
+            startDate: startDate.toISOString(),
+            nextDue: nextDue.toISOString(),
+            club: club,
+          };
+
+          let profile;
+          if (existing && (isRenewal || isLoggedIn)) {
+            profile = existing;
+            profile.fullName = fullName;
+            profile.phone = tel;
+            profile.club = club;
+
+            if (!profile.payments) profile.payments = [];
+            profile.payments.push(payment);
+
+            profile.subscription = subscription;
+          } else {
+            profile = {
+              email: email,
+              fullName: fullName,
+              phone: tel,
+              club: club,
+              memberSince: memberSince,
+              subscription: subscription,
+              payments: [payment],
+            };
+          }
+
+          await dbPut(profile);
+
+          sessionStorage.setItem(
+            "fgConnectedUser",
+            JSON.stringify({
+              email: email,
+              fullName: fullName,
+              club: club,
+            })
+          );
+
+          sessionStorage.removeItem("fitnessRenewData");
+
+          const dateActivation = today.toLocaleDateString("fr-FR", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+          document.getElementById("sDetailOffre").textContent = offre.name;
+          document.getElementById("sDetailClub").textContent = club;
+          document.getElementById("sDetailTotal").textContent = total + " DT";
+          document.getElementById("sDetailDate").textContent = dateActivation;
+          document.getElementById("successMsg").textContent =
+            existing && (isRenewal || isLoggedIn)
+              ? `Bienvenue ${prenom} ! Votre abonnement ${offre.name} a été renouvelé / modifié avec succès.`
+              : `Bienvenue ${prenom} ! Votre ${offre.name} est actif.`;
+          document.getElementById("emailStatusText").innerHTML =
+            existing && (isRenewal || isLoggedIn)
+              ? "✅ Abonnement mis à jour avec succès. Vous êtes connecté."
+              : "✅ Compte créé avec succès. Vous êtes maintenant connecté.";
+
+          document.getElementById("successOverlay").classList.add("show");
+          launchConfetti();
+        } catch (err) {
+          console.error(err);
+          alert(
+            "❌ Une erreur est survenue lors de l'enregistrement : " +
+              err.message
+          );
+          btn.disabled = false;
+          document.getElementById("btnPayText").textContent =
+            "CONFIRMER ET PAYER →";
+        }
+      }
+    </script>
+  </body>
+</html>

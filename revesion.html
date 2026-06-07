@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Formulaire Démonstration</title>
+
+<style>
+legend{
+    color: blueviolet;
+    font-size: 25px;
+    text-decoration: underline;
+    font-style: italic;
+     
+}
+
+body{
+    background-color: rgb(211, 183, 242);
+    min-height: 100vh;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+fieldset {
+    width: 600px;
+    padding: 40px;
+    border-radius: 12px;      
+    border: 1px solid #ccc;
+    box-shadow: 0 30px 30px rgb(108, 0, 151); 
+    background-color: white;
+}
+
+.button{
+    background-color: rgb(120, 14, 150);
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+td{
+    padding: 10px 15px;
+    font-size: 18px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+</style>
+
+</head>
+<body>
+
+<form>
+    <fieldset>
+        <legend>Formulaire d'inscription</legend>
+        <table>
+            <tr>
+                <td>Nom :</td>
+                <td><input type="text" placeholder="Entrez votre nom"></td>
+            </tr>
+            <tr>
+                <td>Email :</td>
+                <td><input type="email" placeholder="Entrez votre email"></td>
+            </tr>
+            <tr>
+                <td>Mot de passe :</td>
+                <td><input type="password" placeholder="Entrez votre mot de passe"></td>
+            </tr>
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                    <button class="button">Envoyer</button>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+</body>
+</html>

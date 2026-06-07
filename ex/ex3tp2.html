@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="ex3tp3.css" />
+    <title>TP2-HTML-Exercice3</title>
+  </head>
+  <body>
+    <h1>Formulaire Exercice 3</h1>
+    <form>
+      <fieldset>
+        <legend>Formulaire Exercice 3</legend>
+        <table>
+          <tr>
+            <td>civilité</td>
+            <td><input type="radio" name="sexe" checked />Monsieur</td>
+            <td><input type="radio" name="sexe" />Madame</td>
+            <td><input type="radio" name="sexe" />Mademoiselle</td>
+          </tr>
+          <tr>
+            <td>Nom/Prenom</td>
+            <td class="nom"><input type="text" name="" /></td>
+          </tr>
+          <tr>
+            <td>Adresse</td>
+            <td><textarea></textarea></td>
+          </tr>
+          <tr>
+            <td>No Postal/Localité</td>
+            <td><input type="text" name="" /></td>
+            <td><input type="text" name="" /></td>
+          </tr>
+          <tr>
+            <td>Pays</td>
+            <td>
+              <select>
+                <option value="tunisie">tunisie</option>
+                <option value="maroc">maroc</option>
+                <option value="algérie">algérie</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>Platforme</td>
+            <td><input type="checkbox" name="" checked />windows</td>
+            <td><input type="checkbox" name="" checked />Marcintosh</td>
+            <td><input type="checkbox" name="" />Unix</td>
+          </tr>
+          <tr>
+            <td>Application(s)</td>
+            <td>
+              <select multiple size="4">
+                <option>Bureautique</option>
+                <option>DAO</option>
+                <option>SGBD</option>
+                <option>internet</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td align="right" colspan="4" class="button">
+              <input type="reset" value="Effacer" />
+              <input type="submit" value="Soumettre Formulaire" />
+            </td>
+          </tr>
+        </table>
+      </fieldset>
+    </form>
+  </body>
+</html>

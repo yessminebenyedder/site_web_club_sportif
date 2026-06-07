@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact - Fitness Gym</title>
+    <style>
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --gold-pale: rgba(201, 168, 76, 0.11);
+        --gold-border: rgba(201, 168, 76, 0.28);
+        --cyan: #8fe9f0;
+        --cyan-dim: rgba(143, 233, 240, 0.13);
+        --cyan-border: rgba(143, 233, 240, 0.22);
+        --bg: #080d10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --text: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --text-dim: rgba(255, 255, 255, 0.3);
+        --green: #4ade80;
+        --red: #ef4444;
+        --blue: #60a5fa;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      header,
+      header.bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 50px;
+        height: 66px;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--gold-border);
+      }
+
+      .logo-luxury,
+      a.logo-luxury {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 22px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+      }
+      .logo-luxury:hover {
+        transform: scale(1.02);
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.14),
+          rgba(143, 233, 240, 0.04)
+        );
+        border: 1px solid rgba(143, 233, 240, 0.32);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+      }
+      .logo-luxury:hover .logo-icon {
+        border-color: var(--cyan);
+        box-shadow: 0 0 14px rgba(143, 233, 240, 0.25);
+      }
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        background: linear-gradient(135deg, #fff 40%, var(--gold));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+
+      nav.links,
+      .nav-links,
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      nav.links a,
+      .nav-links a,
+      nav a {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.06);
+        transition: 0.22s;
+        font-family: "DM Sans", sans-serif;
+      }
+      nav.links a:hover,
+      .nav-links a:hover,
+      nav a:hover,
+      nav.links a.active,
+      .nav-links a.active,
+      nav a.active {
+        color: var(--cyan);
+        background: var(--cyan-dim);
+      }
+
+      nav.auth-btns,
+      .auth-btns,
+      .hdr-right {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      nav.auth-btns a,
+      .auth-btns a {
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 7px 20px;
+        border-radius: 8px;
+        transition: 0.25s;
+        font-family: "DM Sans", sans-serif;
+      }
+
+      .btn-connecter,
+      .btn-login,
+      .c2,
+      .btn-outline-gold {
+        background: transparent !important;
+        color: var(--gold) !important;
+        border: 1.5px solid var(--gold) !important;
+      }
+      .btn-connecter:hover,
+      .btn-login:hover,
+      .c2:hover,
+      .btn-outline-gold:hover {
+        background: var(--gold) !important;
+        color: #0a2a2d !important;
+        transform: translateY(-2px);
+      }
+
+      .btn-inscrire,
+      .btn-signup,
+      .c1 {
+        background: var(--gold) !important;
+        color: #0a2a2d !important;
+        border: 1.5px solid var(--gold) !important;
+      }
+      .btn-inscrire:hover,
+      .btn-signup:hover,
+      .c1:hover {
+        background: transparent !important;
+        color: var(--gold) !important;
+        transform: translateY(-2px);
+      }
+
+      .btn-hdr {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 7px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: 0.22s;
+        border: none;
+      }
+      .btn-red {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1.5px solid rgba(239, 68, 68, 0.3) !important;
+        color: var(--red);
+      }
+      .btn-red:hover {
+        background: var(--red);
+        color: #fff;
+      }
+
+      .hero-banner {
+        margin-top: 66px;
+        height: 300px;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
+          url("img7.jpg") center/cover no-repeat;
+        display: flex;
+        align-items: flex-end;
+        padding: 40px 60px;
+        border-bottom: 1px solid var(--gold-border);
+      }
+      .hero-banner h2 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        font-weight: 900;
+        letter-spacing: 2px;
+        color: #fff;
+        text-shadow: 0 0 30px rgba(201, 168, 76, 0.2);
+        line-height: 1;
+      }
+      .breadcrumb {
+        font-size: 12px;
+        color: var(--text-dim);
+        margin-bottom: 8px;
+      }
+      .breadcrumb span {
+        color: var(--gold);
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 96px 32px 80px;
+      }
+      .page-eyebrow {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 6px;
+      }
+      .page-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.6rem;
+        font-weight: 900;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .page-sub {
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-bottom: 30px;
+      }
+      .page-label {
+        font-family: "Playfair Display", serif;
+        font-size: 0.85rem;
+        letter-spacing: 4px;
+        color: rgba(201, 168, 76, 0.5);
+        margin-bottom: 14px;
+        text-transform: uppercase;
+      }
+
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 16px;
+        padding: 28px 30px;
+        transition: 0.25s;
+      }
+      .card:hover {
+        border-color: var(--gold-border);
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 6px;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1.5px solid var(--card-border);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        outline: none;
+        transition: 0.22s;
+      }
+      .field input::placeholder,
+      .field textarea::placeholder {
+        color: rgba(255, 255, 255, 0.22);
+      }
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: var(--gold);
+        background: rgba(201, 168, 76, 0.06);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.08);
+      }
+      .field select option {
+        background: #0d1720;
+      }
+
+      .btn-gold {
+        padding: 12px 24px;
+        background: var(--gold);
+        color: #0a2a2d;
+        border: none;
+        border-radius: 10px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.22s;
+      }
+      .btn-gold:hover {
+        background: var(--gold-light);
+        transform: translateY(-1px);
+      }
+      .btn-outline {
+        padding: 12px 24px;
+        background: var(--card-bg);
+        border: 1.5px solid var(--gold-border);
+        color: var(--gold);
+        border-radius: 10px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.22s;
+      }
+      .btn-outline:hover {
+        background: var(--gold-pale);
+      }
+
+      footer,
+      .footer {
+        background: linear-gradient(180deg, #0a1a1f 0%, #040a0d 100%);
+        border-top: 1px solid var(--gold-border);
+        padding: 20px;
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 12px;
+        font-family: "DM Sans", sans-serif;
+      }
+      .footer {
+        padding: 50px 40px 0;
+        text-align: left;
+      }
+      footer .fitness,
+      footer .c {
+        color: var(--gold);
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 9999;
+        background: var(--card-bg);
+        border-left: 4px solid var(--gold);
+        padding: 14px 22px;
+        border-radius: 12px;
+        color: var(--text);
+        transform: translateX(400px);
+        transition: 0.35s;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        backdrop-filter: blur(16px);
+      }
+      .toast.show {
+        transform: translateX(0);
+      }
+      .toast.error {
+        border-left-color: var(--red);
+      }
+      .toast.success {
+        border-left-color: var(--green);
+      }
+
+      @media (max-width: 900px) {
+        header,
+        header.bar {
+          padding: 0 18px;
+        }
+        .hero-banner {
+          padding: 24px 20px;
+        }
+        .page {
+          padding: 88px 16px 40px;
+        }
+      }
+      @media (max-width: 600px) {
+        nav.links a,
+        .nav-links a {
+          display: none;
+        }
+        .logo-luxury {
+          margin-right: 0;
+        }
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: radial-gradient(
+            ellipse at top left,
+            rgba(143, 233, 240, 0.07) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            ellipse at bottom right,
+            rgba(58, 184, 194, 0.05) 0%,
+            transparent 45%
+          ),
+          #080d10;
+        min-height: 100vh;
+        color: white;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 50px;
+        background: rgba(0, 0, 0, 0.55);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(143, 233, 240, 0.1);
+        z-index: 1000;
+      }
+      nav.links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      nav.links a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: 40px;
+        background: rgba(255, 255, 255, 0.08);
+        transition: 0.3s;
+      }
+      nav.links a:hover,
+      nav.links a.active {
+        color: #8fe9f0;
+        background: rgba(143, 233, 240, 0.12);
+      }
+      nav.auth-btns {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      nav.auth-btns a {
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px 22px;
+        border-radius: 50px;
+        transition: 0.3s;
+      }
+      .c1 {
+        background: #8fe9f0;
+        color: #0a2a2d;
+        border: 2px solid #8fe9f0;
+      }
+      .c1:hover {
+        background: transparent;
+        color: #8fe9f0;
+      }
+      .c2 {
+        background: transparent;
+        color: #8fe9f0;
+        border: 2px solid #8fe9f0;
+      }
+      .c2:hover {
+        background: #8fe9f0;
+        color: #0a2a2d;
+      }
+      .logo-luxury {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 25px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .logo-luxury:hover {
+        transform: scale(1.02);
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.15),
+          rgba(143, 233, 240, 0.05)
+        );
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(143, 233, 240, 0.3);
+        transition: all 0.3s ease;
+      }
+      .logo-luxury:hover .logo-icon {
+        border-color: #8fe9f0;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.2),
+          rgba(143, 233, 240, 0.08)
+        );
+        box-shadow: 0 0 12px rgba(143, 233, 240, 0.2);
+      }
+      .logo-icon svg {
+        transition: transform 0.3s ease;
+      }
+      .logo-luxury:hover .logo-icon svg {
+        transform: rotate(3deg);
+      }
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        letter-spacing: 3px;
+        background: linear-gradient(135deg, #ffffff, #8fe9f0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+      .hero-banner {
+        margin-top: 62px;
+        height: 280px;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75)),
+          url("img33.jpg") center/cover no-repeat;
+        display: flex;
+        align-items: flex-end;
+        padding: 40px 60px;
+      }
+      .breadcrumb {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.45);
+        margin-bottom: 8px;
+      }
+      .breadcrumb span {
+        color: #8fe9f0;
+      }
+      .hero-banner h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3rem, 6vw, 5rem);
+        letter-spacing: 6px;
+        color: white;
+        text-shadow: 0 0 40px rgba(143, 233, 240, 0.3);
+        line-height: 1;
+      }
+      .hero-banner p {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 15px;
+        margin-top: 8px;
+      }
+      .main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 60px 40px 80px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+      }
+      .card {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(143, 233, 240, 0.12);
+        border-top: 2px solid rgba(143, 233, 240, 0.35);
+        border-radius: 20px;
+        padding: 36px 38px;
+        transition: border-color 0.3s, transform 0.3s;
+      }
+      .card:hover {
+        border-color: rgba(143, 233, 240, 0.3);
+        transform: translateY(-3px);
+      }
+      .card.full {
+        grid-column: 1 / -1;
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+        letter-spacing: 3px;
+        color: #8fe9f0;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .contact-items {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .contact-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: rgba(143, 233, 240, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #8fe9f0;
+      }
+      .contact-label {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+      }
+      .contact-value {
+        font-size: 15px;
+        color: white;
+        font-weight: 500;
+      }
+      .contact-value a {
+        color: #8fe9f0;
+        text-decoration: none;
+      }
+      .contact-value a:hover {
+        text-decoration: underline;
+      }
+      .horaires-list {
+        display: flex;
+        flex-direction: column;
+      }
+      .horaire-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        font-size: 14px;
+      }
+      .horaire-row:last-child {
+        border: none;
+      }
+      .horaire-jour {
+        color: rgba(255, 255, 255, 0.5);
+      }
+      .horaire-heure {
+        color: white;
+        font-weight: 500;
+      }
+      .badge-ouvert {
+        background: rgba(74, 222, 128, 0.15);
+        border: 1px solid rgba(74, 222, 128, 0.3);
+        color: #4ade80;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 8px;
+        border-radius: 20px;
+        margin-left: 8px;
+      }
+      .map-wrapper {
+        margin-top: 20px;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 2px solid rgba(143, 233, 240, 0.2);
+        box-shadow: 0 0 24px rgba(143, 233, 240, 0.08);
+        position: relative;
+      }
+      .map-header {
+        background: rgba(143, 233, 240, 0.08);
+        border-bottom: 1px solid rgba(143, 233, 240, 0.15);
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #8fe9f0;
+        letter-spacing: 1px;
+      }
+      .map-header svg {
+        flex-shrink: 0;
+      }
+      .map-wrapper iframe {
+        width: 100%;
+        height: 200px;
+        display: block;
+        border: none;
+        filter: invert(90%) hue-rotate(180deg);
+      }
+      .field {
+        margin-bottom: 16px;
+      }
+      .field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 7px;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        font-family: "DM Sans", sans-serif;
+        font-size: 15px;
+        outline: none;
+        transition: 0.3s;
+        resize: none;
+      }
+      .field input::placeholder,
+      .field textarea::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: #8fe9f0;
+        background: rgba(143, 233, 240, 0.07);
+        box-shadow: 0 0 0 3px rgba(143, 233, 240, 0.08);
+      }
+      .field select option {
+        background: #0d1a20;
+      }
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .btn-send {
+        width: 100%;
+        padding: 14px;
+        background: #8fe9f0;
+        color: #0a2a2d;
+        border: none;
+        border-radius: 50px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 8px;
+        letter-spacing: 0.5px;
+      }
+      .btn-send:hover {
+        background: white;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(143, 233, 240, 0.25);
+      }
+      .social-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      .social-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 20px 12px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        text-decoration: none;
+        color: white;
+        font-size: 13px;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+      .social-btn .s-icon {
+        font-size: 1.6rem;
+      }
+      .social-btn:hover {
+        transform: translateY(-4px);
+      }
+      .social-btn.fb:hover {
+        border-color: rgba(24, 119, 242, 0.5);
+        background: rgba(24, 119, 242, 0.1);
+        color: #60a5fa;
+      }
+      .social-btn.ig:hover {
+        border-color: rgba(225, 48, 108, 0.5);
+        background: rgba(225, 48, 108, 0.1);
+        color: #f9a8d4;
+      }
+      .social-btn.yt:hover {
+        border-color: rgba(255, 0, 0, 0.4);
+        background: rgba(255, 0, 0, 0.08);
+        color: #f87171;
+      }
+      .notif-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(8px);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+      }
+      .notif-overlay.show {
+        display: flex;
+      }
+      .notif-box {
+        background: #0d1a20;
+        border: 1px solid rgba(143, 233, 240, 0.25);
+        border-top: 3px solid #8fe9f0;
+        border-radius: 20px;
+        padding: 50px 44px;
+        text-align: center;
+        max-width: 420px;
+        width: 90%;
+        animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0.6);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .notif-icon {
+        font-size: 3.5rem;
+        margin-bottom: 14px;
+      }
+      .notif-box h2 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        letter-spacing: 3px;
+        color: #8fe9f0;
+        margin-bottom: 10px;
+      }
+      .notif-box p {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.5);
+        line-height: 1.7;
+        margin-bottom: 24px;
+      }
+      .notif-close {
+        padding: 12px 32px;
+        border-radius: 50px;
+        background: #8fe9f0;
+        color: #0a2a2d;
+        border: none;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .notif-close:hover {
+        background: white;
+      }
+      footer {
+        background: rgba(0, 0, 0, 0.5);
+        border-top: 1px solid rgba(143, 233, 240, 0.08);
+        padding: 28px 50px;
+        margin-top: auto;
+      }
+      .footer-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 24px;
+        margin-bottom: 20px;
+      }
+      .fcol {
+        min-width: 140px;
+      }
+      .fcol h3 {
+        font-family: "Playfair Display", serif;
+        color: #8fe9f0;
+        letter-spacing: 2px;
+        font-size: 1rem;
+        margin-bottom: 10px;
+      }
+      .fcol p,
+      .fcol a {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 13px;
+        line-height: 2;
+        text-decoration: none;
+        display: block;
+        transition: 0.2s;
+      }
+      .fcol a:hover {
+        color: #8fe9f0;
+      }
+      .soc-link {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 13px;
+        line-height: 2.3;
+        transition: 0.2s;
+      }
+      .soc-link:hover {
+        color: #8fe9f0;
+      }
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding-top: 14px;
+        text-align: center;
+        color: white;
+        font-size: 12px;
+      }
+      @media (max-width: 768px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .card.full {
+          grid-column: auto;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+        header {
+          padding: 12px 16px;
+        }
+        .hero-banner {
+          padding: 24px 20px;
+        }
+        .main {
+          padding: 40px 16px 60px;
+        }
+        .logo-text {
+          font-size: 16px;
+        }
+        .logo-icon {
+          width: 32px;
+          height: 32px;
+        }
+        .logo-icon svg {
+          width: 24px;
+          height: 24px;
+        }
+      }
+      .fitness {
+        color: darkgoldenrod;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="notif-overlay" id="notifOverlay">
+      <div class="notif-box">
+        <div class="notif-icon">✅</div>
+        <h2>MESSAGE ENVOYÉ !</h2>
+        <p>
+          Merci <strong id="notifNom" style="color: #8fe9f0"></strong> !<br />
+          Votre message a bien été reçu.<br />
+          Notre équipe vous répondra dans les <strong>24h</strong>.
+        </p>
+        <button class="notif-close" onclick="fermerNotif()">Fermer</button>
+      </div>
+    </div>
+    <header>
+      <nav class="links">
+        <div class="logo-luxury" onclick="window.location.href='aceuill.html'">
+          <div class="logo-icon">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 2L4 9L16 16L28 9L16 2Z"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M4 9V23L16 30L28 23V9"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path d="M16 16V30" stroke="#8fe9f0" stroke-width="1.5" />
+              <circle
+                cx="16"
+                cy="16"
+                r="3"
+                fill="#8fe9f0"
+                stroke="#8fe9f0"
+                stroke-width="1"
+              />
+              <path
+                d="M9 12.5L23 12.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 19.5L23 19.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">FITNESS GYM</span>
+        </div>
+        <a href="aceuill.html">Accueil</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="horaires.html">Horaires</a>
+        <a href="offre.html">Offres</a>
+        <a href="contact.html" class="active">Contact</a>
+        <a href="profil.html">My FG</a>
+        <a href="analytic.html">Suivi</a>
+      </nav>
+      <nav class="auth-btns">
+        <a href="connexion.html" class="c2">Se connecter</a>
+      </nav>
+    </header>
+    <div class="hero-banner">
+      <div>
+        <div class="breadcrumb">Accueil &nbsp;›&nbsp; <span>Contact</span></div>
+        <h1>CONTACTEZ-NOUS</h1>
+        <p>Notre équipe est disponible pour répondre à toutes vos questions</p>
+      </div>
+    </div>
+
+    <section class="main">
+      <div class="grid">
+        <div class="card">
+          <div class="card-title">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.07 3.38 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"
+              />
+            </svg>
+            NOS COORDONNÉES
+          </div>
+          <div class="contact-items">
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.07 3.38 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <div class="contact-label">Téléphone</div>
+                <div class="contact-value">
+                  <a href="tel:+21671000000">+216 71 000 000</a>
+                </div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                  />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+              </div>
+              <div>
+                <div class="contact-label">Email</div>
+                <div class="contact-value">
+                  <a href="mailto:contact@fitnessgym.tn"
+                    >contact@fitnessgym.tn</a
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+              </div>
+              <div>
+                <div class="contact-label">Siège social</div>
+                <div class="contact-value">Av. Habib Bourguiba, Tunis 1000</div>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
+                </svg>
+              </div>
+              <div>
+                <div class="contact-label">Disponibilité</div>
+                <div class="contact-value">
+                  Lun – Sam &nbsp;|&nbsp; 08h00 – 20h00
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            HORAIRES D'ACCUEIL
+          </div>
+          <div class="horaires-list">
+            <div class="horaire-row">
+              <span class="horaire-jour">Lundi – Vendredi</span
+              ><span class="horaire-heure"
+                >08h00 – 20h00 <span class="badge-ouvert">Ouvert</span></span
+              >
+            </div>
+            <div class="horaire-row">
+              <span class="horaire-jour">Samedi</span
+              ><span class="horaire-heure"
+                >09h00 – 18h00 <span class="badge-ouvert">Ouvert</span></span
+              >
+            </div>
+            <div class="horaire-row">
+              <span class="horaire-jour">Dimanche</span
+              ><span
+                class="horaire-heure"
+                style="color: rgba(255, 120, 120, 0.8)"
+                >Fermé</span
+              >
+            </div>
+            <div class="horaire-row">
+              <span class="horaire-jour">Jours fériés</span
+              ><span
+                class="horaire-heure"
+                style="color: rgba(255, 120, 120, 0.8)"
+                >Fermé</span
+              >
+            </div>
+          </div>
+
+          <div class="map-wrapper">
+            <div class="map-header">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              📍 AV. HABIB BOURGUIBA — TUNIS
+            </div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3194.7560498055345!2d10.186619499999999!3d36.800399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd346987ae54b1%3A0x9aec62e94b314b47!2sAv.%20Habib%20Bourguiba%2C%20Tunis!5e0!3m2!1sfr!2stn!4v1774643467967!5m2!1sfr!2stn"
+              allowfullscreen=""
+              loading="lazy"
+            >
+            </iframe>
+          </div>
+        </div>
+        <div class="card full">
+          <div class="card-title">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+              />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            ENVOYER UN MESSAGE
+          </div>
+          <form onsubmit="envoyerContact(event)">
+            <div class="form-row">
+              <div class="field">
+                <label>* Prénom & Nom</label
+                ><input
+                  type="text"
+                  id="cNom"
+                  placeholder="Votre nom complet"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label>* Email</label
+                ><input type="email" placeholder="email@exemple.com" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label>Téléphone</label
+                ><input type="tel" placeholder="+216 XX XXX XXX" />
+              </div>
+              <div class="field">
+                <label>* Sujet</label>
+                <select required>
+                  <option value="">— Choisir un sujet —</option>
+                  <option>Renseignement abonnement</option>
+                  <option>Informations club</option>
+                  <option>Problème technique</option>
+                  <option>Partenariat</option>
+                  <option>Autre</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>* Message</label
+              ><textarea
+                rows="5"
+                placeholder="Écrivez votre message ici..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-send">✉ Envoyer le message</button>
+          </form>
+        </div>
+        <div class="card full">
+          <div class="card-title">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+              />
+            </svg>
+            SUIVEZ-NOUS
+          </div>
+          <div class="social-grid">
+            <a href="#" class="social-btn fb"
+              ><div class="s-icon"></div>
+              <span>Facebook</span></a
+            >
+            <a href="#" class="social-btn ig"
+              ><div class="s-icon"></div>
+              <span>Instagram</span></a
+            >
+            <a href="#" class="social-btn yt"
+              ><div class="s-icon"></div>
+              <span>YouTube</span></a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer>
+      <div class="footer-container">
+        <div class="fcol">
+          <h3>Fitness Gym</h3>
+          <p>La première chaîne de clubs de fitness en Tunisie.</p>
+          <p>Enjoy the difference!</p>
+        </div>
+        <div class="fcol">
+          <h3>Liens utiles</h3>
+          <a href="aceuill.html">Accueil</a>
+          <a href="clubs.html">Clubs</a>
+          <a href="offre.html">Offres</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="fcol">
+          <h3>Informations</h3>
+          <a href="#">À propos</a>
+          <a href="#">FAQ</a>
+        </div>
+        <div class="fcol">
+          <h3>Suivez-nous</h3>
+          <a href="#" class="soc-link"
+            ><svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+              /></svg
+            >Facebook</a
+          >
+          <a href="#" class="soc-link"
+            ><svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg
+            >Instagram</a
+          >
+          <a href="#" class="soc-link"
+            ><svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+            >
+              <path
+                d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.97C18.88 4 12 4 12 4s-6.88 0-8.59.45A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"
+              /></svg
+            >YouTube</a
+          >
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2026 <span class="fitness">Fitness Gym Tunisie</span> — Tous droits
+        réservés
+      </div>
+    </footer>
+
+    <script>
+      function envoyerContact(e) {
+        e.preventDefault();
+        const nom = document.getElementById("cNom").value.trim();
+        document.getElementById("notifNom").textContent = nom;
+        document.getElementById("notifOverlay").classList.add("show");
+      }
+      function fermerNotif() {
+        document.getElementById("notifOverlay").classList.remove("show");
+        document.getElementById("cNom").closest("form").reset();
+      }
+      document
+        .getElementById("notifOverlay")
+        .addEventListener("click", function (e) {
+          if (e.target === this) fermerNotif();
+        });
+    </script>
+  </body>
+</html>

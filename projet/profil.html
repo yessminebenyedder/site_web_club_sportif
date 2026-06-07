@@ -1,0 +1,1502 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mon Profil – Fitness Gym</title>
+    <style>
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --gold-pale: rgba(201, 168, 76, 0.11);
+        --gold-border: rgba(201, 168, 76, 0.28);
+        --cyan: #8fe9f0;
+        --cyan-dim: rgba(143, 233, 240, 0.12);
+        --bg: #080d10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --text: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.58);
+        --text-dim: rgba(255, 255, 255, 0.28);
+        --green: #4ade80;
+        --red: #ef4444;
+        --accent: #c9a84c;
+        --accent-bg: rgba(201, 168, 76, 0.1);
+        --accent-border: rgba(201, 168, 76, 0.28);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      header.bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 50px;
+        height: 66px;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--gold-border);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 13.5px;
+        font-weight: 500;
+        padding: 6px 14px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.05);
+        transition: 0.22s;
+      }
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--cyan);
+        background: var(--cyan-dim);
+      }
+      .auth-btns {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .auth-btns a {
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 7px 20px;
+        border-radius: 16px;
+        transition: 0.25s;
+        background: transparent;
+        color: var(--gold);
+        border: 1.5px solid var(--gold);
+        cursor: pointer;
+      }
+      .auth-btns a:hover {
+        background: var(--gold);
+        color: #0a2a2d;
+        transform: translateY(-1px);
+      }
+      .btn-red {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1.5px solid rgba(239, 68, 68, 0.3);
+        color: var(--red);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 7px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        transition: 0.22s;
+      }
+      .btn-red:hover {
+        background: var(--red);
+        color: #fff;
+        transform: translateY(-1px);
+      }
+      .logo-luxury {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 22px;
+        cursor: pointer;
+        transition: 0.3s;
+        text-decoration: none;
+      }
+      .logo-luxury:hover {
+        transform: scale(1.02);
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.14),
+          rgba(143, 233, 240, 0.04)
+        );
+        border: 1px solid rgba(143, 233, 240, 0.32);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+      }
+      .logo-luxury:hover .logo-icon {
+        border-color: var(--cyan);
+        box-shadow: 0 0 14px rgba(143, 233, 240, 0.2);
+      }
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 19px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        background: linear-gradient(135deg, #fff 40%, var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+      .page {
+        max-width: 1360px;
+        margin: 0 auto;
+        padding: 90px 32px 80px;
+        flex: 1;
+      }
+      .breadcrumb {
+        font-size: 12px;
+        color: var(--text-dim);
+        margin-bottom: 6px;
+      }
+      .breadcrumb span {
+        color: var(--gold);
+      }
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+      .page-eyebrow {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 4px;
+      }
+      .page-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: var(--text);
+        line-height: 1;
+      }
+      .profil-grid {
+        display: grid;
+        grid-template-columns: 400px 1fr;
+        gap: 28px;
+        align-items: start;
+      }
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 18px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        transition: 0.25s;
+      }
+      .card:hover {
+        border-color: var(--gold-border);
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 20px;
+        letter-spacing: 0.5px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--card-border);
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .card-title-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--gold);
+        flex-shrink: 0;
+      }
+      .avatar-section {
+        text-align: center;
+        padding: 6px 0 22px;
+      }
+      .avatar-ring {
+        width: 118px;
+        height: 118px;
+        border-radius: 50%;
+        margin: 0 auto 18px;
+        background: conic-gradient(
+          var(--gold) 0deg,
+          rgba(201, 168, 76, 0.06) 200deg,
+          transparent 360deg
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: rotateSlow 10s linear infinite;
+      }
+      @keyframes rotateSlow {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .avatar-inner {
+        width: 106px;
+        height: 106px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0d1f2d, #091520);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: rotateSlow 10s linear infinite reverse;
+      }
+      .avatar-initials {
+        font-family: "Playfair Display", serif;
+        font-size: 2.4rem;
+        font-weight: 900;
+        line-height: 1;
+        background: linear-gradient(135deg, var(--gold), var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .member-name {
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .member-since {
+        font-size: 12px;
+        color: var(--text-dim);
+        letter-spacing: 0.5px;
+      }
+      .badge-active {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 12px;
+        padding: 4px 14px;
+        border-radius: 50px;
+        background: rgba(74, 222, 128, 0.1);
+        color: var(--green);
+        border: 1px solid rgba(74, 222, 128, 0.28);
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+      .badge-active::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 6px var(--green);
+      }
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .info-row:last-child {
+        border: none;
+      }
+      .info-label {
+        font-size: 11px;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        font-weight: 600;
+      }
+      .info-value {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        text-align: right;
+        word-break: break-word;
+        max-width: 62%;
+      }
+      .info-value.accent {
+        color: var(--cyan);
+      }
+      .quick-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .action-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 15px 14px;
+        border-radius: 12px;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        cursor: pointer;
+        transition: 0.22s;
+        text-decoration: none;
+        color: var(--text);
+      }
+      .action-btn:hover {
+        border-color: var(--gold-border);
+        background: var(--gold-pale);
+      }
+      .action-btn.danger {
+        border-color: rgba(239, 68, 68, 0.2);
+        background: rgba(239, 68, 68, 0.04);
+      }
+      .action-btn.danger:hover {
+        border-color: rgba(239, 68, 68, 0.5);
+        background: rgba(239, 68, 68, 0.1);
+      }
+      .action-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--gold-pale);
+        border: 1px solid var(--gold-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        margin-bottom: 4px;
+        flex-shrink: 0;
+      }
+      .action-btn.danger .action-icon {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: rgba(239, 68, 68, 0.3);
+        color: var(--red);
+      }
+      .action-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .action-sub {
+        font-size: 11px;
+        color: var(--text-dim);
+      }
+      .abonnement-card {
+        background: var(--accent-bg);
+        border: 1.5px solid var(--accent-border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        margin-bottom: 18px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .abonnement-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 10px;
+        flex-shrink: 0;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--accent-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+      }
+      .abonnement-info h4 {
+        font-family: "Playfair Display", serif;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 2px;
+      }
+      .abonnement-info p {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      .abonnement-price {
+        margin-left: auto;
+        text-align: right;
+        flex-shrink: 0;
+      }
+      .abonnement-price .amount {
+        font-family: "Playfair Display", serif;
+        font-size: 1.9rem;
+        font-weight: 900;
+        color: var(--accent);
+        line-height: 1;
+      }
+      .abonnement-price .period {
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 2px;
+      }
+      .progress-wrap {
+        margin: 16px 0 4px;
+      }
+      .progress-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-bottom: 7px;
+      }
+      .progress-bar {
+        height: 5px;
+        background: rgba(255, 255, 255, 0.07);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--accent), var(--gold-light));
+        border-radius: 10px;
+        transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .historique-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .historique-item:last-child {
+        border: none;
+      }
+      .historique-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .historique-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 9px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--card-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+      }
+      .historique-date {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .historique-method {
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 1px;
+      }
+      .historique-montant {
+        font-weight: 700;
+        color: var(--gold);
+        font-size: 15px;
+      }
+      .historique-status {
+        font-size: 11px;
+        color: var(--green);
+        margin-top: 2px;
+        text-align: right;
+      }
+      .no-sub {
+        text-align: center;
+        padding: 32px 20px;
+        color: var(--text-dim);
+        font-size: 13px;
+        line-height: 1.9;
+      }
+      .no-sub-icon {
+        width: 52px;
+        height: 52px;
+        margin: 0 auto 14px;
+        background: var(--gold-pale);
+        border: 1px solid var(--gold-border);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .no-sub a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+      .no-sub a:hover {
+        text-decoration: underline;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.88);
+        backdrop-filter: blur(12px);
+        z-index: 2000;
+        justify-content: center;
+        align-items: center;
+      }
+      .modal.show {
+        display: flex;
+      }
+      .modal-content {
+        background: linear-gradient(145deg, #0d1e2a, #091520);
+        border: 1px solid var(--gold-border);
+        border-radius: 22px;
+        padding: 38px 40px;
+        max-width: 560px;
+        width: 90%;
+        animation: modalPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      @keyframes modalPop {
+        from {
+          transform: scale(0.85);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .modal-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: var(--text);
+      }
+      .modal-sub {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-bottom: 22px;
+      }
+      .modal-title.danger {
+        color: var(--red);
+      }
+      .field {
+        margin-bottom: 16px;
+      }
+      .field label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 7px;
+      }
+      .field input,
+      .field select {
+        width: 100%;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1.5px solid var(--card-border);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        outline: none;
+        transition: 0.22s;
+      }
+      .field input:focus,
+      .field select:focus {
+        border-color: var(--gold);
+        background: rgba(201, 168, 76, 0.06);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.08);
+      }
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 22px;
+        justify-content: flex-end;
+      }
+      .btn-cancel {
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        background: transparent;
+        border: 1.5px solid var(--card-border);
+        color: var(--text-muted);
+        font-family: "DM Sans", sans-serif;
+        transition: 0.22s;
+      }
+      .btn-cancel:hover {
+        border-color: var(--text-muted);
+        color: var(--text);
+      }
+      .btn-confirm {
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        background: var(--gold);
+        color: #0a2a2d;
+        border: none;
+        font-family: "DM Sans", sans-serif;
+        transition: 0.22s;
+      }
+      .btn-confirm:hover {
+        background: var(--gold-light);
+      }
+      .btn-danger-confirm {
+        padding: 10px 22px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        background: var(--red);
+        color: #fff;
+        border: none;
+        font-family: "DM Sans", sans-serif;
+        transition: 0.22s;
+      }
+      .btn-danger-confirm:hover {
+        opacity: 0.85;
+      }
+      .toast {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        z-index: 3000;
+        background: var(--card-bg);
+        border-left: 4px solid var(--gold);
+        padding: 14px 22px;
+        border-radius: 12px;
+        color: var(--text);
+        transform: translateX(400px);
+        transition: 0.35s;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        backdrop-filter: blur(16px);
+        max-width: 320px;
+      }
+      .toast.show {
+        transform: translateX(0);
+      }
+      .toast.error {
+        border-left-color: var(--red);
+      }
+      .toast.ok {
+        border-left-color: var(--green);
+      }
+      footer {
+        background: linear-gradient(180deg, #0a1a1f 0%, #040a0d 100%);
+        border-top: 1px solid var(--gold-border);
+        padding: 22px;
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 12px;
+        font-family: "DM Sans", sans-serif;
+      }
+      footer span {
+        color: var(--gold);
+      }
+      
+      .offre-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+      .offre-option {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 14px 18px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .offre-option.selected {
+        border-color: var(--gold);
+        background: var(--gold-pale);
+        box-shadow: 0 0 0 1px var(--gold);
+      }
+      .offre-option:hover {
+        border-color: var(--gold-border);
+        background: rgba(201, 168, 76, 0.08);
+      }
+      .offre-nom {
+        font-weight: 700;
+        font-size: 1rem;
+      }
+      .offre-prix {
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--gold);
+      }
+      @media (max-width: 1024px) {
+        .profil-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+        .page {
+          max-width: 100%;
+          padding: 82px 20px 40px;
+        }
+      }
+      @media (max-width: 860px) {
+        header.bar {
+          padding: 0 18px;
+        }
+      }
+      @media (max-width: 520px) {
+        .nav-links a:not(.logo-luxury) {
+          display: none;
+        }
+        .modal-content {
+          padding: 26px 20px;
+        }
+        .page-title {
+          font-size: 2rem;
+        }
+        .card {
+          padding: 20px 18px;
+        }
+        .quick-grid {
+          grid-template-columns: 1fr;
+        }
+        .abonnement-card {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .abonnement-price {
+          margin-left: 0;
+          text-align: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bar">
+      <div class="nav-links">
+        <a class="logo-luxury" href="aceuill.html">
+          <div class="logo-icon">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+              <path
+                d="M16 2L4 9L16 16L28 9L16 2Z"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M4 9V23L16 30L28 23V9"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path d="M16 16V30" stroke="#8fe9f0" stroke-width="1.5" />
+              <circle
+                cx="16"
+                cy="16"
+                r="3"
+                fill="#8fe9f0"
+                stroke="#8fe9f0"
+                stroke-width="1"
+              />
+              <path
+                d="M9 12.5L23 12.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 19.5L23 19.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">FITNESS GYM</span>
+        </a>
+        <a href="aceuill.html">Accueil</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="horaires.html">Horaires</a>
+        <a href="offre.html">Offre</a>
+        <a href="contact.html">Contact</a>
+        <a href="profil.html" class="active">My FG</a>
+        <a href="analytic.html">Suivi</a>
+      </div>
+      <div class="auth-btns">
+        <a href="connexion.html">Se connecter</a>
+        <button class="btn-red" onclick="logout()">Déconnexion</button>
+      </div>
+    </header>
+
+    <div class="page">
+      <div class="breadcrumb">Mon compte &rsaquo; <span>Mon Profil</span></div>
+      <div class="page-header">
+        <div>
+          <div class="page-eyebrow">Mon espace personnel</div>
+          <h1 class="page-title">Mon Profil</h1>
+        </div>
+      </div>
+
+      <div class="profil-grid">
+        <div>
+          <div class="card">
+            <div class="avatar-section">
+              <div class="avatar-ring">
+                <div class="avatar-inner">
+                  <span class="avatar-initials" id="avatarInitials">?</span>
+                </div>
+              </div>
+              <div class="member-name" id="displayName">—</div>
+              <div class="member-since" id="memberSince">Membre depuis —</div>
+              <div class="badge-active">Actif</div>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Email</span>
+              <span class="info-value" id="infoEmail">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Téléphone</span>
+              <span class="info-value" id="infoPhone">—</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Club principal</span>
+              <span class="info-value accent" id="infoClub">—</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              <span class="card-title-dot"></span>Actions rapides
+            </div>
+            <div class="quick-grid">
+              <div class="action-btn" onclick="openModal('edit')">
+                <div class="action-icon">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                    />
+                    <path
+                      d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                    />
+                  </svg>
+                </div>
+                <div class="action-label">Modifier</div>
+                <div class="action-sub">Mes informations</div>
+              </div>
+              
+              <div class="action-btn" onclick="openChangeOfferModal()">
+                <div class="action-icon">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="17 1 21 5 17 9" />
+                    <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+                    <polyline points="7 23 3 19 7 15" />
+                    <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+                  </svg>
+                </div>
+                <div class="action-label">Changer</div>
+                <div class="action-sub">Mon offre</div>
+              </div>
+              <div class="action-btn" onclick="renewSubscription()">
+                <div class="action-icon">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M23 4v6h-6" />
+                    <path d="M1 20v-6h6" />
+                    <path
+                      d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
+                    />
+                  </svg>
+                </div>
+                <div class="action-label">Renouveler</div>
+                <div class="action-sub">Mon abonnement</div>
+              </div>
+              <div class="action-btn danger" onclick="openModal('cancel')">
+                <div class="action-icon">
+                  <svg
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="15" y1="9" x2="9" y2="15" />
+                    <line x1="9" y1="9" x2="15" y2="15" />
+                  </svg>
+                </div>
+                <div class="action-label">Résilier</div>
+                <div class="action-sub">Mon contrat</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="card-title">
+              <span class="card-title-dot"></span>Mon Abonnement
+            </div>
+            <div id="abonnementContent"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">
+              <span class="card-title-dot"></span>Historique des paiements
+            </div>
+            <div id="historiqueList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="modal" id="editModal">
+      <div class="modal-content">
+        <div class="modal-title">Modifier mon profil</div>
+        <div class="modal-sub">Mettez à jour vos informations personnelles</div>
+        <div class="field">
+          <label>Nom complet</label
+          ><input
+            type="text"
+            id="editFullName"
+            placeholder="Votre nom complet"
+          />
+        </div>
+        <div class="field">
+          <label>Email</label
+          ><input type="email" id="editEmail" placeholder="email@exemple.com" />
+        </div>
+        <div class="field">
+          <label>Téléphone</label
+          ><input type="tel" id="editPhone" placeholder="+216 XX XXX XXX" />
+        </div>
+        <div class="field">
+          <label>Club principal</label>
+          <select id="editClub">
+            <option>FG Tunis Centre</option>
+            <option>FG Boumhal</option>
+            <option>FG La Marsa</option>
+            <option>FG Bardo</option>
+            <option>FG El Menzah</option>
+            <option>FG Sousse</option>
+            <option>FG Sfax</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeModal('edit')">
+            Annuler
+          </button>
+          <button class="btn-confirm" onclick="saveProfile()">
+            Enregistrer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="modal" id="cancelModal">
+      <div class="modal-content">
+        <div class="modal-title danger">Résilier mon abonnement</div>
+        <div class="modal-sub">
+          Êtes-vous sûr ? Votre accès sera désactivé immédiatement et cette
+          action est irréversible.
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeModal('cancel')">
+            Non, annuler
+          </button>
+          <button class="btn-danger-confirm" onclick="cancelSubscription()">
+            Oui, résilier
+          </button>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="modal" id="changeOfferModal">
+      <div class="modal-content">
+        <div class="modal-title">Changer d'abonnement</div>
+        <div class="modal-sub">
+          Sélectionnez une nouvelle offre. Le mois en cours sera remplacé et un
+          nouveau cycle démarrera immédiatement.
+        </div>
+        <div class="offre-list" id="offreListContainer">
+          
+        </div>
+        <div class="modal-actions">
+          <button class="btn-cancel" onclick="closeChangeOfferModal()">
+            Annuler
+          </button>
+          <button
+            class="btn-confirm"
+            id="confirmChangeOfferBtn"
+            onclick="confirmChangeOffer()"
+          >
+            Confirmer le changement
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"><span id="toastMsg">OK</span></div>
+    <footer>© 2026 <span>Fitness Gym</span> — Tous droits réservés</footer>
+
+    <script>
+      const DB_NAME = "FitnessGymDB";
+      const DB_VERSION = 1;
+      const STORE = "profiles";
+      let db = null;
+      let currentProfile = null;
+      let selectedOffre = null; 
+
+      
+      const OFFERS_LIST = [
+        {
+          key: "blue",
+          name: "Essentiel",
+          price: 150,
+          desc: "Accès illimité à un club",
+          period: "/ mois",
+          color: "#60a5fa",
+        },
+        {
+          key: "yellow",
+          name: "Premium",
+          price: 200,
+          desc: "Accès tous clubs + cours collectifs",
+          period: "/ mois",
+          color: "#fbbf24",
+        },
+        {
+          key: "green",
+          name: "Black Card",
+          price: 250,
+          desc: "Accès illimité + spa + invités",
+          period: "/ mois",
+          color: "#34d399",
+        },
+      ];
+
+      function openDB() {
+        return new Promise((resolve, reject) => {
+          const req = indexedDB.open(DB_NAME, DB_VERSION);
+          req.onupgradeneeded = (e) => {
+            const d = e.target.result;
+            if (!d.objectStoreNames.contains(STORE))
+              d.createObjectStore(STORE, { keyPath: "email" });
+          };
+          req.onsuccess = (e) => {
+            db = e.target.result;
+            resolve(db);
+          };
+          req.onerror = (e) => reject(e.target.error);
+        });
+      }
+      function dbGet(email) {
+        return new Promise((res, rej) => {
+          const tx = db.transaction(STORE, "readonly");
+          const req = tx.objectStore(STORE).get(email);
+          req.onsuccess = (e) => res(e.target.result || null);
+          req.onerror = (e) => rej(e.target.error);
+        });
+      }
+      function dbPut(profile) {
+        return new Promise((res, rej) => {
+          const tx = db.transaction(STORE, "readwrite");
+          const req = tx.objectStore(STORE).put(profile);
+          req.onsuccess = () => res();
+          req.onerror = (e) => rej(e.target.error);
+        });
+      }
+
+      const connectedUser = JSON.parse(
+        sessionStorage.getItem("fgConnectedUser") || "null"
+      );
+      if (!connectedUser || !connectedUser.email)
+        window.location.href = "connexion.html";
+
+      function logout() {
+        sessionStorage.removeItem("fgConnectedUser");
+        window.location.href = "connexion.html";
+      }
+
+      const OFFRE_COLORS = {
+        blue: {
+          accent: "#60a5fa",
+          bg: "rgba(96,165,250,.12)",
+          border: "rgba(96,165,250,.3)",
+        },
+        yellow: {
+          accent: "#fbbf24",
+          bg: "rgba(251,191,36,.12)",
+          border: "rgba(251,191,36,.3)",
+        },
+        green: {
+          accent: "#34d399",
+          bg: "rgba(52,211,153,.12)",
+          border: "rgba(52,211,153,.3)",
+        },
+      };
+
+      async function loadProfileFromDB(email) {
+        await openDB();
+        const profile = await dbGet(email);
+        if (!profile) {
+          alert("Profil introuvable. Veuillez vous reconnecter.");
+          logout();
+          return;
+        }
+        currentProfile = profile;
+        const offreKey = profile.subscription?.offreKey || "blue";
+        const c = OFFRE_COLORS[offreKey] || OFFRE_COLORS.blue;
+        document.documentElement.style.setProperty("--accent", c.accent);
+        document.documentElement.style.setProperty("--accent-bg", c.bg);
+        document.documentElement.style.setProperty("--accent-border", c.border);
+        displayProfile(profile);
+        displaySubscription(profile.subscription || null);
+        displayHistorique(profile.payments || []);
+      }
+
+      function displayProfile(p) {
+        const parts = (p.fullName || "?").trim().split(" ");
+        const initials =
+          parts.length >= 2
+            ? parts[0][0] + parts[parts.length - 1][0]
+            : parts[0][0] || "?";
+        document.getElementById("avatarInitials").textContent =
+          initials.toUpperCase();
+        document.getElementById("displayName").textContent = p.fullName || "—";
+        document.getElementById("memberSince").textContent =
+          "Membre depuis " + (p.memberSince || "—");
+        document.getElementById("infoEmail").textContent = p.email || "—";
+        document.getElementById("infoPhone").textContent = p.phone || "—";
+        document.getElementById("infoClub").textContent = p.club || "—";
+      }
+
+      function displaySubscription(sub) {
+        const container = document.getElementById("abonnementContent");
+        if (!sub) {
+          container.innerHTML = `<div class="no-sub"><div class="no-sub-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="22" y2="10"/></svg></div>Aucun abonnement actif.<br><a href="offre.html">Découvrir nos offres →</a></div>`;
+          return;
+        }
+        const today = new Date(),
+          nextDue = new Date(sub.nextDue || sub.dateEcheance),
+          start = new Date(sub.startDate || sub.dateDebut);
+        const diffDays = Math.ceil((nextDue - today) / 864e5);
+        const percent = Math.min(
+          100,
+          Math.max(0, ((today - start) / (nextDue - start)) * 100)
+        );
+        const opts = { day: "numeric", month: "long", year: "numeric" };
+        const daysColor =
+          diffDays <= 7
+            ? "var(--red)"
+            : diffDays <= 15
+            ? "#fbbf24"
+            : "var(--text)";
+        container.innerHTML = `
+          <div class="abonnement-card">
+            <div class="abonnement-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+            <div class="abonnement-info"><h4>${
+              sub.name || "Abonnement"
+            }</h4><p>${sub.desc || ""}</p></div>
+            <div class="abonnement-price"><div class="amount">${
+              sub.price || "—"
+            }</div><div class="period">DT ${sub.period || "/ mois"}</div></div>
+          </div>
+          <div class="info-row"><span class="info-label">Date de début</span><span class="info-value">${start.toLocaleDateString(
+            "fr-FR",
+            opts
+          )}</span></div>
+          <div class="info-row"><span class="info-label">Prochaine échéance</span><span class="info-value">${nextDue.toLocaleDateString(
+            "fr-FR",
+            opts
+          )}</span></div>
+          <div class="info-row"><span class="info-label">Jours restants</span><span class="info-value" style="color:${daysColor}">${
+          diffDays > 0 ? diffDays + " jours" : "Expiré"
+        }</span></div>
+          <div class="progress-wrap"><div class="progress-label"><span>Progression</span><span>${Math.round(
+            percent
+          )}%</span></div><div class="progress-bar"><div class="progress-fill" id="pfill"></div></div></div>`;
+        setTimeout(() => {
+          const pf = document.getElementById("pfill");
+          if (pf) pf.style.width = percent + "%";
+        }, 80);
+      }
+
+      function displayHistorique(payments) {
+        const container = document.getElementById("historiqueList");
+        if (!payments || payments.length === 0) {
+          container.innerHTML = `<div class="no-sub"><div class="no-sub-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c9a84c" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="22" y2="10"/></svg></div>Aucun paiement enregistré</div>`;
+          return;
+        }
+        const mIcon = (m) => {
+          if (m === "carte")
+            return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="22" y2="10"/></svg>`;
+          if (m === "virement")
+            return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>`;
+          return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>`;
+        };
+        const mLabel = (m) =>
+          m === "carte"
+            ? "Carte bancaire"
+            : m === "virement"
+            ? "Virement"
+            : "Espèces";
+        container.innerHTML = [...payments]
+          .reverse()
+          .map(
+            (p) => `
+          <div class="historique-item">
+            <div class="historique-left"><div class="historique-icon">${mIcon(
+              p.method
+            )}</div>
+            <div><div class="historique-date">${
+              p.date
+            }</div><div class="historique-method">${mLabel(
+              p.method
+            )}</div></div></div>
+            <div style="text-align:right"><div class="historique-montant">${
+              p.amount
+            } DT</div><div class="historique-status">Payé</div></div>
+          </div>`
+          )
+          .join("");
+      }
+
+      function openModal(type) {
+        if (type === "edit" && currentProfile) {
+          document.getElementById("editFullName").value =
+            currentProfile.fullName || "";
+          document.getElementById("editEmail").value =
+            currentProfile.email || "";
+          document.getElementById("editPhone").value =
+            currentProfile.phone || "";
+          document.getElementById("editClub").value =
+            currentProfile.club || "FG Tunis Centre";
+          document.getElementById("editModal").classList.add("show");
+        } else if (type === "cancel") {
+          document.getElementById("cancelModal").classList.add("show");
+        }
+      }
+      function closeModal(type) {
+        document
+          .getElementById(type === "edit" ? "editModal" : "cancelModal")
+          .classList.remove("show");
+      }
+
+      async function saveProfile() {
+        if (!currentProfile) return;
+        currentProfile.fullName = document
+          .getElementById("editFullName")
+          .value.trim();
+        currentProfile.email = document
+          .getElementById("editEmail")
+          .value.trim();
+        currentProfile.phone = document
+          .getElementById("editPhone")
+          .value.trim();
+        currentProfile.club = document.getElementById("editClub").value;
+        await dbPut(currentProfile);
+        displayProfile(currentProfile);
+        closeModal("edit");
+        showToast("Profil mis à jour avec succès !", "ok");
+      }
+
+      
+      async function renewSubscription() {
+        if (!currentProfile)
+          return showToast("Erreur : profil introuvable", "error");
+        if (!currentProfile.subscription) {
+          showToast(
+            "Vous n'avez pas d'abonnement actif. Choisissez une offre d'abord.",
+            "error"
+          );
+          return;
+        }
+        const sub = currentProfile.subscription;
+        let currentDue = sub.nextDue ? new Date(sub.nextDue) : null;
+        if (!currentDue || isNaN(currentDue.getTime())) {
+          const start = sub.startDate ? new Date(sub.startDate) : new Date();
+          currentDue = new Date(start);
+          currentDue.setDate(currentDue.getDate() + 30);
+        }
+        const today = new Date();
+        let baseDate = currentDue < today ? today : currentDue;
+        const newDueDate = new Date(baseDate);
+        newDueDate.setMonth(newDueDate.getMonth() + 1);
+        if (newDueDate.getDate() !== baseDate.getDate()) newDueDate.setDate(0);
+        const price = parseFloat(sub.price);
+        if (isNaN(price)) return showToast("Erreur : prix invalide", "error");
+        const todayStr = new Date().toLocaleDateString("fr-FR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+        if (!currentProfile.payments) currentProfile.payments = [];
+        currentProfile.payments.push({
+          date: todayStr,
+          amount: price,
+          method: "Renouvellement auto",
+          offre: sub.name || "Abonnement",
+        });
+        sub.nextDue = newDueDate.toISOString();
+        sub.dateEcheance = sub.nextDue;
+        await dbPut(currentProfile);
+        displaySubscription(sub);
+        displayHistorique(currentProfile.payments);
+        showToast(
+          `Renouvellement effectué ! +1 mois (${price} DT débité)`,
+          "ok"
+        );
+      }
+
+     
+      function openChangeOfferModal() {
+        if (!currentProfile) return;
+        
+        const container = document.getElementById("offreListContainer");
+        container.innerHTML = OFFERS_LIST.map(
+          (offre) => `
+          <div class="offre-option" data-key="${offre.key}" data-price="${offre.price}" data-name="${offre.name}" data-desc="${offre.desc}">
+            <div><span class="offre-nom">${offre.name}</span><br><span style="font-size:12px;color:var(--text-muted)">${offre.desc}</span></div>
+            <div class="offre-prix">${offre.price} DT<span style="font-size:12px">/mois</span></div>
+          </div>
+        `
+        ).join("");
+        
+        document.querySelectorAll(".offre-option").forEach((el) => {
+          el.addEventListener("click", (e) => {
+            document
+              .querySelectorAll(".offre-option")
+              .forEach((opt) => opt.classList.remove("selected"));
+            el.classList.add("selected");
+            selectedOffre = {
+              key: el.dataset.key,
+              name: el.dataset.name,
+              price: parseFloat(el.dataset.price),
+              desc: el.dataset.desc,
+              period: "/ mois",
+            };
+          });
+        });
+        selectedOffre = null;
+        document.getElementById("changeOfferModal").classList.add("show");
+      }
+
+      function closeChangeOfferModal() {
+        document.getElementById("changeOfferModal").classList.remove("show");
+        selectedOffre = null;
+      }
+
+      async function confirmChangeOffer() {
+        if (!selectedOffre) {
+          showToast("Veuillez sélectionner une offre", "error");
+          return;
+        }
+        if (!currentProfile) return;
+        
+        const startDate = new Date();
+        const nextDue = new Date(startDate);
+        nextDue.setMonth(nextDue.getMonth() + 1);
+        if (nextDue.getDate() !== startDate.getDate()) nextDue.setDate(0);
+
+        const newSubscription = {
+          offreKey: selectedOffre.key,
+          name: selectedOffre.name,
+          desc: selectedOffre.desc,
+          price: selectedOffre.price,
+          period: selectedOffre.period,
+          startDate: startDate.toISOString(),
+          nextDue: nextDue.toISOString(),
+          dateDebut: startDate.toISOString(),
+          dateEcheance: nextDue.toISOString(),
+        };
+
+        
+        const todayStr = new Date().toLocaleDateString("fr-FR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+        if (!currentProfile.payments) currentProfile.payments = [];
+        currentProfile.payments.push({
+          date: todayStr,
+          amount: selectedOffre.price,
+          method: "Changement offre",
+          offre: selectedOffre.name,
+        });
+
+        currentProfile.subscription = newSubscription;
+        await dbPut(currentProfile);
+
+        
+        const c = OFFRE_COLORS[selectedOffre.key] || OFFRE_COLORS.blue;
+        document.documentElement.style.setProperty("--accent", c.accent);
+        document.documentElement.style.setProperty("--accent-bg", c.bg);
+        document.documentElement.style.setProperty("--accent-border", c.border);
+
+        displaySubscription(newSubscription);
+        displayHistorique(currentProfile.payments);
+        showToast(
+          `Offre changée pour ${selectedOffre.name} (${selectedOffre.price} DT débité)`,
+          "ok"
+        );
+        closeChangeOfferModal();
+      }
+
+      async function cancelSubscription() {
+        if (currentProfile) {
+          currentProfile.subscription = null;
+          await dbPut(currentProfile);
+          displaySubscription(null);
+          showToast("Abonnement résilié.", "error");
+        }
+        closeModal("cancel");
+      }
+
+      function showToast(msg, type = "ok") {
+        const t = document.getElementById("toast");
+        document.getElementById("toastMsg").textContent = msg;
+        t.className = "toast show " + (type || "ok");
+        setTimeout(() => t.classList.remove("show"), 3500);
+      }
+
+      loadProfileFromDB(connectedUser.email);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+h2 {
+    background-color: yellow;
+    border: 3px solid black;
+    display: block;
+    width:fit-content;
+    padding: 5px 25px;
+    font-style: italic;
+    margin: 20px auto;  
+  }
+  
+
+.center{
+    background-color: white;
+    padding: 20px;
+    margin:30px auto;
+    width:fit-content;
+    border: 8px solid #8b008b;
+    box-shadow: 0 0 0 8px #ff1493;
+    }
+input{
+    background-color: crimson;
+    border-radius: 15px;
+   
+}
+.tr1{
+    background: rgb(234, 157, 224);
+}
+.tr2{
+    background-color: rgb(82, 243, 71);
+}
+.table2 td {
+    padding: 4px;
+    border: 2px solid blue;
+    text-align: center;
+  }
+.button input {
+    background-color: red;
+    color: black;
+    border-radius: 20px;
+    border: 2px solid black;
+   
+    font-weight: bold;
+    cursor: pointer;
+  }
+ 

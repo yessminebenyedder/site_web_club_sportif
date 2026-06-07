@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mes Horaires - Fitness Gym</title>
+    <style>
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --gold-pale: rgba(201, 168, 76, 0.11);
+        --gold-border: rgba(201, 168, 76, 0.28);
+        --cyan: #8fe9f0;
+        --cyan-dim: rgba(143, 233, 240, 0.13);
+        --bg: #080d10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --text: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --text-dim: rgba(255, 255, 255, 0.3);
+        --green: #4ade80;
+        --red: #ef4444;
+        --blue: #60a5fa;
+        --blue-dim: rgba(96, 165, 250, 0.1);
+        --blue-border: rgba(96, 165, 250, 0.25);
+        --accent: #c9a84c;
+        --accent-bg: rgba(201, 168, 76, 0.1);
+        --accent-border: rgba(201, 168, 76, 0.28);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      header.bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 50px;
+        background: rgba(0, 0, 0, 0.82);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--gold-border);
+        z-index: 1000;
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: 40px;
+        background: rgba(255, 255, 255, 0.08);
+        transition: 0.3s;
+      }
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--cyan);
+        background: var(--cyan-dim);
+      }
+      .auth-btns {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .auth-btns a {
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px 22px;
+        border-radius: 50px;
+        transition: 0.3s;
+      }
+      .btn-login {
+        background: transparent;
+        color: var(--gold);
+        border: 2px solid var(--gold);
+      }
+      .btn-login:hover {
+        background: var(--gold);
+        color: #0a2a2d;
+      }
+      .logo-luxury {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 25px;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+      .logo-luxury:hover {
+        transform: scale(1.02);
+      }
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.15),
+          rgba(143, 233, 240, 0.05)
+        );
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(143, 233, 240, 0.3);
+        transition: all 0.3s;
+      }
+      .logo-luxury:hover .logo-icon {
+        border-color: var(--cyan);
+        box-shadow: 0 0 12px rgba(143, 233, 240, 0.2);
+      }
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        letter-spacing: 3px;
+        background: linear-gradient(135deg, #fff, var(--cyan));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+
+      .page {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 100px 30px 60px;
+      }
+      .breadcrumb {
+        font-size: 12px;
+        color: var(--text-dim);
+        margin-bottom: 8px;
+      }
+      .breadcrumb span {
+        color: var(--gold);
+      }
+      .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+      .page-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.6rem;
+        font-weight: 900;
+        letter-spacing: 2px;
+      }
+
+      .offre-banner {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 16px 24px;
+        border-radius: 16px;
+        background: var(--card-bg);
+        border: 1px solid var(--accent-border);
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+      .offre-badge {
+        font-family: "Playfair Display", serif;
+        font-size: 1rem;
+        letter-spacing: 2px;
+        color: var(--accent);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--accent-border);
+        padding: 4px 14px;
+        border-radius: 20px;
+      }
+      .offre-info {
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .offre-info strong {
+        color: var(--text);
+      }
+      .unlock-badge {
+        margin-left: auto;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        padding: 5px 14px;
+        border-radius: 20px;
+        background: var(--gold-pale);
+        color: var(--gold);
+        border: 1px solid var(--gold-border);
+        text-transform: uppercase;
+      }
+
+      .main-grid {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 28px;
+        align-items: start;
+      }
+      .card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        padding: 28px 30px;
+        margin-bottom: 24px;
+        transition: 0.25s;
+      }
+      .card:hover {
+        border-color: var(--gold-border);
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        color: var(--gold);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .week-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 8px;
+      }
+      .day-col {
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        transition: 0.2s;
+      }
+      .day-col.active-day {
+        border-color: var(--gold-border);
+        background: var(--gold-pale);
+      }
+      .day-header {
+        padding: 10px 6px;
+        text-align: center;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .day-name {
+        font-family: "Playfair Display", serif;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+      .day-col.active-day .day-name {
+        color: var(--gold);
+      }
+      .day-sports {
+        padding: 8px 6px;
+        min-height: 60px;
+      }
+      .sport-pill {
+        display: block;
+        font-size: 10px;
+        font-weight: 600;
+        padding: 3px 6px;
+        border-radius: 6px;
+        margin-bottom: 4px;
+        text-align: center;
+        cursor: pointer;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid transparent;
+      }
+      .sport-pill:hover {
+        background: var(--gold-pale);
+        border-color: var(--gold-border);
+        color: var(--gold);
+      }
+      .day-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px;
+        gap: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.03);
+        cursor: pointer;
+        border: none;
+        width: 100%;
+        color: var(--text-dim);
+        font-family: "DM Sans", sans-serif;
+      }
+      .day-col.active-day .day-toggle {
+        color: var(--gold);
+        background: var(--gold-pale);
+      }
+      .day-toggle:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .groupe-card {
+        background: var(--card-bg);
+        border: 1px solid var(--gold-border);
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+      .groupe-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+      }
+      .groupe-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--gold);
+      }
+      .groupe-info {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .groupe-members {
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 12px;
+        padding: 12px;
+        margin: 12px 0;
+      }
+      .member-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .member-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--gold-pale);
+        border: 1px solid var(--gold-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--gold);
+      }
+      .btn-join-group {
+        width: 100%;
+        padding: 12px;
+        background: var(--gold);
+        color: #0a2a2d;
+        font-weight: 700;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 14px;
+        font-family: "DM Sans", sans-serif;
+      }
+      .btn-join-group.joined {
+        background: transparent;
+        border: 2px solid var(--gold);
+        color: var(--gold);
+      }
+      .btn-join-group:hover {
+        background: var(--gold-light);
+      }
+
+      .nutrition-card {
+        background: var(--card-bg);
+        border: 1px solid var(--gold-border);
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+      .nutrition-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--gold);
+      }
+      .meal-plan {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 15px 0;
+      }
+      .meal-card {
+        background: rgba(255, 255, 255, 0.04);
+        border-radius: 12px;
+        padding: 10px;
+        text-align: center;
+      }
+      .meal-time {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--gold);
+        text-transform: uppercase;
+      }
+      .meal-desc {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 5px;
+      }
+      .btn-nutrition {
+        width: 100%;
+        padding: 10px;
+        background: var(--gold-pale);
+        border: 1px solid var(--gold-border);
+        color: var(--gold);
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+        transition: 0.3s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .btn-nutrition:hover {
+        background: var(--gold);
+        color: #0a2a2d;
+      }
+
+      .slot-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .slot-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.02);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .slot-row:hover {
+        border-color: var(--gold-border);
+        background: var(--gold-pale);
+      }
+      .slot-row.selected {
+        border-color: var(--gold);
+        background: var(--gold-pale);
+      }
+      .slot-time {
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+        min-width: 85px;
+      }
+      .slot-label {
+        font-size: 13px;
+        color: var(--text-muted);
+        flex: 1;
+      }
+      .slot-check {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+      }
+      .slot-row.selected .slot-check {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #0a2a2d;
+      }
+      .slot-divider {
+        font-size: 11px;
+        color: var(--text-dim);
+        letter-spacing: 2px;
+        padding: 4px 14px;
+      }
+
+      .sports-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+      .sport-card {
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.03);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .sport-card:hover:not(.locked) {
+        border-color: var(--gold-border);
+        background: var(--gold-pale);
+      }
+      .sport-card.selected {
+        border-color: var(--gold);
+        background: var(--gold-pale);
+      }
+      .sport-card.locked {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .sport-name {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .sport-desc {
+        font-size: 11px;
+        color: var(--text-muted);
+        margin-top: 2px;
+      }
+      .sport-badge {
+        display: inline-block;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        padding: 2px 8px;
+        border-radius: 20px;
+        margin-top: 5px;
+        background: var(--gold-pale);
+        color: var(--cyan);
+      }
+
+      .objectif-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      .objectif-btn {
+        padding: 14px 10px;
+        border-radius: 14px;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.03);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .objectif-btn:hover {
+        border-color: var(--gold-border);
+        background: var(--gold-pale);
+      }
+      .objectif-btn.selected {
+        border-color: var(--gold);
+        background: var(--gold-pale);
+        color: var(--gold);
+      }
+      .objectif-label {
+        font-weight: 600;
+        font-size: 13px;
+      }
+
+      input[type="range"].styled {
+        width: 100%;
+        height: 6px;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        accent-color: var(--gold);
+      }
+      .intensity-labels {
+        display: flex;
+        justify-content: space-between;
+        font-size: 11px;
+        color: var(--text-dim);
+        margin-top: 8px;
+      }
+
+      .rappel-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .rappel-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .rappel-label {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+      .rappel-sub {
+        font-size: 11px;
+        color: var(--text-dim);
+      }
+      .toggle-switch {
+        width: 44px;
+        height: 24px;
+        border-radius: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .toggle-switch.on {
+        background: var(--gold);
+      }
+      .toggle-knob {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: white;
+        transition: 0.3s;
+      }
+      .toggle-switch.on .toggle-knob {
+        left: 23px;
+      }
+
+      .coach-card {
+        background: var(--card-bg);
+        border: 1px solid var(--gold-border);
+      }
+      .coach-img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--gold), var(--gold-light));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Playfair Display", serif;
+        font-size: 18px;
+        font-weight: 900;
+        color: #0a2a2d;
+      }
+      .coach-message {
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--text-muted);
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 12px;
+        border-left: 3px solid var(--gold-border);
+      }
+
+      .recap-card {
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 20px;
+        padding: 26px 28px;
+        position: sticky;
+        top: 90px;
+      }
+      .recap-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--gold);
+        margin-bottom: 20px;
+      }
+      .recap-week {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 4px;
+        margin-bottom: 20px;
+      }
+      .recap-day-dot {
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 9px;
+        font-weight: 700;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text-dim);
+      }
+      .recap-day-dot.on {
+        background: var(--gold-pale);
+        color: var(--gold);
+        border: 1px solid var(--gold-border);
+      }
+      .recap-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 9px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 13px;
+        color: var(--text-muted);
+      }
+      .recap-row .accent {
+        color: var(--gold);
+        font-weight: 700;
+      }
+      .btn-save {
+        width: 100%;
+        padding: 14px;
+        background: var(--gold);
+        color: #0a2a2d;
+        font-weight: 800;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 16px;
+        transition: 0.2s;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+      }
+      .btn-save:hover {
+        background: var(--gold-light);
+        transform: translateY(-1px);
+      }
+      .btn-reset {
+        width: 100%;
+        padding: 11px;
+        background: transparent;
+        border: 1px solid var(--gold-border);
+        color: var(--gold);
+        border-radius: 50px;
+        cursor: pointer;
+        margin-top: 8px;
+        font-family: "DM Sans", sans-serif;
+        transition: 0.2s;
+      }
+      .btn-reset:hover {
+        background: var(--gold-pale);
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 28px;
+        right: 28px;
+        background: var(--card-bg);
+        border-left: 4px solid var(--gold);
+        padding: 14px 22px;
+        border-radius: 12px;
+        transform: translateX(400px);
+        transition: 0.35s;
+        z-index: 9999;
+        color: var(--text);
+        backdrop-filter: blur(16px);
+        font-size: 14px;
+      }
+      .toast.show {
+        transform: translateX(0);
+      }
+      .toast.error {
+        border-left-color: var(--red);
+      }
+
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 12px;
+        color: var(--text-dim);
+        border-top: 1px solid var(--gold-border);
+        margin-top: 40px;
+      }
+      footer span {
+        color: var(--gold);
+      }
+
+      @media (max-width: 900px) {
+        .main-grid {
+          grid-template-columns: 1fr;
+        }
+        header.bar {
+          padding: 12px 16px;
+        }
+        .page {
+          padding: 90px 14px 40px;
+        }
+        .meal-plan {
+          grid-template-columns: 1fr;
+        }
+        .week-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+      @media (max-width: 600px) {
+        .nav-links a:not(:first-child) {
+          display: none;
+        }
+        .objectif-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bar">
+      <div class="nav-links">
+        <div class="logo-luxury" onclick="window.location.href='aceuill.html'">
+          <div class="logo-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path
+                d="M16 2L4 9L16 16L28 9L16 2Z"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M4 9V23L16 30L28 23V9"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path d="M16 16V30" stroke="#8fe9f0" stroke-width="1.5" />
+              <circle
+                cx="16"
+                cy="16"
+                r="3"
+                fill="#8fe9f0"
+                stroke="#8fe9f0"
+                stroke-width="1"
+              />
+              <path
+                d="M9 12.5L23 12.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 19.5L23 19.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <span class="logo-text">FITNESS GYM</span>
+        </div>
+        <a href="aceuill.html">Accueil</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="horaires.html" class="active">Horaires</a>
+        <a href="offre.html">Offre</a>
+        <a href="contact.html">Contact</a>
+        <a href="profil.html">My FG</a>
+        <a href="analytic.html">Suivi</a>
+      </div>
+      <div class="auth-btns">
+        <a href="connexion.html" class="btn-login">Se connecter</a>
+      </div>
+    </header>
+
+    <div class="toast" id="toast">
+      <span id="toastMsg">Planning sauvegardé !</span>
+    </div>
+
+    <div class="page">
+      <div class="breadcrumb">
+        Mon compte &rsaquo; <span>Mes Horaires</span>
+      </div>
+      <div class="page-header">
+        <h1 class="page-title">MON PLANNING D'ENTRAÎNEMENT</h1>
+        <div
+          style="font-size: 13px; color: var(--text-dim)"
+          id="weekLabel"
+        ></div>
+      </div>
+
+      <div class="offre-banner" id="offreBanner">
+        <div class="offre-badge" id="offreIcon">—</div>
+        <div class="offre-info">Club : <strong id="offreClub">—</strong></div>
+        <div class="offre-info">
+          Échéance : <strong id="offreDate">—</strong>
+        </div>
+        <div class="unlock-badge" id="offreUnlock">—</div>
+      </div>
+
+      <div class="main-grid">
+        <div>
+          <div class="card">
+            <div class="card-title">JOURS D'ENTRAÎNEMENT</div>
+            <div class="week-grid" id="weekGrid"></div>
+            <div
+              style="margin-top: 14px; font-size: 12px; color: var(--text-dim)"
+            >
+              Cliquez sur un jour pour l'activer, puis ajoutez des sports via le
+              bouton « + sport ».
+            </div>
+          </div>
+
+          <div class="groupe-card" id="groupeMarche" style="display: none">
+            <div class="groupe-header">
+              <div class="groupe-title">GROUPE MARCHE NORDIQUE</div>
+            </div>
+            <div class="groupe-info">
+              <span>Samedi</span><span>08:00 – 10:00</span>
+              <span>Parc du Belvédère</span><span>Groupe encadré</span>
+            </div>
+            <div class="groupe-members">
+              <div style="font-size: 12px; color: var(--text-muted)">
+                Membres inscrits (<span id="memberCount">0</span>/15)
+              </div>
+              <div class="member-list" id="memberList"></div>
+            </div>
+            <button
+              class="btn-join-group"
+              id="joinGroupBtn"
+              onclick="toggleJoinGroup()"
+            >
+              REJOINDRE LE GROUPE
+            </button>
+            <div
+              style="
+                font-size: 11px;
+                color: var(--text-dim);
+                margin-top: 12px;
+                text-align: center;
+              "
+            >
+              Sortie hebdomadaire encadrée — Marche nordique (6 km)
+            </div>
+          </div>
+
+          <div class="nutrition-card" id="nutritionCard" style="display: none">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 15px;
+              "
+            >
+              <div class="nutrition-title">PROGRAMME NUTRITIONNEL</div>
+            </div>
+            <div class="meal-plan">
+              <div class="meal-card">
+                <div class="meal-time">PETIT-DÉJEUNER</div>
+                <div class="meal-desc">
+                  Flocons d'avoine, oeufs, fruits frais
+                </div>
+              </div>
+              <div class="meal-card">
+                <div class="meal-time">DÉJEUNER</div>
+                <div class="meal-desc">
+                  Protéines maigres, légumes verts, féculents complets
+                </div>
+              </div>
+              <div class="meal-card">
+                <div class="meal-time">DÎNER</div>
+                <div class="meal-desc">Poisson ou volaille, légumes, soupe</div>
+              </div>
+            </div>
+            <div class="meal-plan" style="margin-top: 0">
+              <div class="meal-card">
+                <div class="meal-time">COLLATION</div>
+                <div class="meal-desc">Fruits secs, yaourt protéiné</div>
+              </div>
+              <div class="meal-card">
+                <div class="meal-time">HYDRATATION</div>
+                <div class="meal-desc">2–3 L d'eau par jour</div>
+              </div>
+              <div class="meal-card">
+                <div class="meal-time">PRÉ-WORKOUT</div>
+                <div class="meal-desc">Banane, café, amandes</div>
+              </div>
+            </div>
+            <button
+              class="btn-nutrition"
+              onclick="showToast('Programme nutritionnel téléchargé !')"
+            >
+              TÉLÉCHARGER LE PLAN COMPLET
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-title">CRÉNEAUX PRÉFÉRÉS</div>
+            <div class="slot-grid" id="slotGrid"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">ACTIVITÉS DISPONIBLES</div>
+            <div class="sports-grid" id="sportsGrid"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">MON OBJECTIF</div>
+            <div class="objectif-grid" id="objectifGrid"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">INTENSITÉ D'ENTRAÎNEMENT</div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+              "
+            >
+              <span style="font-size: 14px; color: var(--text-muted)"
+                >Niveau sélectionné :</span
+              >
+              <span
+                style="
+                  font-family: 'Playfair Display';
+                  font-size: 1.3rem;
+                  color: var(--gold);
+                "
+                id="intensityLabel"
+                >MODÉRÉ</span
+              >
+            </div>
+            <input
+              type="range"
+              class="styled"
+              id="intensityRange"
+              min="1"
+              max="5"
+              value="3"
+              oninput="updateIntensity(this.value)"
+            />
+            <div class="intensity-labels">
+              <span>Débutant</span><span>Léger</span><span>Modéré</span
+              ><span>Intense</span><span>Elite</span>
+            </div>
+            <div
+              style="
+                margin-top: 16px;
+                padding: 12px;
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.03);
+                font-size: 13px;
+                color: var(--text-muted);
+                border-left: 3px solid var(--gold-border);
+              "
+              id="intensityTip"
+            >
+              Idéal pour maintenir une progression régulière.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">RAPPELS &amp; OPTIONS</div>
+            <div class="rappel-grid" id="rappelGrid"></div>
+          </div>
+          <div class="card coach-card">
+            <div class="card-title">RECOMMANDATION COACH</div>
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 15px;
+              "
+            >
+              <div class="coach-img">K</div>
+              <div>
+                <div style="font-weight: 700">Coach Karim</div>
+                <div style="font-size: 11px; color: var(--text-muted)">
+                  Coach diplômé d'État
+                </div>
+              </div>
+            </div>
+            <div class="coach-message" id="coachMessage">
+              Sélectionnez vos jours d'entraînement pour obtenir des conseils
+              personnalisés.
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="recap-card">
+            <div class="recap-title">MON PLANNING</div>
+            <div class="recap-week" id="recapWeek"></div>
+            <div class="recap-row">
+              <span>Jours actifs</span
+              ><span class="accent" id="rJours">0 / 7</span>
+            </div>
+            <div class="recap-row">
+              <span>Créneau principal</span><span id="rCreneau">—</span>
+            </div>
+            <div class="recap-row">
+              <span>Marche nordique</span><span id="rMarche">Non inscrit</span>
+            </div>
+            <div class="recap-row">
+              <span>Objectif</span><span id="rObjectif">—</span>
+            </div>
+            <div class="recap-row">
+              <span>Intensité</span><span id="rIntensite">Modéré</span>
+            </div>
+            <div class="recap-row">
+              <span>Offre active</span><span class="accent" id="rOffre">—</span>
+            </div>
+            <button class="btn-save" onclick="savePlanning()">
+              SAUVEGARDER MON PLANNING
+            </button>
+            <button class="btn-reset" onclick="resetPlanning()">
+              Réinitialiser
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>© 2026 <span>Fitness Gym</span> — Tous droits réservés</footer>
+
+    <script>
+      const OFFRES = {
+        blue: {
+          label: "BLUE PASS-SPORT",
+          color: "#60a5fa",
+          bg: "rgba(96,165,250,0.10)",
+          border: "rgba(96,165,250,0.28)",
+          sportsAllowed: ["musculation", "cardio", "velo", "marche"],
+          unlockLabel: "Cours collectifs non inclus",
+          hasNutrition: false,
+        },
+        yellow: {
+          label: "YELLOW PASS-SPORT",
+          color: "#fbbf24",
+          bg: "rgba(251,191,36,0.10)",
+          border: "rgba(251,191,36,0.28)",
+          sportsAllowed: [
+            "musculation",
+            "cardio",
+            "velo",
+            "marche",
+            "zumba",
+            "yoga",
+            "boxe",
+            "pilates",
+          ],
+          unlockLabel: "Spa & piscine non inclus",
+          hasNutrition: false,
+        },
+        green: {
+          label: "GREEN PASS-SPORT",
+          color: "#34d399",
+          bg: "rgba(52,211,153,0.10)",
+          border: "rgba(52,211,153,0.28)",
+          sportsAllowed: [
+            "musculation",
+            "cardio",
+            "velo",
+            "marche",
+            "zumba",
+            "yoga",
+            "boxe",
+            "pilates",
+            "natation",
+            "spa",
+            "crossfit",
+            "arts-martiaux",
+          ],
+          unlockLabel: "Accès total débloqué",
+          hasNutrition: true,
+        },
+      };
+
+      const ALL_SPORTS = [
+        {
+          id: "musculation",
+          name: "Musculation",
+          desc: "Salle de poids",
+          badge: "INCLUS",
+          tier: 1,
+        },
+        {
+          id: "cardio",
+          name: "Cardio",
+          desc: "Tapis, vélos",
+          badge: "INCLUS",
+          tier: 1,
+        },
+        {
+          id: "velo",
+          name: "Vélo/Spinning",
+          desc: "Cours indoor",
+          badge: "INCLUS",
+          tier: 1,
+        },
+        {
+          id: "marche",
+          name: "Marche Nordique",
+          desc: "Groupe le samedi",
+          badge: "INCLUS",
+          tier: 1,
+        },
+        {
+          id: "zumba",
+          name: "Zumba",
+          desc: "Danse cardio",
+          badge: "YELLOW+",
+          tier: 2,
+        },
+        {
+          id: "yoga",
+          name: "Yoga",
+          desc: "Méditation",
+          badge: "YELLOW+",
+          tier: 2,
+        },
+        {
+          id: "boxe",
+          name: "Boxe",
+          desc: "Arts du ring",
+          badge: "YELLOW+",
+          tier: 2,
+        },
+        {
+          id: "pilates",
+          name: "Pilates",
+          desc: "Gainage",
+          badge: "YELLOW+",
+          tier: 2,
+        },
+        {
+          id: "natation",
+          name: "Natation",
+          desc: "Piscine",
+          badge: "GREEN",
+          tier: 3,
+        },
+        {
+          id: "spa",
+          name: "Spa & Sauna",
+          desc: "Bien-être",
+          badge: "GREEN",
+          tier: 3,
+        },
+        {
+          id: "crossfit",
+          name: "CrossFit",
+          desc: "Fonctionnel",
+          badge: "GREEN",
+          tier: 3,
+        },
+        {
+          id: "arts-martiaux",
+          name: "Arts martiaux",
+          desc: "Judo, MMA",
+          badge: "GREEN",
+          tier: 3,
+        },
+      ];
+
+      const SLOTS = [
+        { id: "m1", time: "06:00", label: "Séance matinale", period: "matin" },
+        { id: "m2", time: "07:30", label: "Avant le travail", period: "matin" },
+        {
+          id: "a1",
+          time: "12:30",
+          label: "Pause déjeuner",
+          period: "apresmidi",
+        },
+        { id: "a2", time: "14:00", label: "Après-midi", period: "apresmidi" },
+        { id: "s1", time: "18:00", label: "Après le travail", period: "soir" },
+        { id: "s2", time: "19:30", label: "Soirée", period: "soir" },
+      ];
+
+      const DAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+      const OBJECTIFS = [
+        { id: "perte", label: "Perte de poids" },
+        { id: "muscle", label: "Prise de muscle" },
+        { id: "forme", label: "Remise en forme" },
+        { id: "endurance", label: "Endurance" },
+        { id: "flexibilite", label: "Flexibilité" },
+        { id: "competition", label: "Compétition" },
+      ];
+      const RAPPELS = [
+        {
+          id: "rappel_veille",
+          label: "Rappel la veille",
+          sub: "Notification 18h avant",
+          default: true,
+        },
+        {
+          id: "rappel_1h",
+          label: "Rappel 1h avant",
+          sub: "Ne jamais oublier",
+          default: true,
+        },
+        {
+          id: "coach_tips",
+          label: "Conseils coach",
+          sub: "Tips nutrition & entraînement",
+          default: true,
+        },
+      ];
+      const INTENSITY_DATA = [
+        {
+          label: "DÉBUTANT",
+          tip: "Parfait pour commencer. Séances courtes et progressives.",
+        },
+        { label: "LÉGER", tip: "Activité douce pour se maintenir en forme." },
+        {
+          label: "MODÉRÉ",
+          tip: "Idéal pour maintenir une progression régulière.",
+        },
+        {
+          label: "INTENSE",
+          tip: "Pour les sportifs confirmés cherchant à progresser.",
+        },
+        {
+          label: "ELITE",
+          tip: "Niveau compétition. Récupération active indispensable.",
+        },
+      ];
+
+      let state = {
+        offreKey: "blue",
+        club: "FG Tunis Centre",
+        activeDays: [],
+        daySports: {},
+        selectedSlots: [],
+        selectedSports: [],
+        objectif: null,
+        intensity: 3,
+        rappels: {},
+        joinedMarche: false,
+      };
+      let groupeMembers = ["Sophie M.", "Karim B.", "Leila R.", "Amine T."];
+
+      function getSavedSubscription() {
+        const VALID_KEYS = ["blue", "yellow", "green"];
+
+        try {
+          const raw = localStorage.getItem("fitnessGymSubscription");
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && VALID_KEYS.includes(parsed.offreKey)) {
+              console.log(
+                "✅ Offre récupérée depuis localStorage:",
+                parsed.offreKey
+              );
+              return parsed;
+            }
+          }
+        } catch (e) {
+          console.warn("Erreur localStorage:", e);
+        }
+
+        try {
+          const raw = sessionStorage.getItem("fitnessGymSubscription");
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && VALID_KEYS.includes(parsed.offreKey)) {
+              console.log(
+                "✅ Offre récupérée depuis sessionStorage:",
+                parsed.offreKey
+              );
+              return parsed;
+            }
+          }
+        } catch (e) {
+          console.warn("Erreur sessionStorage:", e);
+        }
+
+        console.log("ℹ️ Aucune offre trouvée, défaut: blue");
+        return { offreKey: "blue", club: "FG Tunis Centre" };
+      }
+
+      function getSavedPlanning() {
+        const s = sessionStorage.getItem("fitnessGymPlanning");
+        return s ? JSON.parse(s) : null;
+      }
+
+      function savePlanningToSession() {
+        sessionStorage.setItem(
+          "fitnessGymPlanning",
+          JSON.stringify({
+            activeDays: state.activeDays,
+            daySports: state.daySports,
+            selectedSlots: state.selectedSlots,
+            selectedSports: state.selectedSports,
+            objectif: state.objectif,
+            intensity: state.intensity,
+            rappels: state.rappels,
+            savedAt: new Date().toISOString(),
+          })
+        );
+      }
+
+      function getMarcheGroup() {
+        return sessionStorage.getItem("fitnessGymMarcheGroup") === "true";
+      }
+      function setMarcheGroup(val) {
+        sessionStorage.setItem("fitnessGymMarcheGroup", val);
+      }
+
+      function init() {
+        const savedSub = getSavedSubscription();
+        const savedPlan = getSavedPlanning();
+
+        state.offreKey = savedSub.offreKey || "blue";
+        state.club = savedSub.club || "FG Tunis Centre";
+        state.joinedMarche = getMarcheGroup();
+
+        if (savedPlan) {
+          state.activeDays = savedPlan.activeDays || [];
+          state.daySports = savedPlan.daySports || {};
+          state.selectedSlots = savedPlan.selectedSlots || [];
+          state.selectedSports = savedPlan.selectedSports || [];
+          state.objectif = savedPlan.objectif || null;
+          state.intensity = savedPlan.intensity || 3;
+          state.rappels = savedPlan.rappels || {};
+        }
+
+        const offre = OFFRES[state.offreKey];
+
+        document.documentElement.style.setProperty("--accent", offre.color);
+        document.documentElement.style.setProperty("--accent-bg", offre.bg);
+        document.documentElement.style.setProperty(
+          "--accent-border",
+          offre.border
+        );
+
+        const offreIcon = document.getElementById("offreIcon");
+        offreIcon.textContent = offre.label;
+        offreIcon.style.color = offre.color;
+        offreIcon.style.borderColor = offre.border;
+
+        document.getElementById("offreClub").textContent = state.club;
+        document.getElementById("offreBanner").style.borderColor = offre.border;
+
+        if (savedSub.dateEcheance) {
+          const d = new Date(savedSub.dateEcheance);
+          document.getElementById("offreDate").textContent =
+            d.toLocaleDateString("fr-FR", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            });
+        }
+
+        const unlockEl = document.getElementById("offreUnlock");
+        unlockEl.textContent = offre.unlockLabel;
+        if (state.offreKey === "green") {
+          unlockEl.style.background = "rgba(52,211,153,0.15)";
+          unlockEl.style.color = "#34d399";
+          unlockEl.style.borderColor = "rgba(52,211,153,0.3)";
+        } else if (state.offreKey === "yellow") {
+          unlockEl.style.background = "rgba(251,191,36,0.15)";
+          unlockEl.style.color = "#fbbf24";
+          unlockEl.style.borderColor = "rgba(251,191,36,0.3)";
+        }
+
+        const hasMarche = offre.sportsAllowed.includes("marche");
+        document.getElementById("groupeMarche").style.display = hasMarche
+          ? "block"
+          : "none";
+        document.getElementById("nutritionCard").style.display =
+          offre.hasNutrition ? "block" : "none";
+
+        if (hasMarche) updateGroupeUI();
+
+        document.getElementById("rOffre").textContent = offre.label;
+
+        renderWeekGrid();
+        renderSlots();
+        renderSports();
+        renderObjectifs();
+        renderRappels();
+        document.getElementById("intensityRange").value = state.intensity;
+        updateIntensity(state.intensity);
+        updateRecap();
+        updateCoachMessage();
+
+        const monday = getMonday(new Date());
+        document.getElementById("weekLabel").textContent =
+          "Semaine du " +
+          monday.toLocaleDateString("fr-FR", { day: "numeric", month: "long" });
+      }
+
+      function updateGroupeUI() {
+        const count = state.joinedMarche
+          ? groupeMembers.length + 1
+          : groupeMembers.length;
+        document.getElementById("memberCount").textContent = count;
+        const all = [...groupeMembers];
+        if (state.joinedMarche) all.push("Vous");
+        document.getElementById("memberList").innerHTML = all
+          .map((m) => `<div class="member-avatar">${m.charAt(0)}</div>`)
+          .join("");
+        const btn = document.getElementById("joinGroupBtn");
+        if (state.joinedMarche) {
+          btn.textContent = "Inscrit au groupe";
+          btn.classList.add("joined");
+        } else {
+          btn.textContent = "REJOINDRE LE GROUPE";
+          btn.classList.remove("joined");
+        }
+        document.getElementById("rMarche").textContent = state.joinedMarche
+          ? "Inscrit (Sam. 8h)"
+          : "Non inscrit";
+      }
+
+      function toggleJoinGroup() {
+        const offre = OFFRES[state.offreKey];
+        if (!offre.sportsAllowed.includes("marche")) {
+          showToast(
+            "Cette activité n'est pas incluse dans votre offre",
+            "error"
+          );
+          return;
+        }
+        state.joinedMarche = !state.joinedMarche;
+        setMarcheGroup(state.joinedMarche);
+        updateGroupeUI();
+        showToast(
+          state.joinedMarche
+            ? "Vous avez rejoint le groupe Marche Nordique !"
+            : "Vous avez quitté le groupe Marche Nordique"
+        );
+        updateRecap();
+      }
+
+      function renderWeekGrid() {
+        const container = document.getElementById("weekGrid");
+        container.innerHTML = "";
+        DAYS.forEach((day, i) => {
+          const isActive = state.activeDays.includes(i);
+          const sports = state.daySports[i] || [];
+          const col = document.createElement("div");
+          col.className = "day-col" + (isActive ? " active-day" : "");
+          col.innerHTML = `
+            <div class="day-header" onclick="toggleDay(${i})"><div class="day-name">${day}</div></div>
+            <div class="day-sports" id="day-sports-${i}">
+              ${
+                sports
+                  .map((sid) => {
+                    const spt = ALL_SPORTS.find((x) => x.id === sid);
+                    return spt
+                      ? `<div class="sport-pill" onclick="event.stopPropagation();removeSportFromDay(${i},'${sid}')" title="Cliquer pour retirer">${spt.name}</div>`
+                      : "";
+                  })
+                  .join("") ||
+                '<div style="font-size:10px;color:rgba(255,255,255,.15);text-align:center;margin-top:8px">—</div>'
+              }
+            </div>
+            <button class="day-toggle" onclick="event.stopPropagation();openDaySports(${i})" ${
+            !isActive ? "disabled" : ""
+          }>+ sport</button>`;
+          container.appendChild(col);
+        });
+      }
+
+      function toggleDay(i) {
+        if (state.activeDays.includes(i)) {
+          state.activeDays = state.activeDays.filter((d) => d !== i);
+          delete state.daySports[i];
+        } else {
+          state.activeDays.push(i);
+          if (!state.daySports[i]) state.daySports[i] = [];
+        }
+        renderWeekGrid();
+        updateRecap();
+        updateCoachMessage();
+        savePlanningToSession();
+      }
+
+      function removeSportFromDay(dayIdx, sportId) {
+        if (state.daySports[dayIdx]) {
+          state.daySports[dayIdx] = state.daySports[dayIdx].filter(
+            (s) => s !== sportId
+          );
+          renderWeekGrid();
+          updateRecap();
+          updateCoachMessage();
+          savePlanningToSession();
+        }
+      }
+
+      function openDaySports(dayIdx) {
+        const offre = OFFRES[state.offreKey];
+        const current = state.daySports[dayIdx] || [];
+        const options = ALL_SPORTS.filter(
+          (s) => offre.sportsAllowed.includes(s.id) && !current.includes(s.id)
+        );
+        if (options.length === 0) {
+          showToast("Tous les sports disponibles sont déjà ajoutés", "warn");
+          return;
+        }
+        const picker = document.createElement("div");
+        picker.id = "sportPicker";
+        picker.style.cssText =
+          "position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:9000;display:flex;align-items:center;justify-content:center;";
+        picker.innerHTML = `<div style="background:#0d1a20;border:1px solid var(--gold-border);border-radius:20px;padding:28px;max-width:460px;width:90%">
+          <div style="font-family:'Playfair Display';font-size:1.2rem;color:var(--gold);margin-bottom:16px">AJOUTER UN SPORT — ${
+            DAYS[dayIdx]
+          }</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            ${options
+              .map(
+                (
+                  s
+                ) => `<div onclick="addSportToDay(${dayIdx},'${s.id}');document.body.removeChild(document.getElementById('sportPicker'))"
+              style="cursor:pointer;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.08);text-align:center;transition:.2s"
+              onmouseover="this.style.borderColor='var(--gold-border)';this.style.background='var(--gold-pale)'"
+              onmouseout="this.style.borderColor='rgba(255,255,255,.08)';this.style.background='transparent'">
+              <div style="font-size:13px;font-weight:600">${s.name}</div>
+              <div style="font-size:11px;color:var(--text-dim);margin-top:2px">${s.desc}</div>
+            </div>`
+              )
+              .join("")}
+          </div>
+          <button onclick="document.body.removeChild(document.getElementById('sportPicker'))" style="margin-top:18px;width:100%;padding:11px;border-radius:50px;background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.4);cursor:pointer;font-family:'DM Sans'">Fermer</button>
+        </div>`;
+        document.body.appendChild(picker);
+      }
+
+      window.addSportToDay = function (dayIdx, sportId) {
+        if (!state.daySports[dayIdx]) state.daySports[dayIdx] = [];
+        if (!state.daySports[dayIdx].includes(sportId))
+          state.daySports[dayIdx].push(sportId);
+        renderWeekGrid();
+        updateRecap();
+        updateCoachMessage();
+        savePlanningToSession();
+      };
+
+      function renderSlots() {
+        const container = document.getElementById("slotGrid");
+        container.innerHTML = "";
+        [
+          { key: "matin", label: "MATIN" },
+          { key: "apresmidi", label: "APRÈS-MIDI" },
+          { key: "soir", label: "SOIR" },
+        ].forEach((p) => {
+          const div = document.createElement("div");
+          div.className = "slot-divider";
+          div.textContent = p.label;
+          container.appendChild(div);
+          SLOTS.filter((s) => s.period === p.key).forEach((slot) => {
+            const isSel = state.selectedSlots.includes(slot.id);
+            const row = document.createElement("div");
+            row.className = "slot-row" + (isSel ? " selected" : "");
+            row.onclick = () => toggleSlot(slot.id);
+            row.innerHTML = `<div class="slot-time">${
+              slot.time
+            }</div><div class="slot-label">${
+              slot.label
+            }</div><div class="slot-check">${isSel ? "✓" : ""}</div>`;
+            container.appendChild(row);
+          });
+        });
+      }
+
+      function toggleSlot(id) {
+        state.selectedSlots = state.selectedSlots.includes(id)
+          ? state.selectedSlots.filter((s) => s !== id)
+          : [id];
+        renderSlots();
+        updateRecap();
+        savePlanningToSession();
+      }
+
+      function renderSports() {
+        const offre = OFFRES[state.offreKey];
+        const container = document.getElementById("sportsGrid");
+        container.innerHTML = "";
+        ALL_SPORTS.forEach((sport) => {
+          const isAllowed = offre.sportsAllowed.includes(sport.id);
+          const isSelected = state.selectedSports.includes(sport.id);
+          const card = document.createElement("div");
+          card.className = `sport-card ${isSelected ? "selected" : ""} ${
+            !isAllowed ? "locked" : ""
+          }`;
+          if (isAllowed) card.onclick = () => toggleSport(sport.id);
+          card.innerHTML = `<div class="sport-name">${
+            sport.name
+          }</div><div class="sport-desc">${sport.desc}</div>
+            <div class="sport-badge" style="background:${
+              isAllowed ? offre.color + "22" : "#44444422"
+            };color:${isAllowed ? offre.color : "#888"}">
+              ${isAllowed ? "DISPONIBLE" : sport.badge}
+            </div>`;
+          container.appendChild(card);
+        });
+      }
+
+      function toggleSport(id) {
+        state.selectedSports = state.selectedSports.includes(id)
+          ? state.selectedSports.filter((s) => s !== id)
+          : [...state.selectedSports, id];
+        renderSports();
+        updateRecap();
+        updateCoachMessage();
+        savePlanningToSession();
+      }
+
+      function renderObjectifs() {
+        const container = document.getElementById("objectifGrid");
+        container.innerHTML = "";
+        OBJECTIFS.forEach((obj) => {
+          const btn = document.createElement("div");
+          btn.className =
+            "objectif-btn" + (state.objectif === obj.id ? " selected" : "");
+          btn.onclick = () => selectObjectif(obj.id);
+          btn.innerHTML = `<div class="objectif-label">${obj.label}</div>`;
+          container.appendChild(btn);
+        });
+      }
+
+      function selectObjectif(id) {
+        state.objectif = id;
+        renderObjectifs();
+        updateRecap();
+        updateCoachMessage();
+        savePlanningToSession();
+      }
+
+      function renderRappels() {
+        const container = document.getElementById("rappelGrid");
+        container.innerHTML = "";
+        RAPPELS.forEach((r) => {
+          const isOn =
+            state.rappels[r.id] !== undefined ? state.rappels[r.id] : r.default;
+          state.rappels[r.id] = isOn;
+          const row = document.createElement("div");
+          row.className = "rappel-row";
+          row.innerHTML = `<div><div class="rappel-label">${
+            r.label
+          }</div><div class="rappel-sub">${r.sub}</div></div>
+            <div class="toggle-switch ${
+              isOn ? "on" : ""
+            }" onclick="toggleRappel('${
+            r.id
+          }')"><div class="toggle-knob"></div></div>`;
+          container.appendChild(row);
+        });
+      }
+
+      window.toggleRappel = function (id) {
+        state.rappels[id] = !state.rappels[id];
+        const tog = document.querySelector(`.toggle-switch[onclick*="${id}"]`);
+        if (tog) tog.classList.toggle("on", state.rappels[id]);
+        savePlanningToSession();
+      };
+
+      function updateIntensity(val) {
+        state.intensity = parseInt(val);
+        const data = INTENSITY_DATA[val - 1];
+        document.getElementById("intensityLabel").textContent = data.label;
+        document.getElementById("intensityTip").textContent = data.tip;
+        document.getElementById("rIntensite").textContent = data.label;
+        updateCoachMessage();
+        savePlanningToSession();
+      }
+
+      function updateRecap() {
+        document.getElementById("rJours").textContent =
+          state.activeDays.length + " / 7";
+        document.getElementById("recapWeek").innerHTML = DAYS.map((d, i) => {
+          const on = state.activeDays.includes(i);
+          const count = on ? (state.daySports[i] || []).length || "✓" : "—";
+          return `<div class="recap-day-dot ${
+            on ? "on" : ""
+          }"><div style="font-size:10px;font-weight:700">${count}</div><div style="font-size:8px;margin-top:1px">${d}</div></div>`;
+        }).join("");
+        const slot = SLOTS.find((s) => s.id === state.selectedSlots[0]);
+        document.getElementById("rCreneau").textContent = slot
+          ? slot.time
+          : "—";
+        const obj = OBJECTIFS.find((o) => o.id === state.objectif);
+        document.getElementById("rObjectif").textContent = obj
+          ? obj.label
+          : "—";
+      }
+
+      function updateCoachMessage() {
+        const nb = state.activeDays.length;
+        const msgs = [];
+        if (nb === 0) {
+          msgs.push(
+            "Commencez par sélectionner vos jours d'entraînement pour obtenir des conseils personnalisés."
+          );
+        } else {
+          if (nb >= 5 && state.intensity >= 4)
+            msgs.push(
+              `Attention : ${nb} séances à haute intensité peut mener au surmenage. Intégrez 1 à 2 jours de récupération active.`
+            );
+          else if (nb <= 2)
+            msgs.push(
+              `Avec ${nb} séance(s), les progrès seront lents. Visez 3 à 4 séances/semaine pour des résultats optimaux.`
+            );
+          else
+            msgs.push(
+              `${nb} séances/semaine : excellent rythme ! Continuez ainsi.`
+            );
+          if (
+            state.objectif === "perte" &&
+            !state.selectedSports.includes("cardio")
+          )
+            msgs.push(
+              "Pour la perte de poids, ajoutez du cardio à votre planning."
+            );
+          if (
+            state.objectif === "muscle" &&
+            !state.selectedSports.includes("musculation")
+          )
+            msgs.push(
+              "Pour la prise de muscle, la musculation est essentielle."
+            );
+          if (
+            state.objectif === "flexibilite" &&
+            !state.selectedSports.includes("yoga")
+          )
+            msgs.push("Pour la flexibilité, le yoga est fortement recommandé.");
+          if (state.joinedMarche)
+            msgs.push(
+              "Le groupe Marche Nordique du samedi est parfait pour l'endurance !"
+            );
+        }
+        document.getElementById("coachMessage").textContent =
+          msgs.join(" ") ||
+          "Planning bien équilibré. Vous êtes sur la bonne voie !";
+      }
+
+      function savePlanning() {
+        if (state.activeDays.length === 0) {
+          showToast(
+            "❌ Veuillez sélectionner au moins un jour d'entraînement.",
+            "error"
+          );
+          return;
+        }
+        if (state.selectedSlots.length === 0) {
+          showToast("❌ Veuillez choisir un créneau horaire préféré.", "error");
+          return;
+        }
+        if (!state.objectif) {
+          showToast("❌ Veuillez sélectionner un objectif sportif.", "error");
+          return;
+        }
+        const hasSportOnActiveDay = state.activeDays.some(
+          (day) => state.daySports[day] && state.daySports[day].length > 0
+        );
+        if (!hasSportOnActiveDay) {
+          showToast(
+            "⚠️ Aucun sport ajouté à vos jours d'entraînement.",
+            "warn"
+          );
+        }
+        savePlanningToSession();
+        showToast("✅ Planning sauvegardé avec succès !");
+      }
+
+      function resetPlanning() {
+        if (!confirm("Réinitialiser tout le planning ?")) return;
+        state.activeDays = [];
+        state.daySports = {};
+        state.selectedSlots = [];
+        state.selectedSports = [];
+        state.objectif = null;
+        state.intensity = 3;
+        state.rappels = {};
+        sessionStorage.removeItem("fitnessGymPlanning");
+        renderWeekGrid();
+        renderSlots();
+        renderSports();
+        renderObjectifs();
+        renderRappels();
+        document.getElementById("intensityRange").value = 3;
+        updateIntensity(3);
+        updateRecap();
+        updateCoachMessage();
+        showToast("Planning réinitialisé", "warn");
+      }
+
+      function getMonday(d) {
+        const day = d.getDay();
+        const diff = day === 0 ? -6 : 1 - day;
+        const m = new Date(d);
+        m.setDate(d.getDate() + diff);
+        return m;
+      }
+
+      function showToast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        document.getElementById("toastMsg").textContent = msg;
+        t.className = "toast show" + (type === "error" ? " error" : "");
+        setTimeout(() => t.classList.remove("show"), 3200);
+      }
+
+      window.toggleDay = toggleDay;
+      window.removeSportFromDay = removeSportFromDay;
+      window.openDaySports = openDaySports;
+      window.toggleSlot = toggleSlot;
+      window.toggleSport = toggleSport;
+      window.selectObjectif = selectObjectif;
+      window.savePlanning = savePlanning;
+      window.resetPlanning = resetPlanning;
+      window.toggleJoinGroup = toggleJoinGroup;
+      window.updateIntensity = updateIntensity;
+
+      init();
+    </script>
+  </body>
+</html>

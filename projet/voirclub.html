@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Détail Club - Fitness Gym</title>
+    <style>
+     
+
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8c97a;
+        --gold-pale: rgba(201, 168, 76, 0.11);
+        --gold-border: rgba(201, 168, 76, 0.28);
+        --cyan: #8fe9f0;
+        --cyan-dim: rgba(143, 233, 240, 0.13);
+        --cyan-border: rgba(143, 233, 240, 0.22);
+        --bg: #080d10;
+        --card-bg: rgba(255, 255, 255, 0.04);
+        --card-border: rgba(255, 255, 255, 0.08);
+        --text: #ffffff;
+        --text-muted: rgba(255, 255, 255, 0.6);
+        --text-dim: rgba(255, 255, 255, 0.3);
+        --green: #4ade80;
+        --red: #ef4444;
+        --blue: #60a5fa;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: #0a0f14;
+        color: white;
+        min-height: 100vh;
+      }
+      header.bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 50px;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid rgba(143, 233, 240, 0.12);
+        z-index: 1000;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.85);
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: 40px;
+        background: rgba(255, 255, 255, 0.08);
+        transition: 0.3s;
+      }
+
+      .nav-links a:hover {
+        color: #8fe9f0;
+        background: rgba(143, 233, 240, 0.12);
+      }
+
+      .auth-btns {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .auth-btns a {
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 8px 22px;
+        border-radius: 50px;
+        transition: 0.3s;
+      }
+
+      .btn-login {
+        background: transparent;
+        color: #8fe9f0;
+        border: 2px solid #8fe9f0;
+      }
+
+      .btn-login:hover {
+        background: #8fe9f0;
+        color: #0a2a2d;
+      }
+
+      .btn-signup {
+        background: #8fe9f0;
+        color: #0a2a2d;
+        border: 2px solid #8fe9f0;
+      }
+
+      .btn-signup:hover {
+        background: transparent;
+        color: #8fe9f0;
+      }
+      .logo-luxury {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-right: 25px;
+        transition: 0.3s ease;
+        cursor: pointer;
+      }
+
+      .logo-luxury:hover {
+        transform: scale(1.02);
+      }
+
+      .logo-icon {
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.15),
+          rgba(143, 233, 240, 0.05)
+        );
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(143, 233, 240, 0.3);
+        transition: 0.3s;
+      }
+
+      .logo-luxury:hover .logo-icon {
+        border-color: #8fe9f0;
+        background: linear-gradient(
+          135deg,
+          rgba(143, 233, 240, 0.2),
+          rgba(143, 233, 240, 0.08)
+        );
+        box-shadow: 0 0 12px rgba(143, 233, 240, 0.2);
+      }
+
+      .logo-luxury:hover .logo-icon svg {
+        transform: rotate(3deg);
+      }
+
+      .logo-text {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        letter-spacing: 3px;
+        background: linear-gradient(135deg, #ffffff, #8fe9f0);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        white-space: nowrap;
+      }
+      .hero-banner {
+        margin-top: 62px;
+        height: 340px;
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)),
+          url("img22.jpg") center/cover no-repeat;
+        display: flex;
+        align-items: flex-end;
+        padding: 40px 60px;
+      }
+
+      .hero-banner .breadcrumb {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 8px;
+      }
+
+      .hero-banner .breadcrumb span {
+        color: #8fe9f0;
+      }
+
+      .hero-banner h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3rem, 6vw, 5rem);
+        letter-spacing: 6px;
+        color: white;
+        text-shadow: 0 0 40px rgba(143, 233, 240, 0.3);
+        line-height: 1;
+      }
+
+      .btn-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: #8fe9f0;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 10px 24px;
+        border-radius: 50px;
+        border: 2px solid rgba(143, 233, 240, 0.3);
+        margin: 32px 60px 0;
+        transition: 0.3s;
+      }
+
+      .btn-back:hover {
+        background: rgba(143, 233, 240, 0.1);
+      }
+      .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 40px 60px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(143, 233, 240, 0.15);
+        border-left: 3px solid rgba(143, 233, 240, 0.4);
+        border-radius: 20px;
+        padding: 32px 36px;
+        transition: 0.3s;
+      }
+
+      .card:hover {
+        border-color: rgba(143, 233, 240, 0.3);
+        border-left-color: #8fe9f0;
+        transform: translateY(-3px);
+      }
+
+      .card.full {
+        grid-column: 1 / -1;
+      }
+
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+        color: #8fe9f0;
+        letter-spacing: 3px;
+        margin-bottom: 22px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .info-item .icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: rgba(143, 233, 240, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: #8fe9f0;
+      }
+
+      .info-item .label {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .info-item .value {
+        font-size: 15px;
+        font-weight: 500;
+        margin-top: 2px;
+      }
+      .horaires-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .horaires-table tr {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .horaires-table tr:last-child {
+        border: none;
+      }
+
+      .horaires-table td {
+        padding: 10px 0;
+        font-size: 14px;
+      }
+
+      .horaires-table td:first-child {
+        color: rgba(255, 255, 255, 0.5);
+        width: 140px;
+      }
+
+      .badge-ouvert {
+        display: inline-block;
+        background: rgba(100, 220, 130, 0.15);
+        border: 1px solid rgba(100, 220, 130, 0.35);
+        color: #6ddc82;
+        font-size: 11px;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 20px;
+        margin-left: 10px;
+      }
+      .activites-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .activite-tag {
+        background: rgba(143, 233, 240, 0.08);
+        border: 1px solid rgba(143, 233, 240, 0.2);
+        color: #8fe9f0;
+        font-size: 13px;
+        font-weight: 500;
+        padding: 7px 16px;
+        border-radius: 50px;
+        transition: 0.3s;
+      }
+
+      .activite-tag:hover {
+        background: rgba(143, 233, 240, 0.18);
+      }
+      .coachs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 16px;
+      }
+
+      .coach-card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(143, 233, 240, 0.1);
+        border-radius: 14px;
+        padding: 20px 16px;
+        text-align: center;
+        transition: 0.3s;
+      }
+
+      .coach-card:hover {
+        border-color: rgba(143, 233, 240, 0.35);
+        transform: translateY(-3px);
+      }
+
+      .coach-avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8fe9f0, #3ab8c2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Playfair Display", serif;
+        font-size: 1.3rem;
+        color: #0a2a2d;
+        margin: 0 auto 10px;
+      }
+
+      .coach-name {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .coach-sport {
+        font-size: 12px;
+        color: #8fe9f0;
+      }
+      .adresse-content {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .adresse-line {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .adresse-line svg {
+        color: #8fe9f0;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+
+      .adresse-line span {
+        font-size: 15px;
+        line-height: 1.6;
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      .map-wrapper {
+        margin-top: 16px;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 2px solid rgba(143, 233, 240, 0.2);
+        box-shadow: 0 0 24px rgba(143, 233, 240, 0.08);
+      }
+
+      .map-header {
+        background: rgba(143, 233, 240, 0.08);
+        border-bottom: 1px solid rgba(143, 233, 240, 0.15);
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #8fe9f0;
+        letter-spacing: 1px;
+      }
+
+      .map-wrapper iframe {
+        width: 100%;
+        height: 200px;
+        display: block;
+        border: none;
+        filter: invert(90%) hue-rotate(180deg);
+      }
+      footer {
+        background: rgba(0, 0, 0, 0.6);
+        border-top: 1px solid rgba(143, 233, 240, 0.1);
+        padding: 24px 50px;
+        text-align: center;
+        color: white;
+        font-size: 12px;
+      }
+
+      footer .fitness {
+        color: var(--gold);
+      }
+      @media (max-width: 768px) {
+        .main-content {
+          grid-template-columns: 1fr;
+          padding: 24px 16px;
+        }
+        .card.full {
+          grid-column: auto;
+        }
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+        header.bar {
+          padding: 12px 16px;
+        }
+        .hero-banner {
+          padding: 24px 20px;
+        }
+        .btn-back {
+          margin: 20px 20px 0;
+        }
+        .logo-icon {
+          width: 32px;
+          height: 32px;
+        }
+        .logo-icon svg {
+          width: 24px;
+          height: 24px;
+        }
+        .logo-text {
+          font-size: 18px;
+          letter-spacing: 2px;
+        }
+        .logo-luxury {
+          gap: 8px;
+          margin-right: 15px;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .logo-icon {
+          width: 28px;
+          height: 28px;
+        }
+        .logo-icon svg {
+          width: 20px;
+          height: 20px;
+        }
+        .logo-text {
+          font-size: 14px;
+          letter-spacing: 1.5px;
+        }
+        .logo-luxury {
+          gap: 6px;
+          margin-right: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="bar">
+      <div class="nav-links">
+        <div class="logo-luxury">
+          <div class="logo-icon">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 2L4 9L16 16L28 9L16 2Z"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path
+                d="M4 9V23L16 30L28 23V9"
+                stroke="#8fe9f0"
+                stroke-width="1.5"
+                fill="none"
+              />
+              <path d="M16 16V30" stroke="#8fe9f0" stroke-width="1.5" />
+              <circle
+                cx="16"
+                cy="16"
+                r="3"
+                fill="#8fe9f0"
+                stroke="#8fe9f0"
+                stroke-width="1"
+              />
+              <path
+                d="M9 12.5L23 12.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+              <path
+                d="M9 19.5L23 19.5"
+                stroke="#8fe9f0"
+                stroke-width="1"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+          <div class="logo-text">
+            <span class="logo-main">FITNESS</span>
+            <span class="logo-sub">GYM</span>
+          </div>
+          <div class="logo-accent"></div>
+        </div>
+        <a href="aceuill.html">Accueil</a>
+        <a href="clubs.html">Clubs</a>
+        <a href="horaires.html">Horaires</a>
+        <a href="offre.html">Offre</a>
+        <a href="contact.html">Contact</a>
+        <a href="profil.html">My FG</a>
+        <a href="analytic.html">Static</a>
+      </div>
+      <div class="auth-btns">
+        <a href="connexion.html" class="btn-login">Se connecter</a>
+        <a href="formulaire.html" class="btn-signup">S'inscrire</a>
+      </div>
+    </header>
+
+    <div class="hero-banner" id="heroBanner">
+      <div>
+        <div class="breadcrumb">
+          Accueil &nbsp;›&nbsp; Clubs &nbsp;›&nbsp;
+          <span id="breadcrumbNom">—</span>
+        </div>
+        <h1 id="clubNom">—</h1>
+      </div>
+    </div>
+
+    <a href="clubs.html" class="btn-back">← Retour aux clubs</a>
+
+    <div class="main-content">
+      <div class="card">
+        <div class="card-title">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          INFORMATIONS
+        </div>
+        <div class="info-grid" id="infoGrid"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          ADRESSE
+        </div>
+        <div class="adresse-content" id="adresseContent"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          HORAIRES D'OUVERTURE
+        </div>
+        <table class="horaires-table" id="horairesTable"></table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
+            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+            <line x1="6" y1="1" x2="6" y2="4" />
+            <line x1="10" y1="1" x2="10" y2="4" />
+            <line x1="14" y1="1" x2="14" y2="4" />
+          </svg>
+          ACTIVITÉS
+        </div>
+        <div class="activites-grid" id="activitesGrid"></div>
+      </div>
+
+      <div class="card full">
+        <div class="card-title">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+          NOS COACHS
+        </div>
+        <div class="coachs-grid" id="coachsGrid"></div>
+      </div>
+    </div>
+    <footer>
+      © 2026 <span class="fitness">Fitness Gym</span> — Tous droits réservés
+    </footer>
+
+    <script>
+      const clubs = {
+        tunis: {
+          nom: "FG TUNIS CENTRE",
+          superficie: "2 200 m²",
+          telephone: "+216 71 000 111",
+          email: "tunis@fitnessgym.tn",
+          adresse: "Av. Habib Bourguiba, Tunis 1000",
+          tel_adresse: "+216 71 000 111",
+          mapEmbed:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3194.7560498055345!2d10.186619499999999!3d36.800399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd346987ae54b1%3A0x9aec62e94b314b47!2sAv.%20Habib%20Bourguiba%2C%20Tunis!5e0!3m2!1sfr!2stn!4v1774643467967!5m2!1sfr!2stn",
+          horaires: [
+            { jour: "Lundi – Vendredi", heure: "06h00 – 23h00", ouvert: true },
+            { jour: "Samedi", heure: "07h00 – 22h00", ouvert: true },
+            { jour: "Dimanche", heure: "08h00 – 20h00", ouvert: true },
+            { jour: "Jours fériés", heure: "09h00 – 18h00", ouvert: true },
+          ],
+          activites: [
+            "Musculation",
+            "Cardio",
+            "CrossFit",
+            "Yoga",
+            "Pilates",
+            "Zumba",
+            "Boxe",
+            "Natation",
+            "RPM",
+            "Body Pump",
+            "Stretching",
+          ],
+          coachs: [
+            { nom: "Ahmed Ben Ali", sport: "Musculation" },
+            { nom: "lina amara", sport: "Musculation" },
+            { nom: "Sarra Khelifi", sport: "Yoga & Pilates" },
+            { nom: "Karim Maatoug", sport: "CrossFit" },
+            { nom: "Ines Trabelsi", sport: "Zumba" },
+            { nom: "Youssef Hamdi", sport: "Boxe" },
+            { nom: "Nadia Sfar", sport: "Natation" },
+          ],
+        },
+        boumhal: {
+          nom: "FG BOUMHAL",
+          superficie: "1 600 m²",
+          telephone: "+216 71 000 222",
+          email: "boumhal@fitnessgym.tn",
+          adresse: "Route de Boumhal, Ben Arous 2012",
+          tel_adresse: "+216 71 000 222",
+          mapEmbed:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3198.2!2d10.2741!3d36.7312!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd35b5a5d5d5d5%3A0x1234567890abcdef!2sBen%20Arous%2C%20Tunisie!5e0!3m2!1sfr!2stn!4v1234567891",
+          horaires: [
+            { jour: "Lundi – Vendredi", heure: "06h30 – 22h30", ouvert: true },
+            { jour: "Samedi", heure: "07h00 – 21h00", ouvert: true },
+            { jour: "Dimanche", heure: "08h00 – 19h00", ouvert: true },
+            { jour: "Jours fériés", heure: "Fermé", ouvert: false },
+          ],
+          activites: [
+            "Musculation",
+            "Cardio",
+            "RPM",
+            "Body Combat",
+            "Zumba",
+            "Pilates",
+            "Stretching",
+          ],
+          coachs: [
+            { nom: "Mohamed Chabbi", sport: "Musculation" },
+            { nom: "jaser", sport: "jerbi" },
+            { nom: "Rim Bouaziz", sport: "Pilates" },
+            { nom: "Fares Ghedira", sport: "RPM" },
+            { nom: "Olfa lahmer", sport: "Zumba" },
+            { nom: "yessmine jlassi", sport: "Zumba" },
+          ],
+        },
+        marsa: {
+          nom: "FG LA MARSA",
+          superficie: "1 900 m²",
+          telephone: "+216 71 000 333",
+          email: "lamarsa@fitnessgym.tn",
+          adresse: "Av. Taieb Mhiri, La Marsa 2070",
+          tel_adresse: "+216 71 000 333",
+          mapEmbed:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3191.5!2d10.3254!3d36.8883!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd35b5a5d5d5d6%3A0x1234567890abcdef!2sLa%20Marsa%2C%20Tunisie!5e0!3m2!1sfr!2stn!4v1234567892",
+          horaires: [
+            { jour: "Lundi – Vendredi", heure: "06h00 – 23h00", ouvert: true },
+            { jour: "Samedi", heure: "07h00 – 22h00", ouvert: true },
+            { jour: "Dimanche", heure: "08h00 – 20h00", ouvert: true },
+            { jour: "Jours fériés", heure: "09h00 – 17h00", ouvert: true },
+          ],
+          activites: [
+            "Musculation",
+            "Cardio",
+            "Natation",
+            "Aquagym",
+            "Yoga",
+            "Body Pump",
+            "Stretching",
+            "Tennis",
+          ],
+          coachs: [
+            { nom: "Tarek Jendoubi", sport: "Musculation" },
+            { nom: "Cyrine Nasri", sport: "Aquagym" },
+            { nom: "Bilel Ayari", sport: "Natation" },
+            { nom: "salma", sport: "mrad" },
+            { nom: "Hajer Amri", sport: "Yoga" },
+            { nom: "amira amri", sport: "Yoga" },
+            { nom: "Sami Kallel", sport: "Tennis" },
+          ],
+        },
+        bardo: {
+          nom: "FG BARDO",
+          superficie: "1 400 m²",
+          telephone: "+216 71 000 444",
+          email: "bardo@fitnessgym.tn",
+          adresse: "Rue du Bardo, Le Bardo 2000",
+          tel_adresse: "+216 71 000 444",
+          mapEmbed:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3194.9!2d10.1333!3d36.8094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd346987ae54b2%3A0x9aec62e94b314b48!2sBardo%2C%20Tunisie!5e0!3m2!1sfr!2stn!4v1234567893",
+          horaires: [
+            { jour: "Lundi – Vendredi", heure: "07h00 – 22h00", ouvert: true },
+            { jour: "Samedi", heure: "08h00 – 21h00", ouvert: true },
+            { jour: "Dimanche", heure: "Fermé", ouvert: false },
+            { jour: "Jours fériés", heure: "Fermé", ouvert: false },
+          ],
+          activites: [
+            "Musculation",
+            "Cardio",
+            "Zumba",
+            "RPM",
+            "Boxe",
+            "Stretching",
+          ],
+          coachs: [
+            { nom: "Hedi Baccouche", sport: "Musculation" },
+            { nom: "nader jlasi", sport: "Musculation" },
+            { nom: "Mariem Ferchichi", sport: "Zumba" },
+            { nom: "Wassim Tlili", sport: "Boxe" },
+            { nom: "mohamed damergi", sport: "Boxe" },
+          ],
+        },
+        ennaser: {
+          nom: "FG ENNASER",
+          superficie: "1 750 m²",
+          telephone: "+216 71 000 555",
+          email: "elmenzah@fitnessgym.tn",
+          adresse: "Cité El Menzah 9, Ariana 2092",
+          tel_adresse: "+216 71 000 555",
+          mapEmbed:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3193.1!2d10.1917!3d36.8389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd346987ae54b3%3A0x9aec62e94b314b49!2sEl%20Menzah%2C%20Ariana!5e0!3m2!1sfr!2stn!4v1234567894",
+          horaires: [
+            { jour: "Lundi – Vendredi", heure: "06h30 – 23h00", ouvert: true },
+            { jour: "Samedi", heure: "07h00 – 22h00", ouvert: true },
+            { jour: "Dimanche", heure: "08h30 – 20h00", ouvert: true },
+            { jour: "Jours fériés", heure: "09h00 – 18h00", ouvert: true },
+          ],
+          activites: [
+            "Musculation",
+            "Cardio",
+            "CrossFit",
+            "Yoga",
+            "Pilates",
+            "RPM",
+            "Body Pump",
+            "Zumba",
+          ],
+          coachs: [
+            { nom: "Achraf Mekni", sport: "CrossFit" },
+            { nom: "mourad akermi", sport: "CrossFit" },
+            { nom: "Leila Belhaj", sport: "Yoga" },
+            { nom: "dora malek", sport: "Yoga" },
+            { nom: "Hedi Baccouche", sport: "Musculation" },
+            { nom: "anouar slimeni", sport: "Musculation" },
+            { nom: "Dorra Saad", sport: "Pilates" },
+          ],
+        },
+        sousse: {
+          nom: "FG SOUSSE",
+          superficie: "2 000 m²",
+          telephone: "+216 73 000 111",
+          email: "sousse@fitnessgym.tn",
+          adresse: "Av. du 14 Janvier, Sousse 4000",
+          tel_adresse: "+216 73 000 111",
+          mapEmbed:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3228.5!2d10.6347!3d35.8256!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12fd8b5a5d5d5d5d%3A0x1234567890abcde0!2sSousse%2C%20Tunisie!5e0!3m2!1sfr!2stn!4v1234567895",
+          horaires: [
+            { jour: "Lundi – Vendredi", heure: "06h00 – 23h00", ouvert: true },
+            { jour: "Samedi", heure: "07h00 – 22h00", ouvert: true },
+            { jour: "Dimanche", heure: "08h00 – 20h00", ouvert: true },
+            { jour: "Jours fériés", heure: "09h00 – 17h00", ouvert: true },
+          ],
+          activites: [
+            "Musculation",
+            "Cardio",
+            "Natation",
+            "Aquagym",
+            "Zumba",
+            "Body Combat",
+            "RPM",
+            "Tennis",
+            "Padel",
+          ],
+          coachs: [
+            { nom: "Mourad Ksouri", sport: "Musculation" },
+            { nom: "Amira Gharbi", sport: "Natation" },
+            { nom: "Nizar Friaa", sport: "Padel" },
+            { nom: "Sabrine Haddad", sport: "Zumba" },
+            { nom: "Lotfi Ben Salah", sport: "Tennis" },
+          ],
+        },
+        sfax: {
+          nom: "FG SFAX",
+          superficie: "1 800 m²",
+          telephone: "+216 74 000 111",
+          email: "sfax@fitnessgym.tn",
+          adresse: "Rue Farhat Hached, Sfax 3000",
+          tel_adresse: "+216 74 000 111",
+          mapEmbed:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3275.4!2d10.7603!3d34.7406!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1301d57eb3e3e3e3%3A0x1234567890abcde1!2sSfax%2C%20Tunisie!5e0!3m2!1sfr!2stn!4v1234567896",
+          horaires: [
+            { jour: "Lundi – Vendredi", heure: "06h30 – 22h30", ouvert: true },
+            { jour: "Samedi", heure: "07h00 – 21h00", ouvert: true },
+            { jour: "Dimanche", heure: "08h00 – 19h00", ouvert: true },
+            { jour: "Jours fériés", heure: "Fermé", ouvert: false },
+          ],
+          activites: [
+            "Musculation",
+            "Cardio",
+            "CrossFit",
+            "Boxe",
+            "RPM",
+            "Yoga",
+            "Stretching",
+          ],
+          coachs: [
+            { nom: "Khaled Triki", sport: "Musculation" },
+            { nom: "mourad salemi", sport: "Musculation" },
+            { nom: "Wafa Mansouri", sport: "Yoga" },
+            { nom: "Adnen Zouari", sport: "CrossFit" },
+            { nom: "Dorsaf Ben Amor", sport: "Boxe" },
+            { nom: "Ahmed gader", sport: "Boxe" },
+          ],
+        },
+      };
+
+      const params = new URLSearchParams(window.location.search);
+      const clubKey = params.get("club") || "tunis";
+      const club = clubs[clubKey] || clubs["tunis"];
+
+      document.title = club.nom + " - Fitness Gym";
+      document.getElementById("clubNom").textContent = club.nom;
+      document.getElementById("breadcrumbNom").textContent = club.nom;
+      const infoItems = [
+        {
+          icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>`,
+          label: "Superficie",
+          value: club.superficie,
+        },
+        {
+          icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.07 3.38 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>`,
+          label: "Téléphone",
+          value: club.telephone,
+        },
+        {
+          icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
+          label: "Email",
+          value: club.email,
+        },
+        {
+          icon: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/></svg>`,
+          label: "Activités",
+          value: club.activites.length + " disciplines",
+        },
+      ];
+      document.getElementById("infoGrid").innerHTML = infoItems
+        .map(
+          (i) =>
+            '<div class="info-item"><div class="icon">' +
+            i.icon +
+            '</div><div><div class="label">' +
+            i.label +
+            '</div><div class="value">' +
+            i.value +
+            "</div></div></div>"
+        )
+        .join("");
+      document.getElementById("adresseContent").innerHTML =
+        '<div class="adresse-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>' +
+        club.adresse +
+        "</span></div>" +
+        '<div class="adresse-line"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.07 3.38 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg><span>' +
+        club.tel_adresse +
+        "</span></div>" +
+        '<div class="map-wrapper">' +
+        '<div class="map-header"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> 📍 ' +
+        club.adresse +
+        "</div>" +
+        '<iframe src="' +
+        club.mapEmbed +
+        '" allowfullscreen loading="lazy"></iframe>' +
+        "</div>";
+      var today = new Date().getDay();
+      document.getElementById("horairesTable").innerHTML = club.horaires
+        .map(function (h, i) {
+          var isToday =
+            (i === 0 && today >= 1 && today <= 5) ||
+            (i === 1 && today === 6) ||
+            (i === 2 && today === 0);
+          return (
+            "<tr><td>" +
+            h.jour +
+            (isToday ? '<span class="badge-ouvert">Aujourd\'hui</span>' : "") +
+            "</td><td>" +
+            h.heure +
+            (!h.ouvert ? '<span class="badge-ferme">Fermé</span>' : "") +
+            "</td></tr>"
+          );
+        })
+        .join("");
+      document.getElementById("activitesGrid").innerHTML = club.activites
+        .map(function (a) {
+          return '<span class="activite-tag">✦ ' + a + "</span>";
+        })
+        .join("");
+      document.getElementById("coachsGrid").innerHTML = club.coachs
+        .map(function (c) {
+          var ini = c.nom
+            .split(" ")
+            .map(function (w) {
+              return w[0];
+            })
+            .join("")
+            .slice(0, 2);
+          return (
+            '<div class="coach-card"><div class="coach-avatar">' +
+            ini +
+            '</div><div class="coach-name">' +
+            c.nom +
+            '</div><div class="coach-sport">' +
+            c.sport +
+            "</div></div>"
+          );
+        })
+        .join("");
+    </script>
+  </body>
+</html>

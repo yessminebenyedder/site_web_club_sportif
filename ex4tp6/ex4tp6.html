@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="ex4tp6.js" defer></script>
+    <title>Calculatrice</title>
+  </head>
+  <body>
+    <h1 align="center">Calculatrice</h1>
+    <div align="center">
+      <input type="text" name="" id="nb1" />
+      <span id="oper">+</span>
+      <input type="text" name="" id="nb2" />
+      =
+      <input type="text" name="" id="res" />
+    </div>
+    <div align="center">
+      <h2>
+        choisir l'opérteur:<select id="choix" onchange="changer()">
+          <option value="addition(+)">addition(+)</option>
+          <option value="soustraction(-)">soustraction(-)</option>
+          <option value="multiplication(*)">multiplication(*)</option>
+          <option value="division(/)">division(/)</option>
+        </select>
+        <input type="button" value="calculer" onclick="calculatrice()" />
+      </h2>
+    </div>
+  </body>
+</html>
